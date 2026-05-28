@@ -1,5 +1,3 @@
-# LEARNING_ROADMAP.md
-
 # AI Backend Learning Roadmap
 
 ## 0. 这个计划的目的
@@ -136,6 +134,10 @@ ai-backend-learning/
 ├── AGENTS.md
 ├── LEARNING_ROADMAP.md
 ├── README.md
+├── START_HERE.md
+├── CURRENT_STATUS.md
+├── NEXT_SESSION.md
+├── LEARNING_JOURNAL.md
 ├── fundamentals/
 │   ├── algorithm/
 │   ├── data-structure/
@@ -165,6 +167,7 @@ ai-backend-learning/
 │   ├── mock-interview.md
 │   ├── project-deep-dive.md
 │   └── backend-review.md
+├── sessions/
 ├── mistakes/
 │   ├── algorithm/
 │   ├── database/
@@ -178,11 +181,12 @@ ai-backend-learning/
 * 仓库结构建立完成
 * AGENTS.md 完成
 * LEARNING_ROADMAP.md 完成
+* 恢复学习状态机制建立完成
 * 能够用 Codex 开始一次结构化学习
 
 状态：
 
-* Phase 0：TODO
+* Phase 0：DOING
 
 ---
 
