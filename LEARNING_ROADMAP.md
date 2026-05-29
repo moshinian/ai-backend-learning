@@ -1,4 +1,4 @@
-# AI Backend Learning Roadmap
+# LEARNING ROADMAP
 
 ## 0. 这个计划的目的
 
@@ -16,8 +16,15 @@
 
 * `AGENTS.md` 规定你如何与我协作。
 * `LEARNING_ROADMAP.md` 规定我们按什么阶段推进学习。
+* `INTERVIEW_SPRINT_30_DAYS.md` 规定当前 1 个月面试冲刺如何执行。
 * 每次学习开始前，请先读取这两个文件。
 * 每次学习结束后，请帮我更新当前阶段进展、遗留问题和下一步任务。
+
+当前执行口径：
+
+1. `LEARNING_ROADMAP.md` 是长期能力地图。
+2. `INTERVIEW_SPRINT_30_DAYS.md` 是当前 1 个月执行计划。
+3. 如果两者优先级冲突，本月先执行冲刺计划，长期 Roadmap 不废弃。
 
 ---
 
@@ -135,9 +142,8 @@ ai-backend-learning/
 ├── LEARNING_ROADMAP.md
 ├── README.md
 ├── START_HERE.md
-├── CURRENT_STATUS.md
-├── NEXT_SESSION.md
 ├── LEARNING_JOURNAL.md
+├── INTERVIEW_SPRINT_30_DAYS.md
 ├── fundamentals/
 │   ├── algorithm/
 │   ├── data-structure/
@@ -270,7 +276,7 @@ mistakes/concurrency/os-basics.md
 
 ## 5.3 计算机网络基础
 
-任务状态：TODO
+任务状态：REVIEW
 
 必须掌握：
 

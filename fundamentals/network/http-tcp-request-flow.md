@@ -218,6 +218,12 @@ Tomcat 负责：
 2. 接收 TCP 连接
 3. 解析 HTTP 请求
 4. 按 Servlet 规范承载请求
+5. 管理 Servlet、Filter 等 Web 组件的生命周期
+
+注意：
+
+- TCP 三次握手主要由操作系统内核协议栈完成，不是 Tomcat 亲自处理每个握手包
+- Tomcat 面向的是 socket 连接和 HTTP 字节流，不是 JVM 字节码
 
 ### 8.2 DispatcherServlet
 
@@ -244,9 +250,117 @@ Controller 负责：
 - `DispatcherServlet` 负责分请求
 - Controller 负责处理请求
 
+更完整的调用关系：
+
+```text
+客户端
+  -> 操作系统网络协议栈
+  -> Tomcat
+  -> Filter 链
+  -> DispatcherServlet
+  -> HandlerMapping
+  -> Interceptor
+  -> HandlerAdapter
+  -> Controller
+  -> Service / Repository
+```
+
+其中：
+
+1. Servlet 是 Java Web 规范里的请求处理组件
+2. Tomcat 是 Servlet 容器，负责运行 Servlet
+3. `DispatcherServlet` 是 Spring MVC 按 Servlet 规范实现的核心入口
+4. Controller 不是 Servlet，它是 Spring MVC 分发后的业务处理方法
+
 ---
 
-## 9. 为什么 Spring Boot 没手写监听代码也能对外提供 HTTP 服务
+## 9. Keep-Alive、长连接和工作线程占用
+
+关键结论：
+
+```text
+TCP 连接存在 != Tomcat 工作线程一直被占用
+```
+
+在 Tomcat NIO 模型下：
+
+| 阶段 | 是否占用工作线程 |
+|---|---|
+| TCP 连接已建立，但没有请求数据 | 通常不占用工作线程 |
+| Keep-Alive 空闲等待下一次请求 | 通常不占用工作线程 |
+| socket 上有 HTTP 请求可读 | 会交给工作线程处理 |
+| Controller / Service 同步执行业务 | 占用工作线程 |
+| 同步等待数据库、Redis、外部接口、大模型 | 工作线程仍然被占用 |
+| 响应写回并完成请求处理 | 工作线程释放回线程池 |
+
+Tomcat NIO 里可以这样理解：
+
+1. Acceptor 负责接收连接
+2. Poller 负责监听连接上的 IO 事件
+3. 有请求数据可读时，才把处理任务交给工作线程
+
+所以慢请求拖垮 Web 服务，核心通常不是“长连接太多”，而是：
+
+```text
+大量请求进入同步业务处理阶段后，工作线程长时间不释放
+```
+
+例如 RAG 问答接口如果同步等待大模型 20 秒：
+
+1. 1 个请求会占用 1 个 Tomcat 工作线程约 20 秒
+2. 如果并发超过工作线程上限，后续请求开始排队
+3. CPU 可能不高，但服务表现为响应慢、超时、不可用
+
+常见改法：
+
+| 场景 | 更合适的处理方式 |
+|---|---|
+| 短请求、低并发 | 同步处理，设置合理超时 |
+| RAG 问答、模型生成 | SSE 流式响应、异步客户端、限流和超时 |
+| 文档解析、知识库构建 | 返回 taskId，后台线程池或 MQ 异步处理，前端轮询状态 |
+| 下游接口慢 | 独立业务线程池、熔断、限流、降级 |
+
+---
+
+## 10. Filter、Interceptor、Controller 的执行顺序
+
+Filter 和 Interceptor 都能“拦截请求”，但层次不同。
+
+| 对比点 | Filter | Interceptor |
+|---|---|---|
+| 所属体系 | Servlet 规范 | Spring MVC |
+| 执行位置 | `DispatcherServlet` 之前 | `DispatcherServlet` 之后，Controller 之前 |
+| 管理者 | Servlet 容器，例如 Tomcat | Spring MVC |
+| 感知能力 | 更偏底层，主要操作 request / response | 能拿到 Handler / Controller 方法信息 |
+| 常见用途 | 编码、CORS、日志、请求包装、认证入口 | 登录校验、权限、接口耗时、业务上下文 |
+
+典型顺序：
+
+```text
+客户端请求
+  -> Tomcat
+  -> Filter 链
+  -> DispatcherServlet
+  -> HandlerMapping 找到 Controller
+  -> Interceptor.preHandle()
+  -> Controller
+  -> Interceptor.postHandle()
+  -> 返回值处理 / 视图渲染
+  -> Interceptor.afterCompletion()
+  -> Filter 返回阶段
+  -> Tomcat 响应客户端
+```
+
+注意：
+
+1. Filter 不是 Tomcat 私有方法，而是 Servlet 规范的一部分
+2. 不是所有请求都会经过所有 Filter，取决于 Filter 的 URL 匹配规则
+3. Interceptor 主要拦截进入 Spring MVC 并匹配到 Handler 的请求
+4. Filter 更靠近容器层，Interceptor 更靠近业务框架层
+
+---
+
+## 11. 为什么 Spring Boot 没手写监听代码也能对外提供 HTTP 服务
 
 因为引入了：
 
@@ -273,7 +387,7 @@ Spring Boot 会把应用识别成 Web 应用，并自动完成：
 
 ---
 
-## 10. 结合项目怎么表达
+## 12. 结合项目怎么表达
 
 在 Spring Boot 项目里，例如一个 `DocumentController`：
 
@@ -291,14 +405,31 @@ Spring Boot 会把应用识别成 Web 应用，并自动完成：
 
 这类表达更能体现你理解的是完整请求链路，而不只是框架表面。
 
+RAG 问答接口可以进一步这样表达：
+
+1. HTTP 请求先由内嵌 Tomcat 接收
+2. Filter 可以做跨域、认证、日志等通用处理
+3. `DispatcherServlet` 把请求分发给问答 Controller
+4. Interceptor 可以做登录态、权限、耗时统计、业务上下文
+5. Controller 调用检索、重排、大模型生成等业务逻辑
+6. 如果大模型调用耗时长，需要考虑 SSE、异步任务、限流和超时，避免 Tomcat 工作线程长期被同步占用
+
 ---
 
-## 11. 面试回答模板
+## 13. 面试回答模板
 
-### 11.1 简洁版
+### 13.1 简洁版
 
 “浏览器访问 Spring Boot 接口时，先通过 DNS 把域名解析成目标 IP，再根据协议或显式配置确定目标端口。客户端随后向目标 `IP:Port` 发起 TCP 连接，三次握手成功后，在这条连接上发送 HTTP 请求。服务端由 Tomcat 这类 Web 容器监听端口、接收连接并解析 HTTP 请求，再把请求交给 Spring MVC 的 `DispatcherServlet` 做统一分发，最后路由到具体的 Controller 处理业务逻辑并返回响应。”
 
-### 11.2 深挖版
+### 13.2 深挖版
 
 “这个过程可以分成网络层和框架层。网络层上，DNS 负责域名到 IP 的映射，端口负责定位机器上的具体服务，TCP 负责建立可靠连接，HTTP 负责定义请求和响应的语义与格式。框架层上，Tomcat 作为 Web 容器负责监听端口、接收 TCP 连接并解析 HTTP 报文，然后按 Servlet 规范把请求交给 Spring MVC 的 `DispatcherServlet`。`DispatcherServlet` 作为前端控制器负责路由匹配、参数绑定、拦截器执行、调用 Controller、返回值处理和异常处理，最终再把结果响应给客户端。”
+
+### 13.3 追问：Keep-Alive 会一直占用 Tomcat 工作线程吗？
+
+“不会。TCP 连接存在不等于工作线程一直被占用。Tomcat NIO 模型下，Keep-Alive 空闲连接主要由 Poller 监听 IO 事件，只有连接上有 HTTP 请求数据可读，并进入 HTTP 解析、Servlet、Controller 业务处理时，才会占用工作线程。真正容易拖垮 Tomcat 的是大量同步慢请求，比如慢 SQL、外部接口或大模型调用，导致工作线程长时间不释放。”
+
+### 13.4 追问：Filter 和 Interceptor 有什么区别？
+
+“Filter 属于 Servlet 规范，由 Tomcat 这类容器执行，位置在 `DispatcherServlet` 之前。Interceptor 属于 Spring MVC，位置在 `DispatcherServlet` 之后、Controller 之前。Filter 更适合做编码、CORS、日志、认证入口等通用处理；Interceptor 能感知 Handler 信息，更适合做登录校验、权限、业务上下文和接口耗时统计。”

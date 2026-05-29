@@ -10,11 +10,9 @@
 
 它不是当前状态权威文件。
 
-当前恢复学习进度时，优先以这些文件为准：
+当前恢复学习进度时，只需要优先读取：
 
 1. `START_HERE.md`
-2. `CURRENT_STATUS.md`
-3. `NEXT_SESSION.md`
 
 ---
 
@@ -77,6 +75,12 @@
 - 机制表达
 - 从“我懂”到“我能清楚讲给面试官听”
 
+### 5. 容易把长期路线和短期冲刺混在一起
+
+长期路线图用于建立完整能力地图。
+
+当前 1 个月目标是面试冲刺，应该优先处理高频短板和项目表达，不平均推进所有 Phase。
+
 ---
 
 ## 已沉淀主题索引
@@ -87,8 +91,21 @@
 2. `interview/computer-fundamentals-questions.md`
 3. `mistakes/network/request-flow.md`
 
+### 学习计划和文档口径
+
+1. `LEARNING_ROADMAP.md`
+2. `INTERVIEW_SPRINT_30_DAYS.md`
+3. `START_HERE.md`
+
+### MySQL 事务
+
+1. `backend/mysql/transaction.md`
+2. `interview/mysql-questions.md`
+3. `mistakes/database/transaction.md`
+
 ---
 
 ## 历史会话索引
 
 1. `sessions/2026-05-28-http-tcp-request-flow.md`
+2. `sessions/2026-05-29-learning-plan-and-doc-consolidation.md`

@@ -1,4 +1,4 @@
-# AGENTS.md
+# AGENTS
 
 ## 你的角色
 

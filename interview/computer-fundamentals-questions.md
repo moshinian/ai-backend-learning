@@ -117,7 +117,24 @@ HTTP 的价值不是替代 TCP，而是在 TCP 之上建立统一应用层协议
 
 ---
 
-## 7. 为什么没有 Tomcat，浏览器通常不能直接访问 Spring MVC + Controller？
+## 7. Tomcat、Servlet、DispatcherServlet 三者是什么关系？
+
+### 简洁版
+
+“Tomcat 是 Servlet 容器，Servlet 是 Java Web 处理请求的规范，`DispatcherServlet` 是 Spring MVC 基于 Servlet 规范实现的统一请求入口。请求先到 Tomcat，再由 Tomcat 调用 Servlet 链路，最后进入 `DispatcherServlet` 分发到 Controller。”
+
+### 深挖版
+
+可以这样拆：
+
+1. Tomcat 负责监听端口、接收连接、解析 HTTP，并管理 Servlet 生命周期
+2. Servlet 定义了 Java Web 请求处理组件的标准接口
+3. `DispatcherServlet` 是 Spring MVC 的核心 Servlet，不负责网络 IO，只负责 MVC 层的路由、参数绑定、拦截器、返回值和异常处理
+4. Controller 是 Spring MVC 分发后的业务方法，不是 Servlet
+
+---
+
+## 8. 为什么没有 Tomcat，浏览器通常不能直接访问 Spring MVC + Controller？
 
 ### 简洁版
 
@@ -136,7 +153,7 @@ HTTP 的价值不是替代 TCP，而是在 TCP 之上建立统一应用层协议
 
 ---
 
-## 8. 为什么 Spring Boot 没手写监听代码也能通过 `localhost:8080` 被访问？
+## 9. 为什么 Spring Boot 没手写监听代码也能通过 `localhost:8080` 被访问？
 
 ### 简洁版
 
@@ -155,7 +172,65 @@ HTTP 的价值不是替代 TCP，而是在 TCP 之上建立统一应用层协议
 
 ---
 
-## 9. 面试官可能继续追问什么？
+## 10. Keep-Alive 长连接会一直占用 Tomcat 工作线程吗？
+
+### 简洁版
+
+“不会。TCP 连接存在不等于 Tomcat 工作线程一直被占用。Tomcat NIO 模型下，Keep-Alive 空闲连接主要由 Poller 监听 IO 事件，只有连接上有请求数据可读，并进入 HTTP 解析、Servlet、Controller 业务处理时，才会占用工作线程。”
+
+### 深挖版
+
+真正容易拖垮 Tomcat 的不是空闲长连接，而是大量同步慢请求。
+
+例如 RAG 问答接口同步等待大模型 20 秒：
+
+1. 每个请求会长时间占用一个 Tomcat 工作线程
+2. 工作线程被占满后，新请求只能排队
+3. CPU 不一定高，但接口会变慢、超时甚至不可用
+
+优化方向：
+
+1. 对问答生成使用 SSE 流式响应或异步客户端
+2. 对文档解析、知识库构建使用 taskId + 后台任务 + 状态轮询
+3. 配合限流、超时、熔断、独立业务线程池或 MQ
+
+---
+
+## 11. Filter 和 Interceptor 有什么区别？
+
+### 简洁版
+
+“Filter 属于 Servlet 规范，由 Tomcat 这类容器执行，位置在 `DispatcherServlet` 之前。Interceptor 属于 Spring MVC，位置在 `DispatcherServlet` 之后、Controller 之前。Filter 更偏容器层，Interceptor 更偏业务框架层。”
+
+### 深挖版
+
+执行顺序：
+
+```text
+Tomcat
+  -> Filter 链
+  -> DispatcherServlet
+  -> Interceptor.preHandle()
+  -> Controller
+  -> Interceptor.postHandle()
+  -> Interceptor.afterCompletion()
+  -> Filter 返回阶段
+```
+
+常见用途：
+
+1. Filter：编码、CORS、日志、请求包装、认证入口
+2. Interceptor：登录校验、权限、接口耗时、业务上下文
+
+注意：
+
+1. Filter 不是 Tomcat 私有方法，而是 Servlet 规范的一部分
+2. Filter 是否执行取决于 URL 匹配规则
+3. Interceptor 主要拦截进入 Spring MVC 并匹配到 Handler 的请求
+
+---
+
+## 12. 面试官可能继续追问什么？
 
 1. 三次握手为什么不是两次？
 2. TCP 和 HTTP 分别位于哪一层？
@@ -163,3 +238,6 @@ HTTP 的价值不是替代 TCP，而是在 TCP 之上建立统一应用层协议
 4. Tomcat 为什么能监听端口？
 5. `DispatcherServlet` 为什么不是直接业务代码？
 6. `spring-boot-starter-web` 去掉后项目会发生什么？
+7. Keep-Alive 空闲连接为什么不一直占用工作线程？
+8. RAG 大模型调用很慢时，如何避免 Tomcat 工作线程被打满？
+9. Filter、Interceptor、Controller 的执行顺序是什么？
