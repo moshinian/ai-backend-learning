@@ -351,7 +351,7 @@ interview/computer-fundamentals-questions.md
 
 ## 5.1 数据库事务
 
-任务状态：TODO
+任务状态：REVIEW
 
 必须掌握：
 

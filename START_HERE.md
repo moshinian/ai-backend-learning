@@ -45,7 +45,7 @@
 当前主题：
 
 1. 请求链路与 Tomcat 线程模型第一轮已收尾
-2. 下一步进入 MySQL 事务主线
+2. MySQL 事务主线第一轮已学习：事务出现原因、ACID、隔离级别、MVCC、undo/redo/binlog
 3. 学习恢复入口已合并完成：以后默认只读取 `START_HERE.md`
 
 已经掌握：
@@ -65,20 +65,31 @@
 13. Keep-Alive 长连接存在不等于一直占用 Tomcat 工作线程
 14. Tomcat NIO 中空闲连接主要由 Poller 监听，有请求可读并进入业务处理时才占用工作线程
 15. Filter 属于 Servlet 规范，Interceptor 属于 Spring MVC，执行位置不同
+16. 事务用于保证同库内一组数据库操作整体成功或整体回滚
+17. ACID 中的一致性不等于分布式最终一致性
+18. 脏读、不可重复读、幻读的核心区别
+19. MySQL InnoDB 默认隔离级别是 Repeatable Read
+20. MVCC 通过 Read View、隐藏事务 ID、undo log 支持一致性快照读
+21. undo log 用于回滚和 MVCC 历史版本，不负责提交后的崩溃恢复
+22. redo log 用于崩溃恢复，保证事务提交后的持久性
+23. binlog 用于主从复制、时间点恢复和变更订阅
+24. redo log 和 binlog 需要两阶段提交，避免主库事务状态和 binlog 记录不一致
 
 仍不稳定：
 
 1. 异步化设计表达：业务线程池、任务队列、SSE、轮询的适用边界
 2. Servlet 容器和操作系统线程 / IO 的连接点仍需后续结合 OS 复盘
 3. 三次握手和 TCP 整体机制的边界需要后续复习
-4. 数据库事务、MVCC、锁和项目一致性表达
+4. 数据库锁、当前读、间隙锁、Next-Key Lock 和项目并发控制表达
 5. 动态规划和算法表达
+6. undo / redo / binlog 的边界需要复盘，尤其是持久性和复制恢复的区别
+7. MVCC 幻读边界需要继续区分快照读和当前读
 
 ---
 
 ## 4. 下次从哪里开始
 
-**数据库事务为什么出现？ACID 分别解决什么真实工程问题？**
+**快照读、当前读、行锁、间隙锁、Next-Key Lock 分别解决什么问题？**
 
 不要重复展开以下内容，只需快速确认：
 
@@ -92,6 +103,9 @@
 8. 慢请求会同步阻塞 Tomcat 工作线程
 9. Keep-Alive 空闲连接不长期占用 Tomcat 工作线程
 10. Filter 在 `DispatcherServlet` 之前，Interceptor 在 `DispatcherServlet` 之后、Controller 之前
+11. 事务解决的是本地数据库内一组操作的原子性问题，不解决所有跨系统一致性
+12. undo log 不是持久性日志，redo log 才负责提交后的崩溃恢复
+13. binlog 支撑复制和恢复，但不等于天然保证主从强一致
 
 ---
 

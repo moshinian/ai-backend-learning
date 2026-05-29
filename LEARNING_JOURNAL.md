@@ -81,6 +81,21 @@
 
 当前 1 个月目标是面试冲刺，应该优先处理高频短板和项目表达，不平均推进所有 Phase。
 
+### 6. MySQL 日志职责边界容易混淆
+
+已暴露的问题：
+
+- 把 undo log 说成负责事务提交后的持久性
+- 把 binlog 说成天然保证主从一致
+- 把事务表达成保证业务逻辑一定正确
+
+后续复盘时要反复区分：
+
+- undo log：回滚、MVCC 旧版本
+- redo log：崩溃恢复、持久性
+- binlog：复制、恢复、订阅
+- 本地事务：保证数据库内操作边界，不保证跨系统最终一致
+
 ---
 
 ## 已沉淀主题索引
@@ -109,3 +124,4 @@
 
 1. `sessions/2026-05-28-http-tcp-request-flow.md`
 2. `sessions/2026-05-29-learning-plan-and-doc-consolidation.md`
+3. `sessions/2026-05-29-mysql-transaction-first-pass.md`
