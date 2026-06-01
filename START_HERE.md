@@ -35,7 +35,7 @@
 
 ## 3. 当前学习状态
 
-日期：2026-05-29
+日期：2026-06-01
 
 当前阶段：
 
@@ -46,7 +46,8 @@
 
 1. 请求链路与 Tomcat 线程模型第一轮已收尾
 2. MySQL 事务主线第一轮已学习：事务出现原因、ACID、隔离级别、MVCC、undo/redo/binlog
-3. 学习恢复入口已合并完成：以后默认只读取 `START_HERE.md`
+3. MySQL 锁与批处理并发控制第一轮已学习：快照读、当前读、行锁、间隙锁、Next-Key Lock、任务抢占、补偿恢复、process_token、ERP 幂等
+4. 学习恢复入口已合并完成：以后默认只读取 `START_HERE.md`
 
 已经掌握：
 
@@ -74,22 +75,31 @@
 22. redo log 用于崩溃恢复，保证事务提交后的持久性
 23. binlog 用于主从复制、时间点恢复和变更订阅
 24. redo log 和 binlog 需要两阶段提交，避免主库事务状态和 binlog 记录不一致
+25. 普通快照读在 RR 下主要依赖 MVCC 和 Read View，不是依赖 Next-Key Lock
+26. 当前读包括 `select ... for update`、`update`、`delete`，需要读取最新数据并加锁
+27. 行锁解决同一行并发修改，间隙锁防止索引区间插入，Next-Key Lock 是记录锁加间隙锁
+28. 先 `select` 一批 `INIT` 再处理不安全，因为查询候选数据和声明处理权不是原子动作
+29. 批处理任务应优先用 `update ... where status='INIT'` 这类条件更新抢占，通过影响行数确认处理权
+30. 分片字段可以降低扫描冲突和提升吞吐，但不能替代状态条件更新
+31. `PROCESSING` 应理解为带租约的处理中状态，需要心跳、超时回收、重试次数和补偿任务
+32. `process_token` / `attempt_id` 用于证明当前 worker 仍有资格推进状态，防止过期 worker 覆盖新状态
+33. ERP 推送成功但本地未更新就宕机属于外部调用不确定状态，需要下游幂等、本地推送记录、查询或对账兜底
 
 仍不稳定：
 
 1. 异步化设计表达：业务线程池、任务队列、SSE、轮询的适用边界
 2. Servlet 容器和操作系统线程 / IO 的连接点仍需后续结合 OS 复盘
 3. 三次握手和 TCP 整体机制的边界需要后续复习
-4. 数据库锁、当前读、间隙锁、Next-Key Lock 和项目并发控制表达
+4. 索引如何影响锁范围、为什么没有合适索引会锁更多记录
 5. 动态规划和算法表达
 6. undo / redo / binlog 的边界需要复盘，尤其是持久性和复制恢复的区别
-7. MVCC 幻读边界需要继续区分快照读和当前读
+7. 当前读、Next-Key Lock 和索引访问路径的细节还需要继续练习
 
 ---
 
 ## 4. 下次从哪里开始
 
-**快照读、当前读、行锁、间隙锁、Next-Key Lock 分别解决什么问题？**
+**索引如何影响锁范围？为什么没有合适索引会导致锁范围扩大？**
 
 不要重复展开以下内容，只需快速确认：
 
@@ -106,6 +116,12 @@
 11. 事务解决的是本地数据库内一组操作的原子性问题，不解决所有跨系统一致性
 12. undo log 不是持久性日志，redo log 才负责提交后的崩溃恢复
 13. binlog 支撑复制和恢复，但不等于天然保证主从强一致
+14. RR 下普通快照读靠 MVCC，不靠 Next-Key Lock
+15. 当前读才需要重点讨论行锁、间隙锁、Next-Key Lock
+16. 批处理不能只 select 候选数据，要通过带状态条件的 update 抢占处理权
+17. `PROCESSING` 卡住要靠租约、心跳、超时补偿和幂等重试在线恢复
+18. 成功或失败回写要带 `process_token`，防止过期 worker 覆盖状态
+19. ERP 外部调用的不确定状态要靠请求幂等、本地调用记录、查询或对账兜底
 
 ---
 
@@ -150,8 +166,9 @@
 当前 MySQL 事务主题的可选沉淀文件：
 
 1. `backend/mysql/transaction.md`
-2. `interview/mysql-questions.md`
-3. `mistakes/database/transaction.md`
+2. `backend/mysql/lock-and-batch-processing.md`
+3. `interview/mysql-questions.md`
+4. `mistakes/database/transaction.md`
 
 注意：
 
