@@ -12,10 +12,11 @@
 2. 理解普通快照读在 RR 下主要依赖 MVCC，不是依赖 Next-Key Lock
 3. 理解当前读、行锁、间隙锁、Next-Key Lock 的作用边界
 4. 能把锁机制联系到结算系统的任务抢占、状态流转、补偿恢复和外部 ERP 幂等
+5. 理解索引访问路径会影响锁范围，批处理联合索引要服务分片、状态过滤和稳定排序
 
 下一步继续补：
 
-**索引如何影响锁范围？为什么没有合适索引会导致锁范围扩大？**
+**MySQL 索引基础：B+ 树、聚簇索引、回表、覆盖索引。**
 
 ---
 
@@ -293,8 +294,171 @@ erp_push_record
 
 ---
 
-## 10. 面试简洁回答
+## 10. 索引如何影响锁范围
+
+InnoDB 的锁不是直接加在业务条件上，而是加在实际访问到的索引记录上。
+
+核心理解：
+
+> SQL 怎么找到数据，决定了它会访问哪些索引记录；当前读会沿访问路径加锁，所以访问路径越差，锁范围越大。
+
+例如：
+
+```sql
+select id
+from settlement_order
+where status = 'INIT'
+order by id
+limit 100
+for update;
+```
+
+如果没有 `status` 或 `(status, id)` 相关索引，数据库无法直接定位 `INIT` 记录，可能沿聚簇索引扫描大量数据，边扫描边判断条件。由于 `for update` 是当前读，会对访问到的索引记录加锁。
+
+这时问题不只是 SQL 慢，还包括：
+
+| 问题 | 后果 |
+|---|---|
+| 扫描范围变大 | CPU、IO 成本上升 |
+| 访问记录变多 | 当前读锁住更多索引记录 |
+| 多 worker 扫描路径重叠 | 锁等待增加 |
+| 锁持有时间变长 | 死锁概率上升 |
+| 批处理吞吐下降 | worker 互相阻塞 |
+
+更准确的表达不是“升级成表锁”，而是：
+
+> 没有合适索引时，当前读可能扫描和锁住大量索引记录，表现上接近大范围阻塞。
+
+---
+
+## 11. 有索引后为什么仍会竞争
+
+即使有索引：
+
+```sql
+index idx_status_id(status, id)
+```
+
+多个 worker 同时执行：
+
+```sql
+select id
+from settlement_order
+where status = 'INIT'
+order by id
+limit 100
+for update;
+```
+
+仍然会竞争。
+
+原因是它们都会从 `status='INIT'` 这个索引区间的开头扫描，目标记录高度重叠。索引能减少扫描范围和锁范围，但不会自动把任务分配给不同 worker。
+
+降低竞争的常见方式：
+
+1. 抢占事务尽可能短，只做锁定和状态更新。
+2. 长耗时业务放在事务外执行。
+3. 引入分片字段，让不同 worker 扫描不同分片。
+4. MySQL 8.0+ 可考虑 `for update skip locked`，跳过已锁记录，提高抢占吞吐。
+
+`skip locked` 适合任务相对独立、不要求严格全局顺序的批处理场景。代价是被锁住的老任务会被短时间跳过，处理顺序不再严格。
+
+---
+
+## 12. 批处理联合索引怎么设计
+
+如果批处理 SQL 是：
+
+```sql
+select id
+from settlement_order
+where shard_no = ?
+  and status = 'INIT'
+order by created_at, id
+limit 100;
+```
+
+优先考虑联合索引：
+
+```sql
+index idx_shard_status_created_id(shard_no, status, created_at, id)
+```
+
+原因：
+
+1. `shard_no = ?` 先限定当前 worker 负责的分片。
+2. `status = 'INIT'` 再筛待处理任务。
+3. `created_at, id` 支持稳定排序和 `limit 100`。
+4. 多 worker 按分片处理时，扫描范围天然隔离，锁竞争更小。
+
+不要只根据“哪个字段选择性更高”决定联合索引顺序。`status='INIT'` 可能比单个 `shard_no` 更少，但如果调度模型是 worker 固定处理分片，`shard_no` 放前面更符合访问路径和并发隔离。
+
+不同索引的倾向：
+
+| 索引 | 更适合 |
+|---|---|
+| `(shard_no, status, created_at, id)` | worker 按分片扫描，各分片并行处理 |
+| `(status, shard_no, created_at, id)` | 全局按状态查询，再细分分片 |
+| `(status, created_at, id)` | 不分片的全局待处理任务扫描 |
+| `(shard_no, created_at)` | 分片内按时间扫描，但状态过滤不够精准 |
+
+---
+
+## 13. 为什么排序里要加 id
+
+只按：
+
+```sql
+order by created_at
+limit 100
+```
+
+存在隐患，因为 `created_at` 通常不唯一。大量记录同一时间创建时，相同 `created_at` 内部顺序不稳定，不同执行计划、并发时机或页状态下，前 100 条可能不是同一批。
+
+批处理中的风险：
+
+| 隐患 | 说明 |
+|---|---|
+| 批次边界不稳定 | 同样条件下前 100 条可能变化 |
+| 续扫困难 | 只用 `created_at > last_created_at` 会跳过同时间部分数据 |
+| 重复或遗漏 | 多轮扫描时同一时间的数据不好衔接 |
+| 并发抢占更乱 | worker 更容易在同一时间段数据上重叠 |
+| 排查困难 | 无法解释同一时间数据的先后顺序 |
+
+更稳的排序：
+
+```sql
+order by created_at, id
+limit 100
+```
+
+如果要做游标续扫，应记录：
+
+```text
+last_created_at + last_id
+```
+
+下一页条件：
+
+```sql
+where shard_no = ?
+  and status = 'INIT'
+  and (
+    created_at > ?
+    or (created_at = ? and id > ?)
+  )
+order by created_at, id
+limit 100;
+```
+
+这样即使同一时间有大量数据，也能稳定推进，不容易重复或遗漏。
+
+---
+
+## 14. 面试简洁回答
 
 InnoDB 的普通 `select` 是快照读，RR 下主要依赖 MVCC、Read View 和 undo log 读取一致性视图，一般不加 Next-Key Lock。`select for update`、`update`、`delete` 属于当前读，要读取最新数据并加锁。行锁防止并发修改同一行，间隙锁防止往索引区间插入新记录，Next-Key Lock 是记录锁加间隙锁，常用于 RR 下范围当前读防止幻读。
 
 在批处理项目里，不能只 `select` 一批 `INIT` 数据后直接处理，因为多个节点可能查到同一批数据。更稳的是用 `update ... where status='INIT'` 做原子抢占，通过影响行数确认处理权。长耗时处理放在事务外，成功或失败回写时带上 `status` 和 `process_token`，避免过期 worker 覆盖状态。对于 ERP、MQ 这类外部调用，还要通过请求唯一键、推送记录表、查询或对账保证幂等和最终一致。
+
+索引层面，InnoDB 的锁和索引访问路径强相关。没有合适索引时，当前读可能扫描并锁住大量索引记录，表现上接近大范围阻塞。批处理分片扫描可以使用 `(shard_no, status, created_at, id)` 这类联合索引，让 worker 先进入自己的分片，再筛状态，并按稳定顺序小批量取任务。

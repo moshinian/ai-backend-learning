@@ -46,7 +46,7 @@
 
 1. 请求链路与 Tomcat 线程模型第一轮已收尾
 2. MySQL 事务主线第一轮已学习：事务出现原因、ACID、隔离级别、MVCC、undo/redo/binlog
-3. MySQL 锁与批处理并发控制第一轮已学习：快照读、当前读、行锁、间隙锁、Next-Key Lock、任务抢占、补偿恢复、process_token、ERP 幂等
+3. MySQL 锁与批处理并发控制第一轮已学习：快照读、当前读、行锁、间隙锁、Next-Key Lock、任务抢占、补偿恢复、process_token、ERP 幂等、索引访问路径与锁范围、批处理联合索引
 4. 学习恢复入口已合并完成：以后默认只读取 `START_HERE.md`
 
 已经掌握：
@@ -84,22 +84,28 @@
 31. `PROCESSING` 应理解为带租约的处理中状态，需要心跳、超时回收、重试次数和补偿任务
 32. `process_token` / `attempt_id` 用于证明当前 worker 仍有资格推进状态，防止过期 worker 覆盖新状态
 33. ERP 推送成功但本地未更新就宕机属于外部调用不确定状态，需要下游幂等、本地推送记录、查询或对账兜底
+34. InnoDB 的锁和索引访问路径强相关，锁不是直接加在 `where` 条件上，而是加在实际访问到的索引记录上
+35. 没有合适索引时，当前读可能扫描并锁住大量索引记录，表现上接近大范围阻塞
+36. 有 `(status, id)` 索引也不能自动把任务分给不同 worker，多个 worker 仍可能从同一 `INIT` 区间开头竞争
+37. `for update skip locked` 可以减少锁等待，但要接受跳过语义和非严格全局顺序
+38. 分片批处理 SQL `where shard_no=? and status='INIT' order by created_at, id limit 100` 优先考虑 `(shard_no, status, created_at, id)`
+39. `created_at` 不唯一，只按它排序会导致批次边界不稳定，加入 `id` 可以形成稳定排序和游标续扫
 
 仍不稳定：
 
 1. 异步化设计表达：业务线程池、任务队列、SSE、轮询的适用边界
 2. Servlet 容器和操作系统线程 / IO 的连接点仍需后续结合 OS 复盘
 3. 三次握手和 TCP 整体机制的边界需要后续复习
-4. 索引如何影响锁范围、为什么没有合适索引会锁更多记录
+4. MySQL 索引基础：B+ 树、聚簇索引、非聚簇索引、回表、覆盖索引
 5. 动态规划和算法表达
 6. undo / redo / binlog 的边界需要复盘，尤其是持久性和复制恢复的区别
-7. 当前读、Next-Key Lock 和索引访问路径的细节还需要继续练习
+7. 索引访问路径和锁范围的表达已过第一轮，但仍需要后续通过题目复盘巩固
 
 ---
 
 ## 4. 下次从哪里开始
 
-**索引如何影响锁范围？为什么没有合适索引会导致锁范围扩大？**
+**MySQL 索引基础：B+ 树、聚簇索引、非聚簇索引、回表、覆盖索引。**
 
 不要重复展开以下内容，只需快速确认：
 
@@ -122,6 +128,9 @@
 17. `PROCESSING` 卡住要靠租约、心跳、超时补偿和幂等重试在线恢复
 18. 成功或失败回写要带 `process_token`，防止过期 worker 覆盖状态
 19. ERP 外部调用的不确定状态要靠请求幂等、本地调用记录、查询或对账兜底
+20. InnoDB 锁依赖索引访问路径，没有合适索引会扫描和锁住更多记录
+21. 批处理联合索引要贴合 worker 分片、状态过滤、排序和 `limit`
+22. `order by created_at, id` 比只按 `created_at` 更适合稳定批处理和游标续扫
 
 ---
 
@@ -169,6 +178,7 @@
 2. `backend/mysql/lock-and-batch-processing.md`
 3. `interview/mysql-questions.md`
 4. `mistakes/database/transaction.md`
+5. `sessions/2026-06-01-mysql-lock-index-batch-processing.md`
 
 注意：
 
