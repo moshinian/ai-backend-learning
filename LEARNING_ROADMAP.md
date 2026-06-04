@@ -480,7 +480,7 @@ mistakes/database/lock.md
 
 ## 7.1 动态规划入门
 
-任务状态：TODO
+任务状态：REVIEW
 
 必须掌握：
 
@@ -495,7 +495,7 @@ mistakes/database/lock.md
 阶段输出文件：
 
 ```text
-fundamentals/algorithm/dynamic-programming.md
+fundamentals/algorithm/dp-basic.md
 mistakes/algorithm/dp.md
 ```
 
