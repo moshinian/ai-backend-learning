@@ -563,7 +563,9 @@ square <= i
 |---|---|---|---|
 | 能否凑出 target | 每个物品最多一次 | 0/1 背包 + 可达性 | 容量倒序 |
 | 最多能装多少价值 | 每个物品最多一次 | 0/1 背包 + 最大值 | 容量倒序 |
+| 凑成 target 的子集数量 | 每个物品最多一次 | 0/1 背包 + 方案数 | 容量倒序 |
 | 凑成 amount 的最少硬币数 | 每种硬币无限次 | 完全背包 + 最小值 | 容量正序 |
+| 能否凑成 amount | 每种硬币无限次 | 完全背包 + 可达性 | 容量正序 |
 | 凑成 amount 的组合数 | 每种硬币无限次 | 完全背包 + 方案数 | 外层硬币，容量正序 |
 
 三句话：
@@ -572,6 +574,70 @@ square <= i
 0/1 背包倒序：防止当前物品重复使用。
 完全背包正序：允许当前物品重复使用。
 组合数外层物品：固定硬币顺序，避免排列重复。
+```
+
+### 15.1 `dp[0]` 速查
+
+| 目标 | `dp[0]` | 含义 |
+|---|---:|---|
+| 最少数量 | `0` | 凑成 0 需要 0 个物品 |
+| 最大价值 | `0` | 容量为 0 时价值为 0 |
+| 方案数 | `1` | 什么都不选，是 1 个空方案 |
+| 可达性 | `true` | 什么都不选，可以凑出 0 |
+
+不要机械背 `dp[0]`，必须从状态定义推出。
+
+### 15.2 分类小测结论
+
+背包分类时按这个顺序说：
+
+```text
+1. 0/1 背包还是完全背包
+2. 可达性、方案数、最小值还是最大值
+3. dp[0] 的含义
+4. 容量正序还是倒序
+5. 转移用 ||、+=、min 还是 max
+```
+
+常见模板：
+
+```text
+0/1 背包 + 可达性:
+dp[0] = true
+for num in nums:
+    for j from target down to num:
+        dp[j] = dp[j] || dp[j - num]
+
+0/1 背包 + 方案数:
+dp[0] = 1
+for num in nums:
+    for j from target down to num:
+        dp[j] += dp[j - num]
+
+0/1 背包 + 最大值:
+dp[0..capacity] = 0
+for item in items:
+    for j from capacity down to weight:
+        dp[j] = max(dp[j], dp[j - weight] + value)
+
+完全背包 + 可达性:
+dp[0] = true
+for coin in coins:
+    for j from coin to amount:
+        dp[j] = dp[j] || dp[j - coin]
+
+完全背包 + 方案数:
+dp[0] = 1
+for coin in coins:
+    for j from coin to amount:
+        dp[j] += dp[j - coin]
+
+完全背包 + 最小值:
+dp[0] = 0
+dp[1..amount] = INF
+for coin in coins:
+    for j from coin to amount:
+        dp[j] = min(dp[j], dp[j - coin] + 1)
 ```
 
 ---
