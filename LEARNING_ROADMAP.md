@@ -512,7 +512,7 @@ mistakes/algorithm/dp.md
 
 ## 7.2 编辑距离
 
-任务状态：TODO
+任务状态：REVIEW
 
 这是我已经接触过、但需要彻底吃透的一题。
 
