@@ -258,6 +258,38 @@
 - 背包分类只是“从物品中选择”这一类 DP 的后续判断，不是所有 DP 的统一入口
 - LIS 和最大子数组和通过“以 i 结尾”分别保留结尾元素和连续性
 
+### 17. RAG 项目表达容易堆功能，缺少问题分层
+
+已暴露的问题：
+
+- 自我介绍容易用“我觉得能够胜任”代替项目和能力证据
+- RAG 项目介绍容易罗列文档集成、向量化、模型调用等功能，没有按业务问题、架构、职责、难点和指标组织
+- 一开始把 `Top3` 扩大为 `Top5` 当成准确率问题已经得到解决
+- 评价 RAG 时容易混合检索指标、生成指标和系统容量指标
+- 检索融合和 Chunk 参数容易先给经验结论，没有先说明标注测试集、指标和实验依据
+
+后续要强化：
+
+- 项目表达使用“业务问题 -> 两条核心链路 -> 技术架构 -> 个人职责 -> 难点 -> 指标和优化”结构
+- `TopK` 变大只是召回与噪声之间的权衡，不等于排序和生成问题已经解决
+- 检索层看 `Recall@K`、MRR、NDCG，生成层看正确性、忠实度、引用和拒答，工程层看延迟、吞吐、错误率和成本
+- BM25 与向量分数不能直接比较，需要归一化加权、RRF 或 Rerank
+- 明确区分已实现能力和 Parent-Child Retrieval、Rerank 等后续优化方向
+
+### 18. AI 应用岗位需要明确区分理解和生产实践
+
+已暴露的问题：
+
+- 当前缺少 Multi-Agent、MCP、A2A、LangGraph、Flink、Hive、K8s 和推理优化的生产实践
+- 面对跨度很大的 JD，容易因为无法完全匹配而否定已有后端和 RAG 积累
+
+后续要强化：
+
+- 不虚构生产经验，使用“当前边界 -> 已理解的问题 -> 可迁移经验 -> 落地验证方案”回答
+- 结算系统中的任务拆分、状态机、MQ、幂等、补偿和多节点协作可以迁移为 Agent 系统可靠性能力
+- 单次临时面试先作为市场验证，不立即改变主学习路线
+- 等真实面试问题和反馈归档后，再判断是否提高 Multi-Agent 和 RAG 工程化优先级
+
 ---
 
 ## 已沉淀主题索引
@@ -296,6 +328,12 @@
 5. `sessions/2026-06-05-dp-lcs-edit-distance.md`
 6. `sessions/2026-06-09-dp-space-optimization-and-review.md`
 
+### RAG 与 AI 应用面试
+
+1. `interview/rag-project-story.md`
+2. `interview/ai-application-questions.md`
+3. `sessions/2026-06-10-llm-application-interview-preparation.md`
+
 ---
 
 ## 历史会话索引
@@ -309,3 +347,4 @@
 7. `sessions/2026-06-04-dp-knapsack.md`
 8. `sessions/2026-06-05-dp-lcs-edit-distance.md`
 9. `sessions/2026-06-09-dp-space-optimization-and-review.md`
+10. `sessions/2026-06-10-llm-application-interview-preparation.md`
