@@ -290,6 +290,51 @@
 - 单次临时面试先作为市场验证，不立即改变主学习路线
 - 等真实面试问题和反馈归档后，再判断是否提高 Multi-Agent 和 RAG 工程化优先级
 
+### 19. RAG 面试中容易混淆召回、融合、重排和生成
+
+已暴露的问题：
+
+- 把归一化加权融合称为 Rerank
+- 把 Prompt、模型温度和模型选型放进“混合检索优化”
+- 把 `Recall@K` 说成正确文档的平均排名
+- 把分级相关性评分说成 MRR
+
+后续要强化：
+
+- 全文检索和向量检索负责候选召回
+- 归一化加权或 RRF 负责两路结果融合
+- Cross-Encoder Rerank 只对已召回候选重新排序
+- `Recall@K` 看是否召回，MRR 看第一个相关结果排名，NDCG 看分级相关性和整体排序
+- Prompt 和生成模型优化属于生成层，不能和检索层混答
+
+### 20. Agent 问题容易回答成模型选型
+
+已暴露的问题：
+
+- 面试官询问用户问答如何嵌入 Agent 和 AI Pipeline 时，回答转向本地 Qwen 与 DeepSeek API 的选型
+- 初始判断 Agent 时把工具数量当成关键条件
+
+后续要强化：
+
+- 当前项目是固定 RAG Pipeline，步骤由代码预定义，LLM 只负责生成
+- Agent 的判断标准是模型是否能根据 State 动态决策工具、参数、重试和终止
+- 工具数量不是根本标准，一个工具也可以形成基础 Agent 闭环
+- 没有 Agent 生产经验时，先声明边界，再说明可迁移的状态机、幂等、补偿和任务编排能力
+
+### 21. 项目架构与性能瓶颈需要证据链
+
+已暴露的问题：
+
+- 结算系统回答中业务场景、系统架构、技术栈和性能优化混在一起
+- 多次把“技术栈”口误成“技术债”
+- 从批处理耗时高和 JDBC 调用耗时高直接跳到“数据库是瓶颈”
+
+后续要强化：
+
+- 架构回答按系统定位、业务场景、上下游、核心数据流、可靠性和规模组织
+- 批处理超时先分解阶段耗时，再看 SQL 次数、单次耗时、扫描行数、锁等待、连接等待、CPU 和 IO
+- “单条 SQL 不慢但累计访问耗时高”不等于数据库算力不足，需要继续定位访问模型和总工作量
+
 ---
 
 ## 已沉淀主题索引
@@ -333,6 +378,7 @@
 1. `interview/rag-project-story.md`
 2. `interview/ai-application-questions.md`
 3. `sessions/2026-06-10-llm-application-interview-preparation.md`
+4. `sessions/2026-06-11-llm-application-interview-review.md`
 
 ---
 
@@ -348,3 +394,4 @@
 8. `sessions/2026-06-05-dp-lcs-edit-distance.md`
 9. `sessions/2026-06-09-dp-space-optimization-and-review.md`
 10. `sessions/2026-06-10-llm-application-interview-preparation.md`
+11. `sessions/2026-06-11-llm-application-interview-review.md`
