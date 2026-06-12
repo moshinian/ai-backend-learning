@@ -43,6 +43,8 @@
 | 本月冲刺优先级和周计划 | `INTERVIEW_SPRINT_30_DAYS.md` | 当前执行计划 |
 | 机制、本质、原理、边界 | `fundamentals/` 或 `backend/` | 主知识笔记 |
 | 面试简洁版和深挖版回答 | `interview/` | 面试输出材料 |
+| 真实面试的原题、现场回答、评价和修正版 | `interview/real-records/` | 真实面试复盘 |
+| 模拟面试过程和评分 | `interview/mock-records/` | 模拟面试训练 |
 | 错误、术语混淆、表达偏差 | `mistakes/` | 复盘和纠错 |
 | 单次学习过程摘要 | `sessions/` | 历史归档 |
 | 项目链路、设计取舍、工程亮点 | `projects/` | 项目深挖 |
@@ -97,7 +99,7 @@ ai-backend-learning/
 - `projects/`
   - 结算系统、RAG 系统复盘与深挖
 - `interview/`
-  - 面试问答、项目表达、模拟面试记录
+  - 面试问答、项目表达、真实面试记录和模拟面试记录
 - `prompts/`
   - 可复用学习提示词
 - `mistakes/`

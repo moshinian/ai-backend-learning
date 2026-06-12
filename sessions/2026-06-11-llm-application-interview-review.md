@@ -1,5 +1,9 @@
 # 2026-06-11 大模型应用开发工程师面试复盘
 
+完整原题、现场回答、逐题评价和修正版见：
+
+`interview/real-records/2026-06-10-llm-application-engineer.md`
+
 ## 1. 面试实际问题
 
 1. RAG 知识问答系统架构

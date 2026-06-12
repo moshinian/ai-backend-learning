@@ -335,6 +335,27 @@
 - 批处理超时先分解阶段耗时，再看 SQL 次数、单次耗时、扫描行数、锁等待、连接等待、CPU 和 IO
 - “单条 SQL 不慢但累计访问耗时高”不等于数据库算力不足，需要继续定位访问模型和总工作量
 
+### 22. 线程池容易把线程数量、队列容量和任务可靠性混在一起
+
+已暴露的问题：
+
+- 初始认为核心线程满后会先扩容到最大线程数
+- 认为大队列因为线程较少而内存风险更低
+- 把 `CallerRunsPolicy` 理解为增加新线程或复用两个线程池
+- 认为 `newFixedThreadPool` 会无限创建线程
+- 把批次 `LIMIT` 当成防止任务积压的反压机制
+- 初始不了解 P95/P99、高低水位和任务限流
+
+后续要强化：
+
+- 固定提交顺序：核心线程、队列、非核心线程、拒绝
+- 队列中的任务对象及其引用是重要内存风险
+- 拒绝策略决定过载压力由谁承担，长任务不能回退到 Tomcat 线程
+- 线程池并发要受数据库连接池、模型服务和其他下游容量约束
+- 状态表解决持久化和恢复，高低水位或许可才负责阶段反压
+- 租约、心跳、Token、幂等和重试分别解决不同可靠性问题
+- 下一步继续学习空闲线程回收、线程工厂、异常处理、监控和优雅关闭
+
 ---
 
 ## 已沉淀主题索引
@@ -379,6 +400,14 @@
 2. `interview/ai-application-questions.md`
 3. `sessions/2026-06-10-llm-application-interview-preparation.md`
 4. `sessions/2026-06-11-llm-application-interview-review.md`
+5. `interview/real-records/2026-06-10-llm-application-engineer.md`
+
+### Java 线程池与后台任务
+
+1. `backend/java/thread-pool.md`
+2. `interview/java-concurrency-questions.md`
+3. `mistakes/concurrency/thread-pool.md`
+4. `sessions/2026-06-12-thread-pool-task-execution.md`
 
 ---
 
@@ -395,3 +424,4 @@
 9. `sessions/2026-06-09-dp-space-optimization-and-review.md`
 10. `sessions/2026-06-10-llm-application-interview-preparation.md`
 11. `sessions/2026-06-11-llm-application-interview-review.md`
+12. `sessions/2026-06-12-thread-pool-task-execution.md`

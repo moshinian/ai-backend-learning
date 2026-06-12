@@ -616,7 +616,7 @@ mistakes/algorithm/binary-search.md
 
 ## 8.1 Java 并发基础
 
-任务状态：TODO
+任务状态：DOING
 
 必须掌握：
 
@@ -984,6 +984,7 @@ interview/rag-project-story.md
 输出文件：
 
 ```text
+interview/real-records/
 interview/mock-records/
 mistakes/interview/
 ```
@@ -1075,7 +1076,7 @@ Phase 7：
 
 # 13. 总进度看板
 
-更新时间：2026-06-09
+更新时间：2026-06-12
 
 进度不是按文件数量计算，而是综合判断：
 
@@ -1090,7 +1091,7 @@ Phase 7：
 | Phase 1：计算机基础 | DOING | 20% | 请求链路已完成第一轮；数据结构、OS、完整 TCP/HTTP 基础仍缺失 |
 | Phase 2：数据库核心基础 | REVIEW | 65% | 事务、MVCC、索引、锁和批处理项目化训练已完成第一轮，仍需补死锁、锁分类和慢 SQL 实战 |
 | Phase 3：算法基础与动态规划 | DOING | 45% | DP 已完成四轮训练；表达精度仍需巩固，滑动窗口和二分尚未开始 |
-| Phase 4：Java / JVM / 并发 / Spring | DOING | 10% | 已学习 Spring MVC 请求链路、Filter/Interceptor 和 Tomcat 线程模型；Java 并发核心、Spring 核心和 JVM 未展开 |
+| Phase 4：Java / JVM / 并发 / Spring | DOING | 18% | 已学习 Spring MVC 请求链路、Tomcat 线程模型，以及线程池容量边界和后台任务可靠执行第一轮；锁、CAS、AQS、Spring 核心和 JVM 未展开 |
 | Phase 5：Redis / MQ / 分布式 | DOING | 10% | 已通过批处理学习幂等、补偿、租约、分片和最终一致性边界；Redis、MQ 和分布式理论主线未开始 |
 | Phase 6：项目深挖与面试表达 | DOING | 15% | 结算系统已有批处理并发与 ERP 一致性素材，但完整项目故事和 RAG 复盘未形成 |
 | Phase 7：模拟面试与查漏补缺 | TODO | 0% | 尚无正式八股模拟或完整算法模拟记录 |
@@ -1116,13 +1117,14 @@ Phase 7：
 2. Spring MVC / Tomcat 请求与线程模型
 3. 分布式任务中的幂等、补偿、租约和处理权
 4. 云服务结算系统项目深挖
+5. Java 线程池与 RAG 后台任务执行
 
 ### 尚未开始
 
 1. 数据结构基础
 2. 操作系统基础
 3. 滑动窗口、二分查找
-4. Java 并发核心、JVM
+4. Java 并发中的锁、CAS、AQS、ThreadLocal，以及 JVM
 5. Redis、MQ 完整主线
 6. RAG 项目系统复盘
 7. 正式模拟面试
