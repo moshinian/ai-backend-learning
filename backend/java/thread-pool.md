@@ -312,12 +312,130 @@ FOR UPDATE SKIP LOCKED;
 
 随机抖动用于避免大量失败任务同时恢复，形成惊群效应。
 
-## 13. 当前未完成
+## 13. 空闲线程回收和预热
 
-下一步继续学习：
+默认情况下，`keepAliveTime` 只控制超过 `corePoolSize` 的空闲线程：
 
-1. `keepAliveTime` 如何回收非核心线程
-2. `allowCoreThreadTimeOut`
-3. 线程工厂和异常处理
-4. 线程池监控与优雅关闭
-5. CPU 密集与 IO 密集任务的参数估算和压测修正
+```text
+poolSize = 16
+corePoolSize = 8
+空闲时间超过 keepAliveTime
+-> 最多回收到 8 个线程
+```
+
+开启：
+
+```java
+executor.allowCoreThreadTimeOut(true);
+```
+
+后，核心线程也允许超时回收。所有任务结束且线程持续空闲时，线程池可以降到 0 个线程。
+
+`keepAliveTime` 计算的是线程等待新任务的空闲时间，不是任务执行时间。一个任务执行 10 分钟，不会因为 `keepAliveTime=60s` 而在第 60 秒被回收。
+
+线程池默认懒创建线程。可以预热：
+
+```java
+executor.prestartCoreThread();
+executor.prestartAllCoreThreads();
+```
+
+如果同时开启核心线程超时，预热线程长期空闲后仍会被回收。
+
+## 14. ThreadFactory、execute 和 submit
+
+职责边界：
+
+```text
+Runnable：描述业务任务要做什么
+Thread：执行任务的载体
+ThreadFactory：规定工作线程如何创建
+Executor：接收任务并调度
+```
+
+`ThreadFactory` 创建的是线程池内部复用的工作线程，不是为每个业务任务创建一个线程。
+
+异常边界：
+
+```text
+execute：未捕获异常会逃出任务，可能触发 UncaughtExceptionHandler
+submit：异常被 FutureTask 捕获并保存在 Future 中
+```
+
+提交线程不能通过包围 `execute()` 的 `try-catch` 捕获另一个工作线程稍后抛出的异常。对于持久化后台任务，业务主路径仍应在任务内部捕获异常并更新状态表。线程级 Handler 只是兜底，`Future` 只是单 JVM 内的临时执行凭证。
+
+## 15. Future 的边界
+
+```java
+Future<Result> future = executor.submit(task);
+Result result = future.get();
+```
+
+`submit()` 通常立即返回，真正可能阻塞的是 `future.get()`。如果 RAG 上传接口调用 `get()` 等待数分钟，Tomcat 请求线程仍会被占用。
+
+长任务更适合：
+
+```text
+POST 上传文档 -> 持久化任务 -> 返回 taskId
+GET 查询任务 -> 返回 PENDING / PROCESSING / SUCCESS / FAILED
+```
+
+## 16. 优雅关闭和中断
+
+`shutdown()` 停止接收新任务，继续执行正在运行和队列中的任务。
+
+```java
+if (!executor.awaitTermination(30, TimeUnit.SECONDS)) {
+    List<Runnable> notStarted = executor.shutdownNow();
+}
+```
+
+`awaitTermination` 只让调用线程最多等待指定时间。`shutdownNow()` 返回队列中尚未开始的任务，并对正在执行任务的线程调用 `interrupt()`，但不保证任务立即停止。
+
+中断是协作式停止请求。阻塞方法收到中断后可能抛出 `InterruptedException` 并清除中断标志，不能空 `catch`：
+
+```java
+try {
+    Thread.sleep(10_000);
+} catch (InterruptedException e) {
+    Thread.currentThread().interrupt();
+    return;
+}
+```
+
+## 17. 参数压测和瓶颈判断
+
+估算公式只能作为初始值：
+
+```text
+线程数约等于 CPU 核数 * (1 + 等待时间 / 计算时间)
+```
+
+IO 等待期间线程通常不持续占用 CPU，因此 IO 密集任务可以配置超过 CPU 核数的线程；最终并发仍受数据库连接池、外部服务和内存限制。
+
+压测应使用多档线程数，同时观察：
+
+```text
+完成吞吐量
+新增速率与完成速率
+排队耗时 P95/P99
+执行耗时 P95/P99
+错误率与拒绝数
+CPU、队列趋势
+数据库连接等待和外部服务限流
+```
+
+选择吞吐量开始趋平，而延迟、连接等待或错误率尚未明显恶化的拐点，并保留生产余量。排队耗时下降不一定代表系统变好，任务可能只是转移到工作线程内部等待数据库连接。
+
+数据库连接等待升高时，需要检查连接池指标、SQL 次数和耗时、事务范围、锁等待、数据库 CPU/IO、连接泄漏和 N+1 查询。
+
+N+1 查询是先查询 N 条主记录，再逐条查询关联数据，产生 `1+N` 次 SQL。可先去重关联 ID，再批量查询并在内存中建立映射。
+
+## 18. 当前未完成
+
+下一步继续验证：
+
+1. 线程池和数据库连接池的容量边界
+2. 工作线程等待连接时的吞吐与延迟变化
+3. 是否应该扩大数据库连接池的证据链
+4. 线程池核心知识的完整面试复述

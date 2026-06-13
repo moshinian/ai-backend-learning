@@ -345,6 +345,12 @@
 - 认为 `newFixedThreadPool` 会无限创建线程
 - 把批次 `LIMIT` 当成防止任务积压的反压机制
 - 初始不了解 P95/P99、高低水位和任务限流
+- 误以为 `keepAliveTime` 默认控制核心线程
+- 不清楚 `ThreadFactory`、Worker 和业务 `Runnable` 的调用关系
+- 误以为不调用 `Future.get()` 时异常没有被保存
+- 吞掉 `InterruptedException` 后仍以为下一轮可以看到中断标志
+- 把 P99 耗时当成生产和消费速率
+- 一度认为线程数超过 CPU 核数一定无效
 
 后续要强化：
 
@@ -354,7 +360,13 @@
 - 线程池并发要受数据库连接池、模型服务和其他下游容量约束
 - 状态表解决持久化和恢复，高低水位或许可才负责阶段反压
 - 租约、心跳、Token、幂等和重试分别解决不同可靠性问题
-- 下一步继续学习空闲线程回收、线程工厂、异常处理、监控和优雅关闭
+- `keepAliveTime` 默认只控制核心线程数以上的空闲 Worker
+- `ThreadFactory` 创建和配置工作线程，业务任务由 `execute/submit` 提交
+- `execute` 的未捕获异常可能到达线程级 Handler，`submit` 的异常保存在 `Future`
+- 中断是协作式协议，阻塞方法抛出 `InterruptedException` 时可能清除中断标志
+- 判断积压要比较新增速率和完成速率，P95/P99 用于观察耗时分布
+- IO 密集线程数可以超过 CPU 核数，但最终受连接池和下游容量约束
+- 下一步继续验证线程池和数据库连接池的容量边界
 
 ---
 
@@ -408,6 +420,7 @@
 2. `interview/java-concurrency-questions.md`
 3. `mistakes/concurrency/thread-pool.md`
 4. `sessions/2026-06-12-thread-pool-task-execution.md`
+5. `sessions/2026-06-14-thread-pool-lifecycle-monitoring.md`
 
 ---
 
@@ -425,3 +438,4 @@
 10. `sessions/2026-06-10-llm-application-interview-preparation.md`
 11. `sessions/2026-06-11-llm-application-interview-review.md`
 12. `sessions/2026-06-12-thread-pool-task-execution.md`
+13. `sessions/2026-06-14-thread-pool-lifecycle-monitoring.md`
