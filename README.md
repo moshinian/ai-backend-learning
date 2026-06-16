@@ -87,7 +87,6 @@ ai-backend-learning/
 ├── interview/
 ├── prompts/
 ├── mistakes/
-└── weekly-review/
 ```
 
 各目录用途：
@@ -106,8 +105,6 @@ ai-backend-learning/
   - 学习和面试中暴露的问题与纠错记录
 - `sessions/`
   - 单次学习会话归档
-- `weekly-review/`
-  - 每周复盘
 
 ---
 
