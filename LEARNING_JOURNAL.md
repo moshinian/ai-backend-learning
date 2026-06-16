@@ -366,7 +366,49 @@
 - 中断是协作式协议，阻塞方法抛出 `InterruptedException` 时可能清除中断标志
 - 判断积压要比较新增速率和完成速率，P95/P99 用于观察耗时分布
 - IO 密集线程数可以超过 CPU 核数，但最终受连接池和下游容量约束
-- 下一步继续验证线程池和数据库连接池的容量边界
+- 下一步用 1 分钟口述验收线程池主线，再切回结算系统项目表达
+
+### 23. RAG 工程化容易从单点优化扩展成无边界设计
+
+本轮新增理解：
+
+- 线程池大于连接池时，多余线程可能只是在等待连接，CPU 低不代表还能继续增加并发
+- 外部 Embedding 调用不应放在持有数据库连接的长事务中
+- Embedding 模型版本、维度和 Chunk 策略需要进入任务快照和向量元数据
+- 向量模型升级更适合蓝绿重建、双写、完整性校验、灰度和回滚
+- 离线 `Recall@K` 提升不代表线上回答一定改善，需要逐层回放召回、融合、重排、Prompt 和生成
+- 权限过滤必须尽量发生在检索前，TopK 应是授权集合中的 TopK
+- 多分区召回后需要统一去重和 Rerank，不能机械平均分配最终名额
+- 版本规则需要按业务事件时间和有效期检索，必要时执行多阶段检索
+- MMR 用于在相关性和重复度之间权衡，但业务条件和相邻证据完整性优先
+- 规则压缩必须保留条件关系、否定词、时间口径和证明要求
+
+仍需警惕：
+
+- 容易在一个 RAG 追问上连续扩展到权限、版本、法规和规则引擎，偏离 Java 后端冲刺主线
+- 理解了设计原则，不等于当前项目已经实际实现权限分区、蓝绿向量索引、MMR 或线上追踪
+- 后续面试表达必须明确区分“当前实现”和“生产化设计方案”
+
+### 24. Redis 分布式锁不能替代状态机和幂等
+
+本轮新增理解：
+
+- `synchronized` 只能控制单 JVM 内线程，不能控制多实例并发
+- `SET key value NX PX` 中 `NX` 负责不存在才写入，`PX` 负责毫秒级过期
+- `SETNX` 和 `EXPIRE` 分开执行存在原子性窗口
+- 解锁不能直接 `DEL`，必须用 Lua 原子校验 value 再删除
+- 看门狗用于续期，但只能证明续期逻辑运行，不能证明业务任务健康
+- 续期也要校验 value，防止旧 Worker 给新 Worker 的锁续期
+- Redis 锁丢失后应停止新的外部副作用，并依赖数据库 Token 条件回写兜底
+- `process_token` 解决当前处理权，不能作为 ERP 业务幂等键
+- ERP 超时是结果不确定，不应直接标记失败或换新幂等键重试
+- 数据库条件更新和状态机应作为任务处理权主依据，Redis 锁只作为辅助互斥
+
+仍需警惕：
+
+- 容易把“加了 Redis 锁”误认为任务绝对只处理一次
+- 容易混淆锁健康、Worker 健康和业务副作用是否成功
+- 后续还要学习 Redis 基础、缓存问题、RedLock 争议和缓存一致性
 
 ---
 
@@ -413,6 +455,7 @@
 3. `sessions/2026-06-10-llm-application-interview-preparation.md`
 4. `sessions/2026-06-11-llm-application-interview-review.md`
 5. `interview/real-records/2026-06-10-llm-application-engineer.md`
+6. `sessions/2026-06-15-rag-engineering-governance.md`
 
 ### Java 线程池与后台任务
 
@@ -421,6 +464,13 @@
 3. `mistakes/concurrency/thread-pool.md`
 4. `sessions/2026-06-12-thread-pool-task-execution.md`
 5. `sessions/2026-06-14-thread-pool-lifecycle-monitoring.md`
+
+### Redis / 分布式锁
+
+1. `backend/redis/distributed-lock.md`
+2. `interview/redis-questions.md`
+3. `mistakes/distributed/redis-lock.md`
+4. `sessions/2026-06-16-redis-distributed-lock.md`
 
 ---
 
@@ -439,3 +489,5 @@
 11. `sessions/2026-06-11-llm-application-interview-review.md`
 12. `sessions/2026-06-12-thread-pool-task-execution.md`
 13. `sessions/2026-06-14-thread-pool-lifecycle-monitoring.md`
+14. `sessions/2026-06-15-rag-engineering-governance.md`
+15. `sessions/2026-06-16-redis-distributed-lock.md`
