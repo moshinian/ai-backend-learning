@@ -129,6 +129,7 @@
 - RAG / Agent 项目没有生产上线时，需要主动说明事实边界，不能虚构生产效果，也不能只说“没上线”。
 - 固定 RAG Pipeline、Workflow、Agent、模型选型、工具调用和人工确认容易混答。
 - 检索、融合、Rerank、Prompt 和生成层优化需要分层表达。
+- LangChain / LangGraph 学习中，容易把框架 runtime 状态、checkpoint、后端业务状态、审批事实和工具执行副作用混成一层，需要持续区分“执行现场”和“业务事实”。
 
 主要索引：
 
@@ -136,6 +137,7 @@
 2. `interview/ai-application-questions.md`
 3. `interview/real-records/2026-06-30-ai-agent-rag-backend.md`
 4. `sessions/2026-06-30-ai-agent-rag-backend-interview.md`
+5. `sessions/2026-07-05-langchain-langgraph-agent-runtime.md`
 
 ### 8. 学习管理容易把路线、任务、断点和归档混在一起
 
@@ -200,6 +202,7 @@
 6. `sessions/2026-06-15-rag-engineering-governance.md`
 7. `interview/real-records/2026-06-30-ai-agent-rag-backend.md`
 8. `sessions/2026-06-30-ai-agent-rag-backend-interview.md`
+9. `sessions/2026-07-05-langchain-langgraph-agent-runtime.md`
 
 ### Java 线程池与后台任务
 
@@ -238,3 +241,4 @@
 14. `sessions/2026-06-15-rag-engineering-governance.md`
 15. `sessions/2026-06-16-redis-distributed-lock.md`
 16. `sessions/2026-06-30-ai-agent-rag-backend-interview.md`
+17. `sessions/2026-07-05-langchain-langgraph-agent-runtime.md`

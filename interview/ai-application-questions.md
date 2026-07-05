@@ -43,6 +43,26 @@ A2A 关注 Agent 之间的能力发现、任务委托、进度和结果通信。
 
 LangGraph 适合表达有状态、可分支、可循环并支持人工介入的 Agent 工作流。重点价值是把 Agent 执行过程显式建模为图和状态，而不只是连续调用 Prompt。
 
+### LangChain 与 LangGraph 的边界
+
+LangChain 更偏上层 Agent 组装，负责模型调用、消息结构、Prompt、工具绑定、Agent loop、middleware 和结构化输出。LangGraph 更偏底层 Agent 编排运行时，把复杂 Agent loop 建模成 Graph、State、Node、Edge，并支持 checkpoint、interrupt、streaming 和 human-in-the-loop。
+
+简单固定 RAG Pipeline 不一定需要 LangGraph；复杂、长时间、可恢复、需要人工介入或多步工具调用的 Agent 更适合使用 LangGraph。
+
+### messages、tool_calls 和 ToolMessage
+
+Agent 不是一次模型调用，而是“决策 -> 工具执行 -> observation -> 再决策”的循环。模型只生成工具调用意图，真正执行工具的是 Agent runtime 或业务代码。
+
+`messages` 是结构化对话状态，不等同于普通 prompt string。`AIMessage` 表示模型输出，可能包含 `tool_calls`；`ToolMessage` 表示工具执行结果，必须用 `tool_call_id` 对应前面某次工具调用。`tool_call_id` 解决的是工具结果归属问题，不等于业务 `requestId`、链路 `traceId` 或任务处理权 `process_token`。
+
+### checkpoint、interrupt 和后端业务状态
+
+LangGraph checkpoint 保存 Agent runtime 执行现场，例如 messages、当前节点、工具 observation 和中断点；后端数据库保存业务事实，例如审批结果、权限校验、副作用执行状态和最终 run 状态。恢复时 checkpoint 决定“从哪里恢复”，后端数据库决定“是否允许继续”。
+
+高风险动作不能只靠 Prompt 约束。模型可以建议动作，LangGraph 通过 interrupt 暂停执行，后端落库待确认 action，前端展示给用户确认；用户确认后后端保存审批结果并校验权限，再通过 resume 恢复图执行。工具真正执行完成后，才生成 ToolMessage。
+
+interrupt 所在 node 在恢复时会从头重放，因此 interrupt 前的数据库写入、日志、外部调用等副作用必须幂等，或者移动到 interrupt 之后的独立节点。
+
 ### Spring AI
 
 Spring AI 为 Java/Spring 应用提供模型调用、Prompt、Tool Calling、Embedding、向量存储和 RAG 等抽象，适合把 AI 能力集成进现有 Java 企业应用。

@@ -91,13 +91,13 @@ Backlog 任务可以来自：
 - 优先级：P0
 - 来源：个人主动学习 + 目标岗位要求
 - RoadmapRef：RM-06 AI Backend / RAG / Agent 能力
-- 状态：TODO
+- 状态：DOING
 - 主题：LangChain / LangGraph 的核心机制、边界和工程使用方式
 - 学习目标：系统梳理 LangChain 与 LangGraph 分别解决什么问题，掌握模型、消息、工具、Agent Harness、Graph、State、Checkpoint、Interrupt、Streaming 和 human-in-the-loop 等核心概念。
 - 验收标准：能说明 LangChain、LangGraph、LangSmith 的职责边界；能画出一个 LangGraph Agent 的状态流转；能解释 `create_agent`、Graph API、checkpoint、interrupt、streaming 的作用；能结合个人 RAG / Agent 项目说明什么时候用框架、什么时候保留业务状态在 Java 后端。
-- 当前断点：2026-07-03 用户主动提出将 LangChain / LangGraph 作为当前最想学、最有动力学习的内容，并希望加入长期能力地图。
-- 关联文件：`LEARNING_ROADMAP.md`、LangGraph 官方文档：`https://docs.langchain.com/oss/python/langgraph/overview`、LangChain 官方文档：`https://docs.langchain.com/oss/python/langchain/overview`
-- 下一步动作：先建立 LangChain 与 LangGraph 的职责边界，再从最小 Agent 调用链路进入 Graph、State、Node、Edge、checkpoint、interrupt 和 streaming。
+- 当前断点：2026-07-05 已完成第一轮机制梳理：LangChain / LangGraph 边界、Agent loop、messages / AIMessage / ToolMessage / `tool_call_id`、工具执行边界、Graph / State / Node / Edge、checkpoint / interrupt / human-in-the-loop、Java DB 与 LangGraph checkpoint 的状态权威边界。尚未进入可运行代码实操和 streaming。
+- 关联文件：`LEARNING_ROADMAP.md`、`interview/ai-application-questions.md`、`sessions/2026-07-05-langchain-langgraph-agent-runtime.md`、LangGraph 官方文档：`https://docs.langchain.com/oss/python/langgraph/overview`、LangChain 官方文档：`https://docs.langchain.com/oss/python/langchain/overview`
+- 下一步动作：从最小可运行 LangGraph 代码开始，验证 `StateGraph -> node -> conditional edge -> interrupt -> Command(resume)`，随后补 `create_agent`、Graph API、checkpoint 配置和 streaming。
 
 ### BL-001 Redis 数据结构与对象存储边界
 
