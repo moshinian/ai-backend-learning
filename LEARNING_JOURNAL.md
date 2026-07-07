@@ -131,6 +131,7 @@
 - 检索、融合、Rerank、Prompt 和生成层优化需要分层表达。
 - LangChain / LangGraph 学习中，容易把框架 runtime 状态、checkpoint、后端业务状态、审批事实和工具执行副作用混成一层，需要持续区分“执行现场”和“业务事实”。
 - 学习 LangChain / LangGraph 时，容易只抓住已跑通的 `create_agent`、StateGraph、checkpoint、interrupt 片段，忽略官方文档中的 Core components、Middleware、Runtime、Frontend、Capabilities、Production、Graph API / Functional API 等目录级全貌。
+- RAG 工程链路能讲通后，容易在 Rerank、私有语料排序失效、文档结构化解析和前沿算法追问处变成泛化回答，需要把工程链路和检索 / NLP 算法机制接起来。
 
 主要索引：
 
@@ -144,6 +145,8 @@
 8. `sessions/2026-07-06-create-agent-stategraph-boundary.md`
 9. `sessions/2026-07-07-langchain-langgraph-learning-summary.md`
 10. `sessions/2026-07-07-langchain-langgraph-official-doc-map-gap.md`
+11. `interview/real-records/2026-07-07-huashengtong-ai-application-engineer.md`
+12. `mistakes/interview/rag-rerank-algorithm-depth.md`
 
 ### 8. 学习管理容易把路线、任务、断点和归档混在一起
 
@@ -213,6 +216,12 @@
 11. `labs/langgraph-runtime-demo/README.md`
 12. `sessions/2026-07-06-create-agent-stategraph-boundary.md`
 13. `sessions/2026-07-07-langchain-langgraph-learning-summary.md`
+14. `sessions/2026-07-07-langchain-langgraph-official-doc-map-gap.md`
+15. `interview/mock-records/2026-07-07-huashengtong-ai-application-engineer-prep.md`
+16. `sessions/2026-07-07-huashengtong-ai-application-interview-prep.md`
+17. `interview/real-records/2026-07-07-huashengtong-ai-application-engineer.md`
+18. `sessions/2026-07-07-huashengtong-ai-application-interview-review.md`
+19. `mistakes/interview/rag-rerank-algorithm-depth.md`
 
 ### Java 线程池与后台任务
 
@@ -255,3 +264,6 @@
 18. `sessions/2026-07-05-langgraph-runtime-demo.md`
 19. `sessions/2026-07-06-create-agent-stategraph-boundary.md`
 20. `sessions/2026-07-07-langchain-langgraph-learning-summary.md`
+21. `sessions/2026-07-07-langchain-langgraph-official-doc-map-gap.md`
+22. `sessions/2026-07-07-huashengtong-ai-application-interview-prep.md`
+23. `sessions/2026-07-07-huashengtong-ai-application-interview-review.md`

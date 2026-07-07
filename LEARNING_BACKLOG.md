@@ -85,6 +85,34 @@ Backlog 任务可以来自：
 
 ## 5. 当前任务池
 
+### BL-013 RAG 检索、重排与文档结构化解析补课
+
+- ID：BL-013
+- 优先级：P0
+- 来源：真实面试暴露
+- RoadmapRef：RM-06 AI Backend / RAG / Agent 能力；RM-08 面试复盘与查漏补缺
+- 状态：DOING
+- 主题：补齐 RAG 从工程链路进入算法追问时的关键短板
+- 学习目标：理解混合检索、结果融合、Rerank、私有语料排序失效、结构化文档解析、语义切分、PDF / OCR 和 RAG 评测的机制边界，能把工程实现和算法原理连接起来。
+- 验收标准：能讲清关键词检索、向量检索、RRF / 加权融合和 Rerank 的区别；能解释 cross-encoder rerank 的基本机制及其和 embedding 双塔召回的差异；能回答“最相关片段被排在最后怎么办”；能说明 Word 标题层级、表格、图片、PDF / OCR 对文档解析和切分的影响；能用 Recall@K、MRR、NDCG、faithfulness、引用准确性组织 RAG 评测。
+- 当前断点：2026-07-07 华盛通面试中，RAG 工程主线、Java / Python 分工、权限审计、版本切换和并发限流表达较稳；主要短板暴露在 Rerank 底层机制、私有数据排序失效的破局方案、结构化文档解析深度、前沿算法关注和模型部署边界。下一步先补 Rerank / Fusion / 文档结构化解析三块。
+- 关联文件：`interview/real-records/2026-07-07-huashengtong-ai-application-engineer.md`、`sessions/2026-07-07-huashengtong-ai-application-interview-review.md`、`mistakes/interview/rag-rerank-algorithm-depth.md`、`interview/mock-records/2026-07-07-huashengtong-ai-application-engineer-prep.md`、`interview/ai-application-questions.md`、`interview/rag-project-story.md`
+- 下一步动作：先整理 Rerank 机制：bi-encoder 召回 vs cross-encoder 重排、训练数据、hard negative、私有语料微调和无监督/规则兜底；再补 Word / PDF 文档结构化解析和 RAG 评测指标。
+
+### BL-012 华盛通大模型应用工程师面试专项准备
+
+- ID：BL-012
+- 优先级：P0
+- 来源：真实面试准备 + 目标岗位要求
+- RoadmapRef：RM-06 AI Backend / RAG / Agent 能力；RM-08 面试复盘与查漏补缺
+- 状态：DONE
+- 主题：围绕华盛通 SZ-大模型应用工程师 JD，压缩 RAG、LangChain / Dify、后端工程和推理加速边界表达
+- 学习目标：在真实面试前，把个人简历中的 RAG 项目表达、后端工程迁移能力、金融场景可信 RAG 风险控制、LangChain / Dify / LangGraph 边界、CUDA / TensorRT 短板防守整理成可口述答案。
+- 验收标准：能完成 60 秒自我介绍；能讲清企业知识库 RAG 的离线索引链路和在线问答链路；能回答 Chunk、Embedding、向量检索、召回排查、pgvector、权限隔离、幻觉控制、索引任务失败、版本冲突、金融场景风险；能诚实说明 RAG 未生产上线、Agent / LangGraph / Dify / CUDA 不是简历主经验；能把优势落到 Java 后端 + RAG 应用工程化。
+- 当前断点：2026-07-07 已完成面试前准备和 20:00 华盛通真实面试验证。准备内容覆盖开场介绍、RAG 项目主线、RAG 排查链路、金融可信 RAG、LangChain / Dify 定位、Redis / MQ / Spring / FastAPI 后端支撑、CUDA / TensorRT 防守表达。面试后已归档真实复盘，新增 `BL-013` 处理 Rerank、检索融合和文档结构化解析短板。
+- 关联文件：`interview/mock-records/2026-07-07-huashengtong-ai-application-engineer-prep.md`、`sessions/2026-07-07-huashengtong-ai-application-interview-prep.md`、`interview/real-records/2026-07-07-huashengtong-ai-application-engineer.md`、`sessions/2026-07-07-huashengtong-ai-application-interview-review.md`、`interview/rag-project-story.md`、`interview/ai-application-questions.md`、`interview/redis-questions.md`、`backend/redis/distributed-lock.md`
+- 下一步动作：任务已完成；后续学习入口转入 `BL-013`。
+
 ### BL-011 LangChain / LangGraph 机制梳理
 
 - ID：BL-011
