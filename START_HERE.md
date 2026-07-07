@@ -1,408 +1,117 @@
 # START HERE
 
-## 1. 这个文件怎么用
+## 1. 用法
 
-这是恢复学习进度的唯一入口文件。Codex 只读取这个文件，也应该能够快速恢复当前学习进度并继续推进。
+新会话优先读取本文件，用于快速恢复当前学习上下文。
 
-新开 Codex 会话时，默认只把这个文件喂给 Codex。不要要求用户再手动提供其他状态文件。
-
-建议启动提示词：
-
-```text
-先读取 START_HERE.md。
-只根据这个文件恢复进度并继续学习。
-不要重复已经掌握的内容。
-```
+本文件只记录恢复入口，不写长篇知识内容。
 
 ---
 
-## 2. 当前执行口径
+## 2. 当前候选最高优先级
 
-当前目标：
+当前候选任务：
 
-1. 用 1 个月时间做 Java 后端面试冲刺
-2. 每周预计学习 30 小时
-3. 总投入约 120 小时
-4. 重点不是完整学完所有知识，而是优先补齐面试最高价值短板
+- `BL-011`：LangChain / LangGraph 机制梳理
 
-计划关系：
+说明：
 
-1. `LEARNING_ROADMAP.md`：长期能力地图
-2. `INTERVIEW_SPRINT_30_DAYS.md`：当前 1 个月执行计划
-3. 本月如果两者优先级冲突，以 `INTERVIEW_SPRINT_30_DAYS.md` 为准
+- 这是用户在 2026-07-03 主动提出的当前最想学、最有动力学习内容。
+- 该任务已回补到 `LEARNING_ROADMAP.md` 的 `RM-06 AI Backend / RAG / Agent 能力`，并加入 `LEARNING_BACKLOG.md`。
+- 2026-07-07 已完成 LangChain / LangGraph 第一轮机制理解和实验验证，`BL-011` 已推进到 REVIEW。已跑通最小 interrupt / resume 代码实验、调用方 interrupt 循环、业务状态冲突校验、streaming 基础观察、`InMemorySaver` 下 `thread_id` 和 checkpoint 存储介质边界、真实 `create_agent()` 标准工具调用 loop，以及 `create_agent` 类上层 harness 与 StateGraph 的职责边界验证。
+- Redis 数据结构和锁粒度仍是面试暴露短板，保留在任务池中，但当前候选学习入口仍为 LangChain / LangGraph。
 
 ---
 
-## 3. 当前学习状态
+## 3. 当前断点
 
-日期：2026-06-16
+已完成第一轮理解：
 
-当前阶段：
+1. LangChain 和 LangGraph 分别解决什么问题
+2. LangChain 的模型、消息、工具、Agent Harness 和 Middleware 如何组成一次 Agent 调用
+3. LangGraph 的 Graph、State、Node、Edge、Checkpoint、Interrupt、Streaming 分别承担什么职责
+4. 在个人 RAG / Agent 项目中，哪些状态可以交给 LangGraph Runtime，哪些业务状态仍应由 Java 后端负责
 
-1. 长期 Roadmap：`Phase 1：计算机基础` 已经开始
-2. 当前执行模式：`1 个月 / 120 小时面试冲刺`
+当前断点：
 
-当前主题：
-
-1. 请求链路与 Tomcat 线程模型第一轮已收尾
-2. MySQL 事务主线第一轮已学习：事务出现原因、ACID、隔离级别、MVCC、undo/redo/binlog
-3. MySQL 锁与批处理并发控制第一轮已学习：快照读、当前读、行锁、间隙锁、Next-Key Lock、任务抢占、补偿恢复、process_token、ERP 幂等、索引访问路径与锁范围、批处理联合索引
-4. MySQL 索引基础第一轮已学习：B+ 树、聚簇索引、二级索引、回表、覆盖索引、联合索引、最左前缀
-5. MySQL 慢 SQL 与 `EXPLAIN` 第一轮已学习：索引失效、函数、隐式类型转换、`like`、范围条件、`type/key/rows/Extra`
-6. MySQL 索引访问路径和锁范围已完成一轮项目化训练：不同索引如何影响 `for update` / `update` 的扫描范围、锁范围和 worker 并发
-7. 学习恢复入口已合并完成：以后默认只读取 `START_HERE.md`
-8. 动态规划入门第一轮已学习：爬楼梯、最小花费爬楼梯、打家劫舍、LIS、最大子数组和，重点训练状态定义、转移、边界和 `dp[n-1]` / `max(dp)` 区分
-9. 动态规划第二轮已学习：整数拆分、零钱兑换 I/II、分割等和子集、完全平方数，重点训练 0/1 背包、完全背包、组合数、最小值和可达性分类
-10. 动态规划第三轮已学习：目标和、最长公共子序列、编辑距离二维 DP，重点训练双字符串前缀状态、二维下标、字符相等与不相等时的转移
-11. 动态规划第四轮已学习：编辑距离一维空间优化、背包分类复盘、组合数与排列数、DP 通用分析框架、打家劫舍/LIS/最大子数组和状态设计
-12. 临时完成一次大模型应用开发工程师面试准备：整理自我介绍、RAG 项目表达、Hybrid Search、检索融合、RAG 评测、Chunk 和 Parent-Child Retrieval
-13. 已完成 2026-06-10 大模型应用开发工程师面试事实复盘：实际问题覆盖 RAG 架构、Chunk、混合检索优化、Prompt、Agent、结算系统架构和数据库性能瓶颈
-14. Java 线程池与后台任务执行第一轮正在推进：已学习提交顺序、队列与拒绝、空闲线程回收、ThreadFactory、Future 异常边界、优雅关闭、中断、监控压测、任务认领、租约心跳、反压与重试
-15. 线程池与数据库连接池容量边界完成第一轮：连接等待不等于数据库 IO，CPU 低不代表仍可增加线程，外部 Embedding 调用应放在短事务之外
-16. RAG 工程治理完成一次设计级深挖：Embedding 模型版本、蓝绿重建、双写补偿、灰度回滚、线上诊断、权限预过滤、版本检索、去重和 MMR
-17. Redis 分布式锁第一轮已开始：`SET NX PX`、唯一值、Lua 解锁、看门狗续期、锁丢失感知、`process_token`、ERP 幂等键和数据库状态机边界
-
-已经掌握：
-
-1. DNS 负责域名到 IP
-2. 端口负责定位机器上的具体服务
-3. 客户端真正连接的是 `IP:Port`
-4. TCP 负责建立可靠传输通道
-5. HTTP 负责请求和响应的格式、语义和规则
-6. Tomcat 负责监听端口、接收连接、解析 HTTP 请求
-7. `DispatcherServlet` 负责统一分发请求
-8. Controller 负责具体业务接口处理
-9. `spring-boot-starter-web` 会触发 Web 自动配置和内嵌 Tomcat 启动
-10. 慢请求拖垮 Web 服务，很多时候是工作线程被同步阻塞，不一定是 CPU 被打满
-11. 当前 1 个月学习策略应是面试冲刺，不是平均推进长期 Roadmap
-12. Tomcat、Servlet、`DispatcherServlet`、Controller 的职责边界
-13. Keep-Alive 长连接存在不等于一直占用 Tomcat 工作线程
-14. Tomcat NIO 中空闲连接主要由 Poller 监听，有请求可读并进入业务处理时才占用工作线程
-15. Filter 属于 Servlet 规范，Interceptor 属于 Spring MVC，执行位置不同
-16. 事务用于保证同库内一组数据库操作整体成功或整体回滚
-17. ACID 中的一致性不等于分布式最终一致性
-18. 脏读、不可重复读、幻读的核心区别
-19. MySQL InnoDB 默认隔离级别是 Repeatable Read
-20. MVCC 通过 Read View、隐藏事务 ID、undo log 支持一致性快照读
-21. undo log 用于回滚和 MVCC 历史版本，不负责提交后的崩溃恢复
-22. redo log 用于崩溃恢复，保证事务提交后的持久性
-23. binlog 用于主从复制、时间点恢复和变更订阅
-24. redo log 和 binlog 需要两阶段提交，避免主库事务状态和 binlog 记录不一致
-25. 普通快照读在 RR 下主要依赖 MVCC 和 Read View，不是依赖 Next-Key Lock
-26. 当前读包括 `select ... for update`、`update`、`delete`，需要读取最新数据并加锁
-27. 行锁解决同一行并发修改，间隙锁防止索引区间插入，Next-Key Lock 是记录锁加间隙锁
-28. 先 `select` 一批 `INIT` 再处理不安全，因为查询候选数据和声明处理权不是原子动作
-29. 批处理任务应优先用 `update ... where status='INIT'` 这类条件更新抢占，通过影响行数确认处理权
-30. 分片字段可以降低扫描冲突和提升吞吐，但不能替代状态条件更新
-31. `PROCESSING` 应理解为带租约的处理中状态，需要心跳、超时回收、重试次数和补偿任务
-32. `process_token` / `attempt_id` 用于证明当前 worker 仍有资格推进状态，防止过期 worker 覆盖新状态
-33. ERP 推送成功但本地未更新就宕机属于外部调用不确定状态，需要下游幂等、本地推送记录、查询或对账兜底
-34. InnoDB 的锁和索引访问路径强相关，锁不是直接加在 `where` 条件上，而是加在实际访问到的索引记录上
-35. 没有合适索引时，当前读可能扫描并锁住大量索引记录，表现上接近大范围阻塞
-36. 有 `(status, id)` 索引也不能自动把任务分给不同 worker，多个 worker 仍可能从同一 `INIT` 区间开头竞争
-37. `for update skip locked` 可以减少锁等待，但要接受跳过语义和非严格全局顺序
-38. 分片批处理 SQL `where shard_no=? and status='INIT' order by created_at, id limit 100` 优先考虑 `(shard_no, status, created_at, id)`
-39. `created_at` 不唯一，只按它排序会导致批次边界不稳定，加入 `id` 可以形成稳定排序和游标续扫
-40. 索引不是简单让查询变快，而是减少扫描范围、快速定位数据、降低排序和锁冲突成本的有序数据结构
-41. B+ 树适合数据库，是因为它贴合磁盘页和 Buffer Pool 的 IO 模型：分叉高、树高低、随机 IO 少、叶子节点有序适合范围扫描
-42. InnoDB 主键索引是聚簇索引，叶子节点存整行数据；二级索引叶子节点存索引列和主键值
-43. 回表是通过二级索引找到主键后，再回到主键索引取完整行；覆盖索引是查询字段都在索引中，不需要回表
-44. 联合索引的有序性从左到右建立，前面的列没有被等值固定时，后续排序字段通常不能保证全局有序
-45. `(shard_no, status, created_at, id)` 适合批处理任务扫描，因为能先收敛到分片和状态小区间，再按创建时间和主键稳定取数
-46. 索引失效不是索引完全不能用，而是 SQL 不能充分利用索引有序结构来减少扫描、避免排序或减少回表
-47. `date(created_at)` 这类函数条件不适合普通索引，应改成 `created_at >= 当天零点 and created_at < 次日零点`
-48. 隐式类型转换可能让 MySQL 对索引列做转换，标识符字段如手机号、订单号、云账号 ID 应按字符串建模和绑定参数
-49. `like 'abc%'` 可以利用前缀范围，`like '%abc'` 无法用普通 B+ 树有效定位起始范围
-50. `EXPLAIN` 中 `type=ALL` 通常表示全表扫描，`key=NULL` 表示未使用索引，`rows` 是估算扫描行数，`Using filesort` 表示额外排序，`Using index` 表示覆盖索引
-51. `status <> 'DONE'` 或多个状态条件会匹配多个 status 区间，可能导致 `created_at, id` 不能跨状态全局有序
-52. 条件 `update` 抢占任务的核心优势是把“筛选候选任务”和“声明处理权”合并成一个原子数据库操作，不只是性能更快
-53. 成功回写要带 `id + process_token + status='PROCESSING'`，通过影响行数判断处理权是否仍有效
-54. ERP 推送成功但本地未更新就宕机，属于外部调用不确定状态，补偿时不能盲目重推或直接复原为 `INIT`，要先结合本地调用记录、查询接口、幂等键和对账处理
-55. DP 的本质是把重复子问题保存起来，再通过状态转移逐步构造答案，不是背公式
-56. 状态定义必须对齐题目目标：方法数用方案数状态，最小代价用最小花费状态，最大收益用最大值状态
-57. 爬楼梯方法数可以从最后一步推出 `dp[i] = dp[i-1] + dp[i-2]`
-58. 最小花费爬楼梯推荐定义 `dp[i] = 到达位置 i 的最小花费`，楼顶是位置 `n`，不是台阶 `n`
-59. `cost[0]` 是第 0 个台阶费用，`dp[0]` 是到达位置 0 的最小花费，两者不是一回事
-60. 打家劫舍的核心是当前房子偷或不偷：`dp[i] = max(dp[i-1], dp[i-2] + nums[i])`
-61. LIS 推荐定义 `dp[i] = 以 nums[i] 结尾的最长递增子序列长度`，因为转移需要知道结尾元素
-62. LIS 能否接上比较的是 `nums[j] < nums[i]`，不是比较 `dp[j]` 和 `dp[i]`
-63. 最大子数组和定义 `dp[i] = 以 nums[i] 结尾的最大连续子数组和`，连续性使它只依赖 `dp[i-1]`
-64. 如果 `dp[i]` 表示 `0..i` 的全局最优，答案通常是 `dp[n-1]`；如果表示“以 i 结尾”的局部最优，答案通常是 `max(dp)`
-65. 整数拆分需要枚举第一刀 `j`，候选值是 `j * (i-j)` 和 `j * dp[i-j]`
-66. 零钱兑换 II 是完全背包 + 组合数，`dp[0]=1` 表示空方案种子，外层遍历硬币避免排列重复
-67. 零钱兑换 I 是完全背包 + 最小值，`dp[0]=0` 表示凑成金额 0 需要 0 枚硬币，不可达状态要用 `INF`
-68. 分割等和子集可以转化为能否选出若干数凑出 `sum/2`，是 0/1 背包 + 可达性
-69. 0/1 背包一维容量倒序，是为了防止当前物品在同一轮重复使用
-70. 完全背包一维容量正序，是为了允许当前物品在同一轮重复使用
-71. 完全背包二维选当前物品时来自 `dp[i][j-weight]`，0/1 背包选当前物品时来自 `dp[i-1][j-weight]`
-72. 背包题要先判断“物品使用次数”和“题目目标”，再决定 `dp[0]`、聚合方式和循环方向
-73. 背包分类小测已完成一轮：0/1 + 可达性、完全 + 组合数、0/1 + 最大值、完全 + 可达性基本稳定
-74. 0/1 背包 + 方案数加餐题已答对：`dp[0]=1`、容量倒序、`dp[j] += dp[j-num]`
-75. 目标和可以转化为 0/1 背包 + 方案数：正数集合和 `P=(sum+target)/2`
-76. LCS 定义 `dp[i][j]` 为两个字符串前缀的最长公共子序列长度，字符相等取左上加 1，不等取上方和左方最大值
-77. 编辑距离定义 `dp[i][j]` 为将 `word1` 前 `i` 个字符转成 `word2` 前 `j` 个字符的最少操作数
-78. 编辑距离字符相等时继承左上；不等时从删除、插入、替换三条路径取最小值再加 1
-79. 编辑距离中上方 `dp[i-1][j]` 对应删除，左方 `dp[i][j-1]` 对应插入，左上 `dp[i-1][j-1]` 对应替换
-80. 编辑距离一维压缩中，更新前 `dp[j]` 是上方、更新后 `dp[j-1]` 是左方、`prev` 是左上
-81. 每列必须先用 `temp` 保存上方旧值，更新 `dp[j]` 后再令 `prev=temp`，使当前上方成为下一列左上
-82. 外层遍历硬币会固定硬币引入顺序，得到组合数；外层遍历金额是在枚举最后一枚硬币，得到排列数
-83. DP 通用分析应先确定目标、子问题、状态保留信息、最后一步选择、边界和答案位置，背包分类只是其中一个分支
-84. 状态定义、转移、边界和答案位置必须使用同一套下标模型
-85. LIS 的“以 i 结尾”用于保留结尾元素，最大子数组和的“以 i 结尾”用于保留连续性
-86. PostgreSQL 全文检索与向量检索属于两路召回，归一化加权和 RRF 属于结果融合，Cross-Encoder Rerank 属于候选集二阶段重排
-87. `Recall@K` 判断相关文档是否进入 TopK，MRR 判断第一个相关文档是否靠前，NDCG 适合评价多个结果的分级相关性和排序质量
-88. Cross-Encoder 联合编码 `query + chunk` 并输出相关性分数，适合对少量候选精排；它不能找回第一阶段没有召回的 Chunk
-89. Prompt 只用于最终生成时不会改变检索排序；只有 Query Rewrite 或 LLM Rerank 等前置环节会影响召回或排序
-90. 当前 RAG 系统属于固定 AI Pipeline：调用顺序由代码预定义，LLM 不负责动态选择工具或决定下一步
-91. Agent 的关键不是工具数量，而是是否形成受约束的“决策 -> 工具执行 -> 观察 -> 更新状态 -> 再决策”闭环
-92. 结算系统性能问题目前只能确认批处理总耗时超出业务目标，且数据库访问累计耗时较高；尚不能仅凭此断言数据库算力或单条慢 SQL 是根因
-93. `ThreadPoolExecutor` 的任务提交顺序是核心线程、工作队列、非核心线程、拒绝策略
-94. 大队列会延迟扩容并积压任务对象，主要风险是等待时间和内存；小队列会更快扩容和拒绝，也更快把压力传递给下游
-95. `CallerRunsPolicy` 不创建新线程，而是让提交线程执行任务；三分钟后台任务不能回退到 Tomcat 请求线程
-96. `newFixedThreadPool` 的风险是近似无界队列，`newCachedThreadPool` 的风险是线程数近似无界
-97. 线程池容量不能只看 CPU，还要受数据库连接池、Embedding 服务和其他下游容量约束
-98. 多实例任务认领可以使用 `FOR UPDATE SKIP LOCKED`，跳过已锁任务并减少 Worker 等待
-99. 任务应先取得本机执行许可，再短事务认领，避免任务租约在本地队列中提前过期
-100. `process_token`、业务唯一键和外部幂等键解决不同问题：处理权、数据库结果幂等和外部副作用幂等
-101. 租约不是预计总耗时，应使用短租约加定期心跳；续租 SQL 也必须校验状态和 Token
-102. 状态表和批次 `LIMIT` 只能持久化缓冲，真正的阶段反压需要高低水位、许可或限流
-103. `PENDING` 数量不能单独判断健康度，还要观察最老等待时间、新增/完成速率、失败重试和 P95/P99
-104. 毒任务需要最大重试次数、错误分类、`RETRY_WAIT`、指数退避、随机抖动和最终 `DEAD` 状态
-105. `keepAliveTime` 默认只回收超过核心线程数的空闲线程，开启 `allowCoreThreadTimeOut(true)` 后核心线程也可超时回收
-106. `keepAliveTime` 计算线程等待新任务的空闲时间，不会按任务执行时长强制回收忙碌线程
-107. 线程池默认懒创建线程，预热方法可以提前创建核心线程
-108. `ThreadFactory` 负责创建和配置 Worker 线程，`execute/submit` 负责提交业务任务
-109. `execute` 的未捕获异常可能触发线程级 Handler；`submit` 的异常由 `FutureTask` 保存
-110. RAG 长任务不能让 Tomcat 请求线程立即调用 `future.get()`，应返回 `taskId` 并查询持久化状态
-111. `shutdown` 停止接单并处理存量任务，`shutdownNow` 发出中断请求但不保证立即停止
-112. 阻塞方法抛出 `InterruptedException` 时可能清除中断标志，不能空 `catch`
-113. 线程池压测要同时看吞吐、新增/完成速率、排队与执行 P95/P99、错误率、队列趋势和下游等待
-114. 增加线程后排队时间下降但数据库连接等待上升，可能只是等待位置发生转移
-115. N+1 查询会产生 `1+N` 次 SQL，可通过关联 ID 去重和批量查询降低数据库往返
-116. 连接池 `pending` 表示工作线程等待取得连接，不能直接表述为数据库 IO 等待
-117. 外部 Embedding 调用不应放入持有数据库连接的长事务，应先完成外部计算，再开启短事务持久化
-118. 本地事务不能回滚 Embedding 调用，写入失败应通过持久化任务状态、退避重试和业务唯一键保证恢复与幂等
-119. Embedding 模型版本、向量维度和 Chunk 策略需要进入任务快照与向量元数据，不同向量空间不能混用
-120. 向量模型升级可以采用 v1 继续服务、v2 后台重建、升级期双写、完整性校验、灰度切换和保留回滚窗口
-121. 离线 `Recall@K` 提升不代表线上满意度一定提升，需要沿召回、融合、Rerank、Prompt 和生成链路回放差评请求
-122. 权限过滤应尽量进入向量检索本身，TopK 应是授权数据集合中的 TopK
-123. 多个授权分区应分别召回候选，合并去重后统一 Rerank，再取全局 TopK
-124. 规则版本检索要区分发布状态、生效时间、失效时间和业务事件时间，必要时先查适用口径再二次查询具体历史条款
-125. MMR 在 Query 相关性和与已选证据的重复度之间权衡，但不能替代业务过滤和相邻互补证据合并
-126. 规则类上下文压缩必须保留主体、期限、条件、例外、证明要求以及 `AND/OR/NOT` 关系
-127. `synchronized` 只能约束单 JVM 内线程，不能约束多个服务实例
-128. Redis 锁获取应使用 `SET lock_key unique_value NX PX ttl`，把不存在检查、写入和过期时间设置合成一个原子命令
-129. 不能用 `SETNX` 后再 `EXPIRE`，因为两条命令之间宕机会造成无过期时间的死锁
-130. 释放锁不能直接 `DEL`，必须用 Lua 原子判断 value 属于自己才删除，避免误删新 Worker 的锁
-131. 看门狗是后台续期任务，续期也必须校验 `unique_value`，否则旧 Worker 可能给新锁续期
-132. 看门狗续期成功只能说明续期逻辑还在运行，不能证明业务线程健康
-133. Redis 锁丢失后 Worker 不应继续产生外部副作用，应通过续期失败、关键步骤校验和数据库 Token 回写感知处理权丢失
-134. `process_token` 标识当前处理权，ERP 幂等键应使用稳定业务身份，不能使用每轮变化的 Token
-135. ERP 调用超时属于结果不确定，应先查询外部状态，再用原幂等键重试，不能直接标记失败或换新 Key
-136. 任务处理权主依据应是数据库条件更新和状态机，Redis 锁只作为辅助互斥
-
-仍不稳定：
-
-1. 异步化设计表达：业务线程池、任务队列、SSE、轮询的适用边界
-2. Servlet 容器和操作系统线程 / IO 的连接点仍需后续结合 OS 复盘
-3. 三次握手和 TCP 整体机制的边界需要后续复习
-4. MySQL 索引基础已过第一轮，但联合索引、排序、范围条件、覆盖索引仍需通过追问复盘巩固
-5. 动态规划已过四轮，背包分类和组合/排列区别基本稳定；编辑距离一维压缩机制已理解，但下标表达和变量更新顺序仍需通过手写巩固
-6. undo / redo / binlog 的边界需要复盘，尤其是持久性和复制恢复的区别
-7. 索引访问路径和锁范围的表达已过第一轮，但仍需要后续通过题目复盘巩固
-8. `EXPLAIN` 慢 SQL 分析仍处于 DOING，只能初步看 `type/key/rows/Extra`，还需要继续练习反推访问路径
-9. 项目完整表达还没成稿，尤其是“批处理任务如何保证并发安全、幂等和失败恢复”需要下次整理
-10. DP 通用分析时容易把所有题缩窄成背包分类，状态定义正确后仍需检查边界和答案位置是否属于同一模型
-11. RAG 项目表达和生产化设计已完成一轮深挖，但 Rerank、权限分区、蓝绿索引、MMR 和线上追踪尚未在项目中实际落地
-12. Multi-Agent、MCP、A2A、LangGraph、Flink、Hive、K8s 和推理优化目前缺少生产实践，不能包装成已掌握能力
-13. RAG 架构可以按两条链路复述，但 Fusion、Rerank、Recall@K、MRR、NDCG 的职责边界仍需短时复盘
-14. Agent 没有生产实践，面试中容易把编排问题回答成模型选型；需要稳定使用固定 Pipeline 与动态 Agent 的边界回答
-15. 结算系统业务素材充分，但系统架构、数据流和性能瓶颈证据容易混在一起，且要避免把“技术栈”口误成“技术债”
-16. 线程池主线已完成第一轮，但还缺 1 分钟完整口述以及与锁、CAS、AQS 的并发知识连接
-17. 最近连续追问已从线程池扩展到 RAG 规则治理，理解有收益，但开始偏离 Redis、MQ、项目表达和模拟面试主线
-18. Redis 分布式锁机制已完成第一轮，但 Redis 为什么快、数据结构、持久化、缓存问题和 RedLock 仍未学习
+1. 已理解 Agent loop 是“决策 -> 工具执行 -> observation -> 再决策”，不是一次模型调用。
+2. 已理解 `messages` 是结构化对话状态，`AIMessage.tool_calls` 与 `ToolMessage.tool_call_id` 需要建立工具调用结果归属。
+3. 已理解模型只生成工具调用意图，工具执行、权限、安全、审计和业务状态必须由 runtime / 后端代码控制。
+4. 已理解 checkpoint 保存 LangGraph runtime 现场，Java DB 保存审批、权限、副作用和业务事实；恢复时 checkpoint 决定“从哪里恢复”，Java DB 决定“是否允许继续”。
+5. 已跑通最小代码：`StateGraph -> node -> conditional edge -> interrupt -> Command(resume)`。
+6. 已验证 resume 会重放触发 interrupt 的 node，interrupt 前副作用需要用 `action_id` 幂等。
+7. 已验证调用方需要循环处理 `__interrupt__`，直到没有 interrupt 才算图执行完成。
+8. 已验证 `approval_node` 不能无条件覆盖 Java DB 业务状态，等待确认期间被取消的 action 不能被 resume approved 重新批准。
+9. 已验证 `stream_mode="updates"` 观察节点增量，`stream_mode="values"` 观察每一步完整 state。
+10. 已验证 `thread_id` 只是 checkpoint 查找 key，`InMemorySaver` 只能恢复当前 Python 进程内仍存在的 checkpoint。
+11. 已验证真实 `create_agent()` 会执行标准模型工具调用 loop：`AIMessage.tool_calls -> ToolMessage -> final AIMessage`。
+12. 已验证标准查询 / 建议生成可以由 `create_agent` 类上层 harness 负责，高风险副作用工具应放在 StateGraph / Java 后端受控执行节点。
+13. 已归纳面试表达入口：LangChain、`create_agent`、LangGraph、StateGraph 的职责边界，以及个人 RAG / Agent 项目中如何保留 Java 后端业务状态权威。
+14. 下一步进入口述验证，若表达稳定则可将 `BL-011` 标记为 DONE。
 
 ---
 
-## 4. 下次从哪里开始
+## 4. 最近学习位置
 
-**当前首要断点：继续 Redis 主线，但先用 1 分钟复述 Redis 分布式锁。**
+最近一次归档：
 
-**下一道训练题：请用 1 分钟回答：Redis 分布式锁怎么实现？为什么不能只依赖 Redis 锁保证任务只处理一次？**
+1. `sessions/2026-07-05-langchain-langgraph-agent-runtime.md`
+2. `sessions/2026-07-05-langgraph-runtime-demo.md`
+3. `sessions/2026-07-06-create-agent-stategraph-boundary.md`
+4. `sessions/2026-07-07-langchain-langgraph-learning-summary.md`
+5. `interview/ai-application-questions.md`
+6. `labs/langgraph-runtime-demo/README.md`
+7. `labs/langgraph-runtime-demo/create_agent_demo.py`
+8. `labs/langgraph-runtime-demo/hybrid_agent_graph_demo.py`
+9. `interview/real-records/2026-06-30-ai-agent-rag-backend.md`
+10. `sessions/2026-06-30-ai-agent-rag-backend-interview.md`
 
-**Redis 主笔记：`backend/redis/distributed-lock.md`。**
+相关主题已有沉淀：
 
-**Redis 面试问答：`interview/redis-questions.md`。**
-
-**最新会话记录：`sessions/2026-06-16-redis-distributed-lock.md`。**
-
-**保留项目表达断点：请按“系统定位 -> 四类业务场景 -> 上下游与核心数据流 -> 异步处理与状态管理 -> 失败恢复 -> 规模与瓶颈”介绍结算系统架构。**
-
-**保留问题 1：你们结算系统的批处理任务是如何保证并发安全、幂等和失败恢复的？**
-
-**面试准备入口：`sessions/2026-06-10-llm-application-interview-preparation.md`。**
-
-**完整面试问答复盘：`interview/real-records/2026-06-10-llm-application-engineer.md`。**
-
-**学习恢复摘要：`sessions/2026-06-11-llm-application-interview-review.md`。**
-
-**RAG 项目表达入口：`interview/rag-project-story.md`。**
-
-**AI 应用高频问题入口：`interview/ai-application-questions.md`。**
-
-**保留问题 2：不看提示完整复述 LCS 和编辑距离的状态定义、边界、转移、答案和复杂度。**
-
-**保留问题 3：不看提示区分 0/1 背包、完全背包、组合数、最小值、可达性，并写出 `dp[0]`、循环方向和转移。**
-
-**保留问题 4：不看提示复述 5 个 DP 入门模型的状态定义、转移、边界和答案位置。**
-
-本次 Redis 分布式锁学习推进了 Phase 5，但不足以判定 Redis 主线完成。下次先做 Redis 锁 1 分钟口述验收，再进入 Redis 为什么快和常见数据结构。结算系统 2 分钟项目表达仍是保留断点，但不是下次第一题。
-
-如果用户状态不适合做项目表达，可以改做 10 分钟 `EXPLAIN` 小测，继续巩固慢 SQL 访问路径判断。
-
-如果用户想继续算法，只做 10 到 15 分钟口述复盘：状态定义、最后一步选择、边界、答案位置。面试前不继续扩展复杂 DP。
-
-不要重复展开以下内容，只需快速确认：
-
-1. DNS 负责域名到 IP
-2. 端口负责定位服务
-3. TCP 负责可靠传输
-4. HTTP 负责请求 / 响应规则
-5. Tomcat 负责接请求
-6. `DispatcherServlet` 负责分请求
-7. Controller 负责处理请求
-8. 慢请求会同步阻塞 Tomcat 工作线程
-9. Keep-Alive 空闲连接不长期占用 Tomcat 工作线程
-10. Filter 在 `DispatcherServlet` 之前，Interceptor 在 `DispatcherServlet` 之后、Controller 之前
-11. 事务解决的是本地数据库内一组操作的原子性问题，不解决所有跨系统一致性
-12. undo log 不是持久性日志，redo log 才负责提交后的崩溃恢复
-13. binlog 支撑复制和恢复，但不等于天然保证主从强一致
-14. RR 下普通快照读靠 MVCC，不靠 Next-Key Lock
-15. 当前读才需要重点讨论行锁、间隙锁、Next-Key Lock
-16. 批处理不能只 select 候选数据，要通过带状态条件的 update 抢占处理权
-17. `PROCESSING` 卡住要靠租约、心跳、超时补偿和幂等重试在线恢复
-18. 成功或失败回写要带 `process_token`，防止过期 worker 覆盖状态
-19. ERP 外部调用的不确定状态要靠请求幂等、本地调用记录、查询或对账兜底
-20. InnoDB 锁依赖索引访问路径，没有合适索引会扫描和锁住更多记录
-21. 批处理联合索引要贴合 worker 分片、状态过滤、排序和 `limit`
-22. `order by created_at, id` 比只按 `created_at` 更适合稳定批处理和游标续扫
-23. B+ 树适合数据库的核心是降低随机 IO、支持有序范围扫描，不是单纯算法复杂度
-24. 聚簇索引叶子节点存整行，二级索引叶子节点存索引列和主键，回表是二级索引到主键索引再查整行
-25. 覆盖索引不是新索引类型，而是一次查询刚好只用索引就能返回需要字段
-26. 联合索引用于排序时，前面的列要么等值固定，要么会打断后续排序字段的全局有序性
-27. 对索引列做函数、隐式类型转换、前置模糊匹配都会削弱普通 B+ 树索引的定位能力
-28. `status <> 'DONE'` 不能简单等同于 `IN` 优化，多状态条件仍可能破坏跨状态全局排序
-29. 条件 `update` 抢占任务强调处理权原子性；抢占后可通过 `process_token` 查询本 worker 抢到的任务
-30. ERP 调用不确定状态要靠本地调用记录、业务幂等键、查询确认、补偿和对账兜底
-31. DP 状态定义要先对齐题目目标，再推转移和边界
-32. 最小花费爬楼梯中要区分 `cost[i]`、`dp[i]`、台阶、位置和楼顶
-33. LIS / 最大子数组和这类“以 i 结尾”的状态，最终答案通常取 `max(dp)`
-34. 背包题先判断每个物品最多一次还是无限次，再判断目标是可达性、方案数、最小值还是最大值
-35. 0/1 背包倒序，完全背包正序，组合数外层遍历物品避免排列重复
-36. `dp[0]` 不是固定背诵：最少数量是 0，方案数是 1 个空方案，可达性是 true
-37. 背包分类小测中，完全背包 + 最小值的 `dp[0]` 仍答错过，复盘时要重点追问
-38. LCS 的 `i`、`j` 表示前缀长度，对应末尾字符是 `text1[i-1]`、`text2[j-1]`
-39. LCS 字符不等时取 `max(dp[i-1][j], dp[i][j-1])`，因为不能确定该舍弃哪个末尾字符
-40. 编辑距离字符相等不操作，字符不等才从删除、插入、替换中取最小值加 1
-41. 编辑距离二维转移手写时曾把相等和不等分支写反，后续必须用语义检查公式
-42. 编辑距离插入对应 `dp[i][j-1]+1`，因为不消耗 `word1` 原字符，只解决 `word2` 的末尾字符
-43. 编辑距离一维压缩每行必须先保存旧 `dp[0]` 到 `prev`，再更新 `dp[0]=i`
-44. 一维压缩每列执行 `temp=dp[j] -> 更新 dp[j] -> prev=temp`，防止左上状态被覆盖
-45. DP 不能统一套背包模板，应先明确状态需要为后续转移保留什么信息
-46. 状态定义、边界和答案位置不能混用不同模型
+1. `interview/rag-project-story.md`
+2. `interview/ai-application-questions.md`
+3. `interview/real-records/2026-06-30-ai-agent-rag-backend.md`
+4. `backend/redis/distributed-lock.md`
+5. `interview/redis-questions.md`
+6. `mistakes/distributed/redis-lock.md`
 
 ---
 
-## 5. 本月优先级
+## 5. 下一步动作
 
-按这个顺序推进：
+建议下一步：
 
-1. 请求链路收尾：Tomcat、Servlet、`DispatcherServlet`
-2. MySQL：事务、隔离级别、MVCC、索引、锁
-3. Java 并发 / Spring：线程池、锁、Spring MVC、`@Transactional`
-4. Redis / MQ / 分布式：分布式锁、消息可靠性、幂等、最终一致性
-5. 项目表达：云服务结算系统、RAG 知识问答系统
-6. 算法保底：滑动窗口、二分、动态规划入门
-7. 模拟面试和 mistakes 复盘
+1. 读取 `LEARNING_BACKLOG.md`
+2. 读取 `sessions/2026-07-05-langchain-langgraph-agent-runtime.md`
+3. 继续 `BL-011` 的 REVIEW：用 2 到 3 分钟口述 LangChain / `create_agent` / LangGraph / StateGraph 职责边界
+4. 继续保持边界：模型负责建议，LangGraph runtime 负责流程，Java DB 负责业务事实和权限
+5. 若用户改选任务，以 `LEARNING_BACKLOG.md` 中的任务池为准
 
 ---
 
-## 6. 是否需要读取其他文件
+## 6. 优先读取文件
 
-默认规则：
-
-1. 只读 `START_HERE.md` 就可以恢复进度并开始学习
-2. 不要让用户额外喂其他文件
-3. 只有在需要更新笔记、核对历史细节或写入沉淀文件时，Codex 再主动读取相关文件
-
-可选参考文件：
-
-1. `INTERVIEW_SPRINT_30_DAYS.md`
-   - 用于查看完整 30 天冲刺计划
+1. `LEARNING_BACKLOG.md`
 2. `LEARNING_ROADMAP.md`
-   - 用于查看长期能力地图
-3. `LEARNING_JOURNAL.md`
-   - 用于查看长期画像、典型误区和历史索引
+3. `sessions/2026-07-05-langchain-langgraph-agent-runtime.md`
+4. `sessions/2026-07-05-langgraph-runtime-demo.md`
+5. `sessions/2026-07-06-create-agent-stategraph-boundary.md`
+6. `sessions/2026-07-07-langchain-langgraph-learning-summary.md`
+7. `interview/ai-application-questions.md`
+8. `labs/langgraph-runtime-demo/README.md`
+9. `labs/langgraph-runtime-demo/approval_flow_demo.py`
+10. `labs/langgraph-runtime-demo/streaming_demo.py`
+11. `labs/langgraph-runtime-demo/checkpoint_demo.py`
+12. `labs/langgraph-runtime-demo/create_agent_demo.py`
+13. `labs/langgraph-runtime-demo/hybrid_agent_graph_demo.py`
+14. LangGraph 官方文档：`https://docs.langchain.com/oss/python/langgraph/overview`
+15. LangChain 官方文档：`https://docs.langchain.com/oss/python/langchain/overview`
+16. `interview/real-records/2026-06-30-ai-agent-rag-backend.md`
 
-当前网络请求链路主题的可选沉淀文件：
+需要判断长期能力方向时，再读取：
 
-1. `fundamentals/network/http-tcp-request-flow.md`
-2. `interview/computer-fundamentals-questions.md`
-3. `mistakes/network/request-flow.md`
-4. `sessions/2026-05-28-http-tcp-request-flow.md`
+1. `LEARNING_ROADMAP.md`
 
-当前 MySQL 事务主题的可选沉淀文件：
+需要确认文档规则时，再读取：
 
-1. `backend/mysql/transaction.md`
-2. `backend/mysql/lock-and-batch-processing.md`
-3. `interview/mysql-questions.md`
-4. `mistakes/database/transaction.md`
-5. `sessions/2026-06-01-mysql-lock-index-batch-processing.md`
-6. `sessions/2026-06-02-mysql-index-explain-lock-path.md`
-
-当前算法 DP 主题的可选沉淀文件：
-
-1. `fundamentals/algorithm/dp-basic.md`
-2. `mistakes/algorithm/dp.md`
-3. `sessions/2026-06-03-dp-basic.md`
-4. `sessions/2026-06-04-dp-knapsack.md`
-5. `sessions/2026-06-05-dp-lcs-edit-distance.md`
-
-注意：
-
-这些文件不是恢复进度的前置条件。Codex 可以先基于本文件直接继续教学；只有需要补充、修改或核对沉淀内容时再读取。
-
----
-
-## 7. 文档记述规则
-
-回答和新增笔记统一使用中文。
-
-学习一个知识点时，优先按这个结构推进：
-
-1. 这个机制解决什么真实工程问题
-2. 如果没有它会怎样
-3. 核心概念是什么
-4. 内部机制大概怎么工作
-5. 边界和代价是什么
-6. 项目里怎么用
-7. 面试官可能怎么问
-8. 简洁版面试回答
-
-每次学习结束时，优先更新：
-
-1. `START_HERE.md`：更新当前状态和下次断点
-2. 对应主题笔记：沉淀机制理解
-3. `interview/`：沉淀面试回答
-4. `mistakes/`：记录错误、偏差和纠正方式
-5. `sessions/`：必要时归档本次会话关键决策和下次起点
-
-状态判断：
-
-1. `TODO`：还没开始
-2. `DOING`：正在学习
-3. `REVIEW`：学过，但表达或追问不稳
-4. `DONE`：能讲清楚、能联系项目、能接住追问
-5. `BLOCKED`：明显卡住，需要拆小
-
-不能因为“看过”就标记为 `DONE`。
+1. `AGENTS.md`

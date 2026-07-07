@@ -43,6 +43,63 @@ A2A 关注 Agent 之间的能力发现、任务委托、进度和结果通信。
 
 LangGraph 适合表达有状态、可分支、可循环并支持人工介入的 Agent 工作流。重点价值是把 Agent 执行过程显式建模为图和状态，而不只是连续调用 Prompt。
 
+### LangChain 与 LangGraph 的边界
+
+LangChain 更偏上层 Agent 组装，负责模型调用、消息结构、Prompt、工具绑定、Agent loop、middleware 和结构化输出。LangGraph 更偏底层 Agent 编排运行时，把复杂 Agent loop 建模成 Graph、State、Node、Edge，并支持 checkpoint、interrupt、streaming 和 human-in-the-loop。
+
+简单固定 RAG Pipeline 不一定需要 LangGraph；复杂、长时间、可恢复、需要人工介入或多步工具调用的 Agent 更适合使用 LangGraph。
+
+### messages、tool_calls 和 ToolMessage
+
+Agent 不是一次模型调用，而是“决策 -> 工具执行 -> observation -> 再决策”的循环。模型只生成工具调用意图，真正执行工具的是 Agent runtime 或业务代码。
+
+`messages` 是结构化对话状态，不等同于普通 prompt string。`AIMessage` 表示模型输出，可能包含 `tool_calls`；`ToolMessage` 表示工具执行结果，必须用 `tool_call_id` 对应前面某次工具调用。`tool_call_id` 解决的是工具结果归属问题，不等于业务 `requestId`、链路 `traceId` 或任务处理权 `process_token`。
+
+### checkpoint、interrupt 和后端业务状态
+
+LangGraph checkpoint 保存 Agent runtime 执行现场，例如 messages、当前节点、工具 observation 和中断点；后端数据库保存业务事实，例如审批结果、权限校验、副作用执行状态和最终 run 状态。恢复时 checkpoint 决定“从哪里恢复”，后端数据库决定“是否允许继续”。
+
+高风险动作不能只靠 Prompt 约束。模型可以建议动作，LangGraph 通过 interrupt 暂停执行，后端落库待确认 action，前端展示给用户确认；用户确认后后端保存审批结果并校验权限，再通过 resume 恢复图执行。工具真正执行完成后，才生成 ToolMessage。
+
+interrupt 所在 node 在恢复时会从头重放，因此 interrupt 前的数据库写入、日志、外部调用等副作用必须幂等，或者移动到 interrupt 之后的独立节点。
+
+### create_agent 和 StateGraph 怎么选
+
+`create_agent` 是 LangChain 提供的上层 Agent Harness，用来快速组织模型、工具、messages 和常见 tool loop。标准路径是：用户消息进入 Agent，模型输出 `AIMessage.tool_calls`，runtime 根据 tool name 和 args 执行工具，生成 `ToolMessage`，再让模型基于工具结果继续生成最终回答。
+
+手写 StateGraph 适合更强的流程控制，例如审批、恢复、状态机、权限校验和高风险副作用。它让开发者显式定义 State、Node、Edge、interrupt、checkpoint 和 resume。
+
+选型原则：
+
+1. 标准模型工具调用、查询和建议生成，优先使用 `create_agent`。
+2. 强业务流程、人工确认、可恢复执行和高风险副作用，优先使用 StateGraph / 后端状态机。
+3. 两者可以配合，但不要让 `create_agent` 直接主导支付、退款、删除等不可逆业务动作。
+
+### LangChain 和 LangGraph 如何配合
+
+LangChain 和 LangGraph 是不同层的能力。LangChain 更偏 LLM 应用组件层，LangGraph 更偏状态化运行时。当前 LangChain 的 Agent 能力会使用 LangGraph runtime，例如 `create_agent()` 返回的是基于 LangGraph 的 compiled graph。
+
+在工程中可以采用外层 StateGraph、内层 LangChain 的方式：
+
+1. StateGraph 负责支付、退款、审批、状态机和恢复。
+2. LangChain / `create_agent` 在某些 node 内负责查询、解释、总结、结构化抽取或建议生成。
+3. node 将业务 State 投影成 LangChain messages，再将 LLM 输出映射回结构化业务字段。
+4. 不应把所有 LangChain messages 直接塞进外层业务 State，避免业务事实、对话历史和工具 trace 混在一起。
+
+### 高风险工具执行边界
+
+模型可以建议动作，但不应直接执行高风险副作用工具。以退款为例，`create_agent` 可以查询订单并生成退款建议，但 `refund_tool` 应只存在于受控执行节点：
+
+1. 后端创建 `WAITING_CONFIRMATION` action。
+2. LangGraph `interrupt()` 暂停并把审批 payload 暴露给调用方。
+3. 用户确认后，后端保存审批结果并校验权限、金额、状态和幂等键。
+4. StateGraph resume 后再次查询后端业务事实。
+5. 只有 action 仍为 `APPROVED` 时，受控节点才调用 `refund_tool`。
+
+面试表达：
+
+> 我会把模型 Agent 和业务执行边界拆开。查询、解释和建议生成可以用 `create_agent` 组织模型、工具和 messages loop；但退款、删除、支付这类高风险副作用不会直接暴露给模型执行，而是进入 StateGraph / Java 后端控制的审批流程。LangGraph checkpoint 负责运行时恢复，Java DB 负责审批状态、权限和最终执行事实。
+
 ### Spring AI
 
 Spring AI 为 Java/Spring 应用提供模型调用、Prompt、Tool Calling、Embedding、向量存储和 RAG 等抽象，适合把 AI 能力集成进现有 Java 企业应用。
