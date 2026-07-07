@@ -91,13 +91,13 @@ Backlog 任务可以来自：
 - 优先级：P0
 - 来源：个人主动学习 + 目标岗位要求
 - RoadmapRef：RM-06 AI Backend / RAG / Agent 能力
-- 状态：REVIEW
+- 状态：DOING
 - 主题：LangChain / LangGraph 的核心机制、边界和工程使用方式
-- 学习目标：系统梳理 LangChain 与 LangGraph 分别解决什么问题，掌握模型、消息、工具、Agent Harness、Graph、State、Checkpoint、Interrupt、Streaming 和 human-in-the-loop 等核心概念。
-- 验收标准：能说明 LangChain、LangGraph、LangSmith 的职责边界；能画出一个 LangGraph Agent 的状态流转；能解释 `create_agent`、Graph API、checkpoint、interrupt、streaming 的作用；能结合个人 RAG / Agent 项目说明什么时候用框架、什么时候保留业务状态在 Java 后端。
-- 当前断点：2026-07-07 已完成第一轮机制梳理和实验验证，进入 REVIEW。已验证 interrupt / resume、node 重放与幂等、调用方循环处理 interrupt、业务状态冲突校验、`stream_mode="updates"` / `stream_mode="values"`、`InMemorySaver` 下 `thread_id` 和 checkpoint 存储介质边界；已通过真实 `create_agent()` demo 验证标准模型工具调用 loop，并通过混合 mock demo 验证高风险副作用工具应放在 StateGraph / Java 后端受控执行节点。当前等待口述表达验证。
-- 关联文件：`LEARNING_ROADMAP.md`、`interview/ai-application-questions.md`、`sessions/2026-07-05-langchain-langgraph-agent-runtime.md`、`sessions/2026-07-05-langgraph-runtime-demo.md`、`sessions/2026-07-06-create-agent-stategraph-boundary.md`、`sessions/2026-07-07-langchain-langgraph-learning-summary.md`、`labs/langgraph-runtime-demo/README.md`、`labs/langgraph-runtime-demo/approval_flow_demo.py`、`labs/langgraph-runtime-demo/streaming_demo.py`、`labs/langgraph-runtime-demo/checkpoint_demo.py`、`labs/langgraph-runtime-demo/create_agent_demo.py`、`labs/langgraph-runtime-demo/hybrid_agent_graph_demo.py`、LangGraph 官方文档：`https://docs.langchain.com/oss/python/langgraph/overview`、LangChain 官方文档：`https://docs.langchain.com/oss/python/langchain/overview`
-- 下一步动作：进行口述验证：用 2 到 3 分钟讲清 LangChain / `create_agent` / LangGraph / StateGraph 的职责边界，以及“模型负责建议、runtime 负责流程、Java DB 负责事实和权限”的项目表达；表达稳定后可将 `BL-011` 标记为 DONE。
+- 学习目标：系统梳理 LangChain 与 LangGraph 分别解决什么问题，掌握 LangChain 的 Core components、Middleware、Runtime、Frontend、Advanced usage 目录层级，以及 LangGraph 的 Capabilities、Production、Frontend、Graph API / Functional API 等目录层级；能把这些内容压缩成工程可用的框架地图，而不是只记零散 API。
+- 验收标准：能说明 LangChain、LangGraph、LangSmith 的职责边界；能按官方目录画出 LangChain / LangGraph 的学习地图；能解释 `create_agent`、Middleware、Runtime context、Graph API、Functional API、checkpoint、store、interrupt、streaming、subgraph、time travel 的作用和边界；能结合个人 RAG / Agent 项目说明什么时候用框架、什么时候保留业务状态在 Java 后端。
+- 当前断点：2026-07-07 已完成第一轮机制梳理和实验验证，但随后对照官方文档发现学习范围偏向 `create_agent`、StateGraph、checkpoint、interrupt 等 runtime 片段，仍缺 LangChain 官方目录中的 Core components / Middleware / Frontend / Advanced usage 全貌，以及 LangGraph 官方目录中的 Capabilities / Production / Frontend / LangGraph APIs 全貌。因此 `BL-011` 从 REVIEW 拉回 DOING，先补“官方目录地图级理解”，再进入口述验收。已验证 interrupt / resume、node 重放与幂等、调用方循环处理 interrupt、业务状态冲突校验、`stream_mode="updates"` / `stream_mode="values"`、`InMemorySaver` 下 `thread_id` 和 checkpoint 存储介质边界；已通过真实 `create_agent()` demo 验证标准模型工具调用 loop，并通过混合 mock demo 验证高风险副作用工具应放在 StateGraph / Java 后端受控执行节点。
+- 关联文件：`LEARNING_ROADMAP.md`、`interview/ai-application-questions.md`、`sessions/2026-07-05-langchain-langgraph-agent-runtime.md`、`sessions/2026-07-05-langgraph-runtime-demo.md`、`sessions/2026-07-06-create-agent-stategraph-boundary.md`、`sessions/2026-07-07-langchain-langgraph-learning-summary.md`、`sessions/2026-07-07-langchain-langgraph-official-doc-map-gap.md`、`labs/langgraph-runtime-demo/README.md`、`labs/langgraph-runtime-demo/approval_flow_demo.py`、`labs/langgraph-runtime-demo/streaming_demo.py`、`labs/langgraph-runtime-demo/checkpoint_demo.py`、`labs/langgraph-runtime-demo/create_agent_demo.py`、`labs/langgraph-runtime-demo/hybrid_agent_graph_demo.py`、LangChain 官方文档：`https://docs.langchain.com/oss/python/langchain/overview`、LangGraph 官方文档：`https://docs.langchain.com/oss/python/langgraph/overview`
+- 下一步动作：补官方目录地图：先整理 LangChain 的 Core components、Middleware、Runtime、Frontend、Advanced usage 分层，再整理 LangGraph 的 Capabilities、Graph API / Functional API、Production、Frontend 分层；补完后再进行 2 到 3 分钟口述验证，要求同时讲清“模型负责建议、runtime 负责流程、Java DB 负责事实和权限”的项目边界。
 
 ### BL-001 Redis 数据结构与对象存储边界
 

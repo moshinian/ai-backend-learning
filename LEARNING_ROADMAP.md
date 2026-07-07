@@ -152,9 +152,10 @@
 2. 混合检索、融合、Rerank、Prompt、引用链
 3. RAG 评测和线上问题回放
 4. Agent 状态、决策、工具执行、观察和人工确认
-5. LangChain 的模型、消息、工具、Agent Harness、Middleware、结构化输出和检索组件
-6. LangGraph 的 Graph、State、Node、Edge、Checkpoint、Interrupt、Streaming、持久执行和 human-in-the-loop
-7. 长任务、异步索引、失败重试、权限和可观测性
+5. LangChain 的 Core components、模型、消息、工具、Agent Harness、Middleware、Runtime context、结构化输出、检索组件和 Agent frontend 基础
+6. LangGraph 的 Graph API、Functional API、State、Node、Edge、Reducer、Command、Checkpoint、Store、Interrupt、Streaming、Subgraph、Time travel、持久执行和 human-in-the-loop
+7. LangChain / LangGraph 的生产化边界：应用结构、部署配置、测试、观测、前端控制面和 LangSmith 辅助调试
+8. 长任务、异步索引、失败重试、权限和可观测性
 
 典型沉淀位置：
 

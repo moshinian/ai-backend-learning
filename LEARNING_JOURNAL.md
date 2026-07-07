@@ -130,6 +130,7 @@
 - 固定 RAG Pipeline、Workflow、Agent、模型选型、工具调用和人工确认容易混答。
 - 检索、融合、Rerank、Prompt 和生成层优化需要分层表达。
 - LangChain / LangGraph 学习中，容易把框架 runtime 状态、checkpoint、后端业务状态、审批事实和工具执行副作用混成一层，需要持续区分“执行现场”和“业务事实”。
+- 学习 LangChain / LangGraph 时，容易只抓住已跑通的 `create_agent`、StateGraph、checkpoint、interrupt 片段，忽略官方文档中的 Core components、Middleware、Runtime、Frontend、Capabilities、Production、Graph API / Functional API 等目录级全貌。
 
 主要索引：
 
@@ -142,6 +143,7 @@
 7. `labs/langgraph-runtime-demo/README.md`
 8. `sessions/2026-07-06-create-agent-stategraph-boundary.md`
 9. `sessions/2026-07-07-langchain-langgraph-learning-summary.md`
+10. `sessions/2026-07-07-langchain-langgraph-official-doc-map-gap.md`
 
 ### 8. 学习管理容易把路线、任务、断点和归档混在一起
 
