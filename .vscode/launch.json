@@ -1,0 +1,35 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug LangGraph approval_flow_demo",
+      "type": "debugpy",
+      "request": "launch",
+      "python": "/tmp/langgraph-learning-venv/bin/python",
+      "program": "${workspaceFolder}/labs/langgraph-runtime-demo/approval_flow_demo.py",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "justMyCode": false
+    },
+    {
+      "name": "Debug LangGraph streaming_demo",
+      "type": "debugpy",
+      "request": "launch",
+      "python": "/tmp/langgraph-learning-venv/bin/python",
+      "program": "${workspaceFolder}/labs/langgraph-runtime-demo/streaming_demo.py",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "justMyCode": false
+    },
+    {
+      "name": "Debug LangGraph create_agent_demo",
+      "type": "debugpy",
+      "request": "launch",
+      "python": "/tmp/langgraph-learning-venv/bin/python",
+      "program": "${workspaceFolder}/labs/langgraph-runtime-demo/create_agent_demo.py",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "justMyCode": false
+    }
+  ]
+}
