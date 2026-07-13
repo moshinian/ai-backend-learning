@@ -12,14 +12,16 @@
 
 当前候选任务：
 
-- `BL-013`：RAG 检索、重排与文档结构化解析补课
+- `BL-014`：金蝶 AI 应用开发高级工程师面试准备
 
 说明：
 
-- 2026-07-07 晚 20:00 已完成华盛通 SZ-大模型应用工程师面试，面试官主要围绕 RAG 项目、文档解析、切片、混合检索、Rerank、并发、版本更新和 AI 应用认知展开追问。
-- 面试结论：RAG 工程化、后端落地、Java / Python 分工、权限审计、版本切换和并发限流表达较稳；短板集中在 Rerank / NLP 算法机制、私有语料排序失效破局、结构化文档解析深度、模型部署和前沿算法关注。
-- `BL-012` 面试专项准备已完成，当前最高优先级切换为 `BL-013`。
-- `BL-011` LangChain / LangGraph 机制梳理仍是长期 P0，但应在 `BL-013` 第一轮补课后恢复。
+- 2026-07-13 19:00 有金蝶软件中国 AI 应用开发高级工程师面试。
+- 岗位重点是 Harness 面向外部系统的工具研发、ERP 对接、第三方 MCP / API 生态接入、Skill / MCP / API 工程化、统一服务治理、持续交付、安全和标准化。
+- 本次准备应把既有 Java 后端、结算系统、RAG 项目、LangChain / LangGraph 学习重新组织成“企业 AI 应用工具生态接入 + 后端可靠性治理”的表达。
+- 2026-07-13 已完成一轮面试前口述准备，当前处于等待今晚面试验证阶段。
+- `BL-013` RAG 检索、重排与文档结构化解析仍是重要短板，但今晚前优先服务 `BL-014`。
+- `BL-011` LangChain / LangGraph 机制梳理仍是长期 P0，本次只抽取 Agent 工具调用、checkpoint、interrupt、human-in-the-loop 和业务状态边界用于面试。
 
 ---
 
@@ -27,12 +29,13 @@
 
 当前断点：
 
-1. 华盛通面试整体不是失败局。面试官认可工程化应用方向，但明确指出不懂算法会限制 RAG 项目深入落地。
-2. 需要保留的优势表达：RAG 两条链路、Java / Python 分工、权限和审计、文档版本、向量灰度切换、并发瓶颈拆分和限流。
-3. 需要立即补的短板：Rerank 的底层机制不能再泛化成“编码器-解码器”；要讲清 bi-encoder 召回、cross-encoder 重排、pairwise 打分、训练数据和 hard negative。
-4. 文档解析不能只停留在固定窗口：需要补 Word 标题层级、段落、表格、图片、PDF / OCR、结构化切分和语义切分。
-5. 对“私有数据强、开源 rerank 效果差、最相关片段排最后”要形成可执行方案：规则特征、业务字段加权、人工标注、hard negative、微调 reranker、评测集闭环。
-6. 当前不急着继续泛学 LangGraph，先把 `BL-013` 中 RAG 检索 / 重排 / 文档解析补稳。
+1. 当前面试不是纯 AI 算法岗，也不是传统 Java 业务岗，而是“AI 应用开发 + 企业外部系统生态接入 + 服务治理”岗位。
+2. 需要优先突出的优势：Java 后端工程经验、结算系统状态机 / 幂等 / 异常修复、RAG + Agent 项目工程链路、权限审计、任务状态、失败重试、LangGraph / MCP 工具调用边界理解。
+3. 需要主动补齐的岗位语言：Harness 是承载 Agent / LLM 调用外部能力的工程层；Skill / MCP / API 是工具能力标准化和生态接入方式；ERP 对接关注权限、租户、字段映射、幂等、审计、超时、重试和补偿。
+4. AI 项目边界口径：不主动自降为“个人 demo”；如果被明确问是否公司正式生产上线，回答不是正式生产上线项目，但它不是只调 Prompt / API 的 demo，而是覆盖 RAG、Agent Runtime、工具调用、人工确认、任务恢复和后端治理的工程系统。
+5. 如果被追问 SQL Server、Hive、Spark、大数据经验，应诚实说明主经验在 MySQL / PostgreSQL / 后端系统，理解数据接入和批处理思路，但不包装为深度生产经验。
+6. RAG chunk 新断点：当前项目实际落地固定窗口 + overlap + 自然边界兜底；结构化切分、语义切分、表格 chunk 是已补一轮认知但仍需后续正式沉淀和实践验证的短板。
+7. 面试后需要新增真实面试复盘，并根据暴露问题更新 `LEARNING_BACKLOG.md` 和必要的 `mistakes/`。
 
 ---
 
@@ -40,15 +43,16 @@
 
 最近一次归档：
 
-1. `interview/real-records/2026-07-07-huashengtong-ai-application-engineer.md`
-2. `sessions/2026-07-07-huashengtong-ai-application-interview-review.md`
-3. `mistakes/interview/rag-rerank-algorithm-depth.md`
-4. `interview/mock-records/2026-07-07-huashengtong-ai-application-engineer-prep.md`
-5. `sessions/2026-07-07-huashengtong-ai-application-interview-prep.md`
-6. `sessions/2026-07-07-langchain-langgraph-official-doc-map-gap.md`
-7. `sessions/2026-07-07-langchain-langgraph-learning-summary.md`
-8. `interview/ai-application-questions.md`
-9. `interview/rag-project-story.md`
+1. `interview/mock-records/2026-07-13-kingdee-ai-application-senior-engineer-prep.md`
+2. `sessions/2026-07-13-kingdee-ai-application-interview-prep.md`
+3. `interview/real-records/2026-07-07-huashengtong-ai-application-engineer.md`
+4. `sessions/2026-07-07-huashengtong-ai-application-interview-review.md`
+5. `mistakes/interview/rag-rerank-algorithm-depth.md`
+6. `interview/mock-records/2026-07-07-huashengtong-ai-application-engineer-prep.md`
+7. `sessions/2026-07-07-langchain-langgraph-official-doc-map-gap.md`
+8. `sessions/2026-07-07-langchain-langgraph-learning-summary.md`
+9. `interview/ai-application-questions.md`
+10. `interview/rag-project-story.md`
 
 相关主题已有沉淀：
 
@@ -66,24 +70,25 @@
 建议下一步：
 
 1. 读取 `LEARNING_BACKLOG.md`
-2. 读取 `interview/real-records/2026-07-07-huashengtong-ai-application-engineer.md`
-3. 读取 `mistakes/interview/rag-rerank-algorithm-depth.md`
-4. 开始 `BL-013` 第一轮：Rerank / Fusion / 私有语料排序失效破局
-5. 第一轮完成后再补文档结构化解析和 RAG 评测指标
+2. 读取 `interview/mock-records/2026-07-13-kingdee-ai-application-senior-engineer-prep.md`
+3. 面试前重点复习 60 秒自我介绍、岗位适配、ERP Tool 接入、安全治理、AI 项目上线边界、RAG 语义 / 表格 chunk 六组回答
+4. 如时间不足，优先背 `sessions/2026-07-13-kingdee-ai-application-interview-prep.md` 的“下次入口”
+5. 面试后新增 `interview/real-records/2026-07-13-kingdee-ai-application-senior-engineer.md` 复盘，并决定 `BL-014` 是否 DONE，以及是否恢复 `BL-013` 或继续补 `BL-011`
 
 ---
 
 ## 6. 优先读取文件
 
 1. `LEARNING_BACKLOG.md`
-2. `interview/real-records/2026-07-07-huashengtong-ai-application-engineer.md`
-3. `sessions/2026-07-07-huashengtong-ai-application-interview-review.md`
-4. `mistakes/interview/rag-rerank-algorithm-depth.md`
-5. `interview/mock-records/2026-07-07-huashengtong-ai-application-engineer-prep.md`
-6. `interview/rag-project-story.md`
-7. `interview/ai-application-questions.md`
-8. `sessions/2026-07-07-langchain-langgraph-official-doc-map-gap.md`
-9. `LEARNING_ROADMAP.md`
+2. `interview/mock-records/2026-07-13-kingdee-ai-application-senior-engineer-prep.md`
+3. `sessions/2026-07-13-kingdee-ai-application-interview-prep.md`
+4. `interview/ai-application-questions.md`
+5. `interview/rag-project-story.md`
+6. `backend/redis/distributed-lock.md`
+7. `backend/java/thread-pool.md`
+8. `interview/real-records/2026-07-07-huashengtong-ai-application-engineer.md`
+9. `mistakes/interview/rag-rerank-algorithm-depth.md`
+10. `LEARNING_ROADMAP.md`
 
 需要判断长期能力方向时，再读取：
 

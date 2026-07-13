@@ -132,6 +132,7 @@
 - LangChain / LangGraph 学习中，容易把框架 runtime 状态、checkpoint、后端业务状态、审批事实和工具执行副作用混成一层，需要持续区分“执行现场”和“业务事实”。
 - 学习 LangChain / LangGraph 时，容易只抓住已跑通的 `create_agent`、StateGraph、checkpoint、interrupt 片段，忽略官方文档中的 Core components、Middleware、Runtime、Frontend、Capabilities、Production、Graph API / Functional API 等目录级全貌。
 - RAG 工程链路能讲通后，容易在 Rerank、私有语料排序失效、文档结构化解析和前沿算法追问处变成泛化回答，需要把工程链路和检索 / NLP 算法机制接起来。
+- RAG 文档切分容易停留在固定窗口 + overlap，面对语义切分、Word / PDF / OCR / 表格等复杂文档结构时，需要主动区分“已落地实现”和“成熟优化方案”，并把结构抽取、语义边界、表格结构和评测闭环讲清。
 
 主要索引：
 
@@ -147,6 +148,7 @@
 10. `sessions/2026-07-07-langchain-langgraph-official-doc-map-gap.md`
 11. `interview/real-records/2026-07-07-huashengtong-ai-application-engineer.md`
 12. `mistakes/interview/rag-rerank-algorithm-depth.md`
+13. `sessions/2026-07-13-kingdee-ai-application-interview-prep.md`
 
 ### 8. 学习管理容易把路线、任务、断点和归档混在一起
 
@@ -222,6 +224,8 @@
 17. `interview/real-records/2026-07-07-huashengtong-ai-application-engineer.md`
 18. `sessions/2026-07-07-huashengtong-ai-application-interview-review.md`
 19. `mistakes/interview/rag-rerank-algorithm-depth.md`
+20. `interview/mock-records/2026-07-13-kingdee-ai-application-senior-engineer-prep.md`
+21. `sessions/2026-07-13-kingdee-ai-application-interview-prep.md`
 
 ### Java 线程池与后台任务
 
@@ -267,3 +271,4 @@
 21. `sessions/2026-07-07-langchain-langgraph-official-doc-map-gap.md`
 22. `sessions/2026-07-07-huashengtong-ai-application-interview-prep.md`
 23. `sessions/2026-07-07-huashengtong-ai-application-interview-review.md`
+24. `sessions/2026-07-13-kingdee-ai-application-interview-prep.md`
