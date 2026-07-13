@@ -91,13 +91,13 @@ Backlog 任务可以来自：
 - 优先级：P0
 - 来源：真实面试准备 + 目标岗位要求
 - RoadmapRef：RM-03 Java / Spring / 并发能力；RM-04 Redis / MQ / 分布式能力；RM-05 项目深挖与工程表达；RM-06 AI Backend / RAG / Agent 能力；RM-08 面试复盘与查漏补缺
-- 状态：REVIEW
+- 状态：DONE
 - 主题：围绕金蝶软件中国 AI 应用开发高级工程师岗位，压缩 Java 后端、ERP 对接、Harness、Skill / MCP / API 工程化、Agent 和服务治理表达
 - 学习目标：在 2026-07-13 19:00 面试前，把个人优势定位为“Java 后端工程化 + RAG / Agent 工具生态接入”，能把结算系统、RAG + Agent 系统、LangGraph / MCP / 工具调用学习、Redis / MQ / Spring / 微服务经验迁移到金蝶的 ERP 外部生态、Harness 工具研发、Skill / MCP / API 标准化和服务治理场景。
 - 验收标准：能完成 60 秒自我介绍；能解释 Harness / Skill / MCP / API 在企业 AI 应用中的工程定位；能回答如何把 ERP、第三方 API 或 MCP Server 接入 Agent 工具体系；能说明工具调用的权限、幂等、超时、审计、灰度和高风险 human-in-the-loop；能处理“AI 项目是否正式上线”的边界追问；能把 Redis、Kafka / MQ、Docker、SpringCloud、MyBatis、MySQL / SQL Server、CI/CD 等关键词落到可靠服务治理，而不是堆栈罗列。
-- 当前断点：2026-07-13 已完成金蝶面试第一轮高密度准备，面试时间为今晚 19:00。当前口径已按新版简历校准：荣耀经历是企业后端生产经验，覆盖结算、ERP 入账、批处理、幂等和异常补偿；RAG + Agent 系统是围绕企业知识库和结算文档问答场景建设的 AI 应用工程项目，覆盖 RAG、Agent Runtime、工具调用和人工确认。面试中不主动自降为“个人 demo”，但若明确追问是否公司正式上线，需要诚实说明不是正式生产上线，并立刻回到完整工程链路和可迁移能力。已完成 Harness / Skill / MCP / API、ERP Tool 接入、安全治理、持续交付、Agent 诊断流程、工具失败处理、重复入账、RAG 评测、Hybrid / Rerank、语义切分和表格 chunk 的口述准备。
-- 关联文件：`interview/mock-records/2026-07-13-kingdee-ai-application-senior-engineer-prep.md`、`sessions/2026-07-13-kingdee-ai-application-interview-prep.md`、`interview/rag-project-story.md`、`interview/ai-application-questions.md`、`backend/redis/distributed-lock.md`、`backend/java/thread-pool.md`、`interview/real-records/2026-07-07-huashengtong-ai-application-engineer.md`、`mistakes/interview/rag-rerank-algorithm-depth.md`
-- 下一步动作：面试前优先复习 60 秒自我介绍、岗位适配、ERP Tool 接入、安全治理、AI 项目上线边界和表格 / 语义 chunk 这六组高频回答；面试后新增真实面试复盘 `interview/real-records/2026-07-13-kingdee-ai-application-senior-engineer.md`，再决定 `BL-014` 是否 DONE，以及是否回补 `BL-013`、`BL-011`、`BL-003` 或新增任务。
+- 当前断点：2026-07-13 已完成金蝶软件中国 AI 应用开发高级工程师面试准备和真实面试归档。准备阶段完成新版简历口径、Harness / Skill / MCP / API、ERP Tool 接入、安全治理、持续交付、Agent 诊断流程、工具失败处理、重复入账、RAG 评测、Hybrid / Rerank、语义切分和表格 chunk 的口述准备。真实面试实际重心仍落在 RAG 项目深挖，暴露文档解析、chunk、Rerank、私有语料排序失效、模型部署和前沿算法跟踪短板，已回流到 `BL-013`。
+- 关联文件：`interview/mock-records/2026-07-13-kingdee-ai-application-senior-engineer-prep.md`、`sessions/2026-07-13-kingdee-ai-application-interview-prep.md`、`interview/real-records/2026-07-13-kingdee-ai-application-senior-engineer.md`、`interview/rag-project-story.md`、`interview/ai-application-questions.md`、`backend/redis/distributed-lock.md`、`backend/java/thread-pool.md`、`mistakes/interview/rag-rerank-algorithm-depth.md`
+- 下一步动作：任务已完成；后续学习入口转入 `BL-013`。
 
 ### BL-013 RAG 检索、重排与文档结构化解析补课
 
@@ -109,9 +109,9 @@ Backlog 任务可以来自：
 - 主题：补齐 RAG 从工程链路进入算法追问时的关键短板
 - 学习目标：理解混合检索、结果融合、Rerank、私有语料排序失效、结构化文档解析、语义切分、PDF / OCR 和 RAG 评测的机制边界，能把工程实现和算法原理连接起来。
 - 验收标准：能讲清关键词检索、向量检索、RRF / 加权融合和 Rerank 的区别；能解释 cross-encoder rerank 的基本机制及其和 embedding 双塔召回的差异；能回答“最相关片段被排在最后怎么办”；能说明 Word 标题层级、表格、图片、PDF / OCR 对文档解析和切分的影响；能用 Recall@K、MRR、NDCG、faithfulness、引用准确性组织 RAG 评测。
-- 当前断点：2026-07-13 在金蝶面试准备中补了一轮 RAG 结构化文档切分认知：当前项目实际落地仍应表述为固定窗口 + overlap + 自然边界兜底；成熟优化方向应表述为结构优先、长度兜底、语义增强、评测闭环。语义切分理解为句子 / 段落基础单元或相邻单元组 embedding 相似度下降处作为候选切点，再加 min_tokens / max_tokens / overlap 和结构保护。表格 chunk 不能按普通文本切，应先抽取表格结构，再按明细表、宽表、交叉表、KV 表、多页表分别处理，并保留 table summary、row-level KV、structured JSON 和原始 HTML / Markdown 等多种表示。
-- 关联文件：`interview/real-records/2026-07-07-huashengtong-ai-application-engineer.md`、`sessions/2026-07-07-huashengtong-ai-application-interview-review.md`、`sessions/2026-07-13-kingdee-ai-application-interview-prep.md`、`mistakes/interview/rag-rerank-algorithm-depth.md`、`interview/mock-records/2026-07-07-huashengtong-ai-application-engineer-prep.md`、`interview/mock-records/2026-07-13-kingdee-ai-application-senior-engineer-prep.md`、`interview/ai-application-questions.md`、`interview/rag-project-story.md`
-- 下一步动作：面试后如果仍暴露文档解析 / chunk 短板，优先把语义切分和表格 chunk 单独沉淀到正式 RAG 项目笔记或 `interview/ai-application-questions.md`；随后继续整理 Rerank 机制：bi-encoder 召回 vs cross-encoder 重排、训练数据、hard negative、私有语料微调和无监督 / 规则兜底。
+- 当前断点：2026-07-13 金蝶真实面试再次暴露 RAG 文档解析、chunk、Rerank 和私有语料排序失效短板。当前项目实际落地仍应表述为固定窗口 + overlap + 自然边界兜底；成熟优化方向应表述为结构优先、长度兜底、语义增强、评测闭环。语义切分理解为句子 / 段落基础单元或相邻单元组 embedding 相似度下降处作为候选切点，再加 min_tokens / max_tokens / overlap 和结构保护。表格 chunk 不能按普通文本切，应先抽取表格结构，再按明细表、宽表、交叉表、KV 表、多页表分别处理，并保留 table summary、row-level KV、structured JSON 和原始 HTML / Markdown 等多种表示。下一轮要把这些内容从面试准备口径沉淀为正式知识笔记和可复述答案。
+- 关联文件：`interview/real-records/2026-07-07-huashengtong-ai-application-engineer.md`、`sessions/2026-07-07-huashengtong-ai-application-interview-review.md`、`interview/real-records/2026-07-13-kingdee-ai-application-senior-engineer.md`、`sessions/2026-07-13-kingdee-ai-application-interview-prep.md`、`mistakes/interview/rag-rerank-algorithm-depth.md`、`interview/mock-records/2026-07-07-huashengtong-ai-application-engineer-prep.md`、`interview/mock-records/2026-07-13-kingdee-ai-application-senior-engineer-prep.md`、`interview/ai-application-questions.md`、`interview/rag-project-story.md`
+- 下一步动作：优先把语义切分和表格 chunk 单独沉淀到正式 RAG 项目笔记或 `interview/ai-application-questions.md`；随后继续整理 Rerank 机制：bi-encoder 召回 vs cross-encoder 重排、训练数据、hard negative、私有语料微调、业务规则特征、评测集和反馈闭环。
 
 ### BL-012 华盛通大模型应用工程师面试专项准备
 

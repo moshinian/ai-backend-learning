@@ -38,5 +38,6 @@
 
 1. `BL-013 RAG 检索、重排与文档结构化解析补课`
 2. `interview/real-records/2026-07-07-huashengtong-ai-application-engineer.md`
-3. `interview/ai-application-questions.md`
-4. `interview/rag-project-story.md`
+3. `interview/real-records/2026-07-13-kingdee-ai-application-senior-engineer.md`
+4. `interview/ai-application-questions.md`
+5. `interview/rag-project-story.md`

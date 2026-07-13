@@ -149,6 +149,7 @@
 11. `interview/real-records/2026-07-07-huashengtong-ai-application-engineer.md`
 12. `mistakes/interview/rag-rerank-algorithm-depth.md`
 13. `sessions/2026-07-13-kingdee-ai-application-interview-prep.md`
+14. `interview/real-records/2026-07-13-kingdee-ai-application-senior-engineer.md`
 
 ### 8. 学习管理容易把路线、任务、断点和归档混在一起
 
@@ -226,6 +227,7 @@
 19. `mistakes/interview/rag-rerank-algorithm-depth.md`
 20. `interview/mock-records/2026-07-13-kingdee-ai-application-senior-engineer-prep.md`
 21. `sessions/2026-07-13-kingdee-ai-application-interview-prep.md`
+22. `interview/real-records/2026-07-13-kingdee-ai-application-senior-engineer.md`
 
 ### Java 线程池与后台任务
 
