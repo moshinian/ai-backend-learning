@@ -2,11 +2,12 @@
 
 ## 作用
 
-这个文件只负责三类信息：
+这个文件只负责四类信息：
 
 1. 长期学习画像
-2. 长期典型误区模式
-3. 已沉淀主题与历史会话索引
+2. 阶段性反思和重要变化
+3. 长期典型误区模式
+4. 已沉淀主题与历史会话索引
 
 它不是当前状态权威文件。
 
@@ -27,12 +28,33 @@
   - 做过云服务结算系统
   - 也在做 RAG 知识问答系统
 - 当前目标：
-  - 从“会做业务开发”升级为“能讲清楚机制、能设计系统、能应对后端 / AI Backend 面试”
+  - 以 Java 后端作为求职和长期能力建设主航道，从“会做业务开发”升级为“能讲清机制、能设计系统、能稳定应对 Java 后端面试”
+  - 保留 RAG / Agent 应用工程能力作为差异化补充，重点体现模型能力接入业务系统时的后端工程价值，不再把算法型 AI 应用岗位作为主要竞争方向
 - 学习偏好：
   - 优先理解本质
   - 优先建立知识结构
   - 优先结合项目和面试表达
   - 不希望直接灌输标准答案
+
+---
+
+## 重要变化
+
+### 2026-07-18 求职与学习主线切回 Java 后端
+
+- 连续的实际求职和 HR 沟通反馈表明，部分 AI 应用岗位更倾向于具备算法、模型训练、检索排序或推理部署背景的候选人。
+- 当前更有证据支撑的优势仍是 Java 后端、结算业务、状态流转、幂等、批处理、数据库、缓存和失败恢复。
+- 后续职业定位调整为“Java 后端主线 + AI 应用工程补充”：优先竞争 Java 后端、平台后端及偏工程接入的 AI 平台后端岗位。
+- 已有 RAG / Agent 学习不作废，但后续只在岗位明确需要或能强化后端差异化时继续投入，不再无边界扩张算法和框架知识面。
+- 具体任务优先级和当前断点以 `LEARNING_BACKLOG.md`、`START_HERE.md` 为准。
+
+### 2026-07-21 Java 主线从方向判断进入证据化表达
+
+- 平安产险面试准备把“切回 Java 后端”从求职方向判断推进到实际学习和表达：结算系统不再按功能清单介绍，而是围绕交易流水与核销业务域、真实故障、性能结果和设计边界组织。
+- 已确认当前最有竞争力的证据不是技术名词数量，而是三类可追问事实：上游纠错的冲销补偿、N+1 批处理优化、事务边界事故定位与修复。
+- Java 基础开始和真实项目互相验证：Spring 代理解释事务事故，SQL 访问模型解释 N+1 性能问题，CAS / 桶级同步解释并发容器，状态抢占与业务幂等解释定时任务唯一性。
+- 当前能力仍不均衡：Spring、事务、SQL 和项目证据已完成第一轮结构化；JVM、RocketMQ、Redis 数据结构、`synchronized` / `volatile` / AQS 仍偏面试速答，后续不能把“看过答案”误认为“稳定掌握”。
+- 面试表达形成新的校验顺序：先限定本人职责，再讲问题和证据，然后解释机制、结果与复盘；不确定的框架细节、生产效果和他人负责模块明确保留边界。
 
 ---
 
@@ -60,6 +82,9 @@
 - MySQL 事务、隔离级别、MVCC、undo log、redo log、binlog 的职责边界容易混淆。
 - 快照读、当前读、行锁、间隙锁、Next-Key Lock 容易被统一说成“锁机制”。
 - 慢 SQL、索引失效和执行计划容易只背结论，缺少访问路径分析。
+- 容易把 SQL 性能问题等同于单条慢 SQL，忽略 N+1、累计调用次数和数据库往返。
+- 容易只看到 `@Transactional` 注解，忽略真实代理调用链、异常规则、线程和数据源边界。
+- 容易把 JDBC 回滚异常直接解释成事务未开启或数据库部分提交，缺少对原始异常和最终数据状态的核对。
 
 主要索引：
 
@@ -89,6 +114,8 @@
 
 - 线程池提交顺序、队列风险、拒绝策略、`submit/execute` 异常处理、中断语义需要反复稳定。
 - 容易把线程数、队列容量、数据库连接池、下游容量和任务可靠性放在一个层次里讲。
+- 容易把“线程安全容器”理解为整段业务逻辑自动原子化，忽略单次原子操作与多步复合操作的区别。
+- ConcurrentHashMap 容易停留在“分段锁”旧口径，需要区分 Java 7 Segment 和 Java 8 以后 CAS、桶级同步、协作扩容的实现主线。
 
 主要索引：
 
@@ -191,9 +218,10 @@
 ### MySQL 锁、批处理和索引访问路径
 
 1. `backend/mysql/lock-and-batch-processing.md`
-2. `interview/mysql-questions.md`
-3. `sessions/2026-06-01-mysql-lock-index-batch-processing.md`
-4. `sessions/2026-06-02-mysql-index-explain-lock-path.md`
+2. `backend/mysql/sql-performance-analysis.md`
+3. `interview/mysql-questions.md`
+4. `sessions/2026-06-01-mysql-lock-index-batch-processing.md`
+5. `sessions/2026-06-02-mysql-index-explain-lock-path.md`
 
 ### 动态规划入门
 
@@ -237,6 +265,29 @@
 4. `sessions/2026-06-12-thread-pool-task-execution.md`
 5. `sessions/2026-06-14-thread-pool-lifecycle-monitoring.md`
 
+### Spring IOC、Bean 与事务代理
+
+1. `backend/spring/ioc-bean-and-transaction-proxy.md`
+2. `interview/mock-records/2026-07-21-pingan-java-backend-prep.md`
+3. `projects/settlement-system/transaction-flow-and-reconciliation.md`
+
+### Java Map 与并发容器
+
+1. `backend/java/map-and-concurrent-hash-map.md`
+2. `interview/mock-records/2026-07-21-pingan-java-backend-prep.md`
+
+### 结算系统项目深挖与 Java 求职表达
+
+1. `projects/settlement-system/transaction-flow-and-reconciliation.md`
+2. `sessions/2026-07-21-java-resume-project-evidence-and-pingan-breakpoint.md`
+3. `sessions/2026-07-21-pingan-java-interview-prep-closeout.md`
+4. `interview/mock-records/2026-07-21-pingan-java-backend-prep.md`
+5. `backend/spring/ioc-bean-and-transaction-proxy.md`
+6. `backend/java/map-and-concurrent-hash-map.md`
+7. `backend/mysql/sql-performance-analysis.md`
+8. `resume/java-backend-resume.md`
+9. `resume/ai-application-resume.md`
+
 ### Redis / 分布式锁
 
 1. `backend/redis/distributed-lock.md`
@@ -274,3 +325,5 @@
 22. `sessions/2026-07-07-huashengtong-ai-application-interview-prep.md`
 23. `sessions/2026-07-07-huashengtong-ai-application-interview-review.md`
 24. `sessions/2026-07-13-kingdee-ai-application-interview-prep.md`
+25. `sessions/2026-07-21-java-resume-project-evidence-and-pingan-breakpoint.md`
+26. `sessions/2026-07-21-pingan-java-interview-prep-closeout.md`

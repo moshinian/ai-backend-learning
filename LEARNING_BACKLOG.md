@@ -85,6 +85,20 @@ Backlog 任务可以来自：
 
 ## 5. 当前任务池
 
+### BL-015 平安系 Java 后端面试准备
+
+- ID：BL-015
+- 优先级：P0
+- 来源：真实面试准备 + HR 明确建议 + 求职主线调整
+- RoadmapRef：RM-02 数据库核心能力；RM-03 Java / Spring / 并发能力；RM-04 Redis / MQ / 分布式能力；RM-05 项目深挖与工程表达；RM-06 AI Backend / RAG / Agent 能力；RM-08 面试复盘与查漏补缺
+- 状态：REVIEW
+- 主题：围绕 2026-07-21 平安系 Java 后端面试，准备项目表达、Java / Spring / MySQL 高频题、生产排障和 AI 工程补充问题
+- 学习目标：以 Java 后端为主身份完成本次面试准备；能用真实项目证据回答设计模式、生产问题、SQL 优化、线程与任务可靠性问题，并能以补充能力回答 Nebula、RAG 文件切分和 AI Coding。
+- 验收标准：完成 60 秒自我介绍和两个代表项目的 2 分钟版本；每个项目至少准备一个真实难点、一个设计选择、一个故障或风险处理和一个复盘改进；能回答 HashMap / ConcurrentHashMap / Hashtable、依赖注入、Bean 创建时机与作用域、`@Transactional` 失效、SQL 优化和生产事故排查；能诚实说明 Nebula 使用边界；能回答 RAG 文件切分和 AI Coding 的实际使用；完成至少一轮按真实追问方式进行的模拟面试。
+- 当前断点：2026-07-21 已完成 HR 三组建议的第一轮覆盖，并完成一次 60 秒自我介绍口述纠偏，评分 8/10。已能围绕真实项目回答策略模式、N+1 批处理优化、事务事故和生产排障；已完成 Spring DI、Bean 生命周期与作用域、事务代理边界、Java Map 对比、ConcurrentHashMap 的 CAS / 桶级同步、SQL 优化、RAG 文件切分和 AI Coding 的机制梳理。JVM、RocketMQ、缓存和通用 SQL 题只完成快速覆盖。两个项目的正式 2 分钟口述和完整综合模拟尚未完成；当前也没有平安产险真实面试结果，不提前建立真实面试记录。
+- 关联文件：`interview/mock-records/2026-07-21-pingan-java-backend-prep.md`、`projects/settlement-system/transaction-flow-and-reconciliation.md`、`sessions/2026-07-21-java-resume-project-evidence-and-pingan-breakpoint.md`、`sessions/2026-07-21-pingan-java-interview-prep-closeout.md`、`resume/java-backend-resume.md`、`backend/spring/ioc-bean-and-transaction-proxy.md`、`backend/java/map-and-concurrent-hash-map.md`、`backend/java/thread-pool.md`、`backend/mysql/sql-performance-analysis.md`、`backend/mysql/transaction.md`、`backend/mysql/lock-and-batch-processing.md`、`interview/mysql-questions.md`、`backend/redis/distributed-lock.md`、`interview/redis-questions.md`、`interview/rag-project-story.md`、`interview/ai-application-questions.md`
+- 下一步动作：下一次先确认平安产险面试是否已经完成；如果已完成，按独立公司和场次归档真实问题、现场回答与暴露短板，并判断 `BL-015` 是否可以 DONE；如果尚未进行，从“介绍最熟悉的 Java 项目、具体职责和挑战”恢复模拟。随后回到 `BL-006` 的两个项目 2 分钟版本和 Java 简历证据更新。
+
 ### BL-014 金蝶 AI 应用开发高级工程师面试准备
 
 - ID：BL-014
@@ -97,21 +111,21 @@ Backlog 任务可以来自：
 - 验收标准：能完成 60 秒自我介绍；能解释 Harness / Skill / MCP / API 在企业 AI 应用中的工程定位；能回答如何把 ERP、第三方 API 或 MCP Server 接入 Agent 工具体系；能说明工具调用的权限、幂等、超时、审计、灰度和高风险 human-in-the-loop；能处理“AI 项目是否正式上线”的边界追问；能把 Redis、Kafka / MQ、Docker、SpringCloud、MyBatis、MySQL / SQL Server、CI/CD 等关键词落到可靠服务治理，而不是堆栈罗列。
 - 当前断点：2026-07-13 已完成金蝶软件中国 AI 应用开发高级工程师面试准备和真实面试归档。准备阶段完成新版简历口径、Harness / Skill / MCP / API、ERP Tool 接入、安全治理、持续交付、Agent 诊断流程、工具失败处理、重复入账、RAG 评测、Hybrid / Rerank、语义切分和表格 chunk 的口述准备。真实面试实际重心仍落在 RAG 项目深挖，暴露文档解析、chunk、Rerank、私有语料排序失效、模型部署和前沿算法跟踪短板，已回流到 `BL-013`。
 - 关联文件：`interview/mock-records/2026-07-13-kingdee-ai-application-senior-engineer-prep.md`、`sessions/2026-07-13-kingdee-ai-application-interview-prep.md`、`interview/real-records/2026-07-13-kingdee-ai-application-senior-engineer.md`、`interview/rag-project-story.md`、`interview/ai-application-questions.md`、`backend/redis/distributed-lock.md`、`backend/java/thread-pool.md`、`mistakes/interview/rag-rerank-algorithm-depth.md`
-- 下一步动作：任务已完成；后续学习入口转入 `BL-013`。
+- 下一步动作：任务已完成；面试暴露问题当时已回流到 `BL-013`，当前全局恢复入口以 `START_HERE.md` 为准。
 
 ### BL-013 RAG 检索、重排与文档结构化解析补课
 
 - ID：BL-013
-- 优先级：P0
+- 优先级：P1
 - 来源：真实面试暴露
 - RoadmapRef：RM-06 AI Backend / RAG / Agent 能力；RM-08 面试复盘与查漏补缺
-- 状态：DOING
+- 状态：REVIEW
 - 主题：补齐 RAG 从工程链路进入算法追问时的关键短板
 - 学习目标：理解混合检索、结果融合、Rerank、私有语料排序失效、结构化文档解析、语义切分、PDF / OCR 和 RAG 评测的机制边界，能把工程实现和算法原理连接起来。
 - 验收标准：能讲清关键词检索、向量检索、RRF / 加权融合和 Rerank 的区别；能解释 cross-encoder rerank 的基本机制及其和 embedding 双塔召回的差异；能回答“最相关片段被排在最后怎么办”；能说明 Word 标题层级、表格、图片、PDF / OCR 对文档解析和切分的影响；能用 Recall@K、MRR、NDCG、faithfulness、引用准确性组织 RAG 评测。
-- 当前断点：2026-07-13 金蝶真实面试再次暴露 RAG 文档解析、chunk、Rerank 和私有语料排序失效短板。当前项目实际落地仍应表述为固定窗口 + overlap + 自然边界兜底；成熟优化方向应表述为结构优先、长度兜底、语义增强、评测闭环。语义切分理解为句子 / 段落基础单元或相邻单元组 embedding 相似度下降处作为候选切点，再加 min_tokens / max_tokens / overlap 和结构保护。表格 chunk 不能按普通文本切，应先抽取表格结构，再按明细表、宽表、交叉表、KV 表、多页表分别处理，并保留 table summary、row-level KV、structured JSON 和原始 HTML / Markdown 等多种表示。下一轮要把这些内容从面试准备口径沉淀为正式知识笔记和可复述答案。
+- 当前断点：2026-07-21 已在 `BL-015` 中完成 RAG 文件切分答案梳理：常见方式包括长度、递归、结构、语义和父子多粒度切分；当前项目事实仍是固定窗口 + overlap + 自然边界兜底，其他方式属于优化方向。尚未进行独立口述追问验证。求职和学习主线仍是 Java 后端，本任务保持 AI 补充能力 REVIEW。
 - 关联文件：`interview/real-records/2026-07-07-huashengtong-ai-application-engineer.md`、`sessions/2026-07-07-huashengtong-ai-application-interview-review.md`、`interview/real-records/2026-07-13-kingdee-ai-application-senior-engineer.md`、`sessions/2026-07-13-kingdee-ai-application-interview-prep.md`、`mistakes/interview/rag-rerank-algorithm-depth.md`、`interview/mock-records/2026-07-07-huashengtong-ai-application-engineer-prep.md`、`interview/mock-records/2026-07-13-kingdee-ai-application-senior-engineer-prep.md`、`interview/ai-application-questions.md`、`interview/rag-project-story.md`
-- 下一步动作：优先把语义切分和表格 chunk 单独沉淀到正式 RAG 项目笔记或 `interview/ai-application-questions.md`；随后继续整理 Rerank 机制：bi-encoder 召回 vs cross-encoder 重排、训练数据、hard negative、私有语料微调、业务规则特征、评测集和反馈闭环。
+- 下一步动作：只有后续目标岗位明确要求检索算法深度时，再做文件切分口述追问，并恢复语义切分、表格 chunk 和 Rerank 专项建设。
 
 ### BL-012 华盛通大模型应用工程师面试专项准备
 
@@ -125,21 +139,21 @@ Backlog 任务可以来自：
 - 验收标准：能完成 60 秒自我介绍；能讲清企业知识库 RAG 的离线索引链路和在线问答链路；能回答 Chunk、Embedding、向量检索、召回排查、pgvector、权限隔离、幻觉控制、索引任务失败、版本冲突、金融场景风险；能诚实说明 RAG 未生产上线、Agent / LangGraph / Dify / CUDA 不是简历主经验；能把优势落到 Java 后端 + RAG 应用工程化。
 - 当前断点：2026-07-07 已完成面试前准备和 20:00 华盛通真实面试验证。准备内容覆盖开场介绍、RAG 项目主线、RAG 排查链路、金融可信 RAG、LangChain / Dify 定位、Redis / MQ / Spring / FastAPI 后端支撑、CUDA / TensorRT 防守表达。面试后已归档真实复盘，新增 `BL-013` 处理 Rerank、检索融合和文档结构化解析短板。
 - 关联文件：`interview/mock-records/2026-07-07-huashengtong-ai-application-engineer-prep.md`、`sessions/2026-07-07-huashengtong-ai-application-interview-prep.md`、`interview/real-records/2026-07-07-huashengtong-ai-application-engineer.md`、`sessions/2026-07-07-huashengtong-ai-application-interview-review.md`、`interview/rag-project-story.md`、`interview/ai-application-questions.md`、`interview/redis-questions.md`、`backend/redis/distributed-lock.md`
-- 下一步动作：任务已完成；后续学习入口转入 `BL-013`。
+- 下一步动作：任务已完成；面试暴露问题当时已回流到 `BL-013`，当前全局恢复入口以 `START_HERE.md` 为准。
 
 ### BL-011 LangChain / LangGraph 机制梳理
 
 - ID：BL-011
-- 优先级：P0
+- 优先级：P2
 - 来源：个人主动学习 + 目标岗位要求
 - RoadmapRef：RM-06 AI Backend / RAG / Agent 能力
-- 状态：DOING
+- 状态：TODO
 - 主题：LangChain / LangGraph 的核心机制、边界和工程使用方式
 - 学习目标：系统梳理 LangChain 与 LangGraph 分别解决什么问题，掌握 LangChain 的 Core components、Middleware、Runtime、Frontend、Advanced usage 目录层级，以及 LangGraph 的 Capabilities、Production、Frontend、Graph API / Functional API 等目录层级；能把这些内容压缩成工程可用的框架地图，而不是只记零散 API。
 - 验收标准：能说明 LangChain、LangGraph、LangSmith 的职责边界；能按官方目录画出 LangChain / LangGraph 的学习地图；能解释 `create_agent`、Middleware、Runtime context、Graph API、Functional API、checkpoint、store、interrupt、streaming、subgraph、time travel 的作用和边界；能结合个人 RAG / Agent 项目说明什么时候用框架、什么时候保留业务状态在 Java 后端。
-- 当前断点：2026-07-07 已完成第一轮机制梳理和实验验证，但随后对照官方文档发现学习范围偏向 `create_agent`、StateGraph、checkpoint、interrupt 等 runtime 片段，仍缺 LangChain 官方目录中的 Core components / Middleware / Frontend / Advanced usage 全貌，以及 LangGraph 官方目录中的 Capabilities / Production / Frontend / LangGraph APIs 全貌。因此 `BL-011` 从 REVIEW 拉回 DOING，先补“官方目录地图级理解”，再进入口述验收。已验证 interrupt / resume、node 重放与幂等、调用方循环处理 interrupt、业务状态冲突校验、`stream_mode="updates"` / `stream_mode="values"`、`InMemorySaver` 下 `thread_id` 和 checkpoint 存储介质边界；已通过真实 `create_agent()` demo 验证标准模型工具调用 loop，并通过混合 mock demo 验证高风险副作用工具应放在 StateGraph / Java 后端受控执行节点。
+- 当前断点：2026-07-07 已完成第一轮机制梳理和实验验证，已验证 interrupt / resume、node 重放与幂等、调用方循环处理 interrupt、业务状态冲突校验、streaming、checkpoint 存储边界、标准模型工具调用 loop 和高风险副作用受控执行边界。尚缺 LangChain / LangGraph 官方目录地图级全貌。2026-07-18 因求职和学习主线切回 Java 后端，本任务降为 P2 TODO，保留现有实验与断点，不继续扩张框架目录。
 - 关联文件：`LEARNING_ROADMAP.md`、`interview/ai-application-questions.md`、`sessions/2026-07-05-langchain-langgraph-agent-runtime.md`、`sessions/2026-07-05-langgraph-runtime-demo.md`、`sessions/2026-07-06-create-agent-stategraph-boundary.md`、`sessions/2026-07-07-langchain-langgraph-learning-summary.md`、`sessions/2026-07-07-langchain-langgraph-official-doc-map-gap.md`、`labs/langgraph-runtime-demo/README.md`、`labs/langgraph-runtime-demo/approval_flow_demo.py`、`labs/langgraph-runtime-demo/streaming_demo.py`、`labs/langgraph-runtime-demo/checkpoint_demo.py`、`labs/langgraph-runtime-demo/create_agent_demo.py`、`labs/langgraph-runtime-demo/hybrid_agent_graph_demo.py`、LangChain 官方文档：`https://docs.langchain.com/oss/python/langchain/overview`、LangGraph 官方文档：`https://docs.langchain.com/oss/python/langgraph/overview`
-- 下一步动作：补官方目录地图：先整理 LangChain 的 Core components、Middleware、Runtime、Frontend、Advanced usage 分层，再整理 LangGraph 的 Capabilities、Graph API / Functional API、Production、Frontend 分层；补完后再进行 2 到 3 分钟口述验证，要求同时讲清“模型负责建议、runtime 负责流程、Java DB 负责事实和权限”的项目边界。
+- 下一步动作：仅在目标岗位明确要求 LangChain / LangGraph，或 Java 主线稳定后，再恢复官方目录地图和 2 到 3 分钟口述验证。
 
 ### BL-001 Redis 数据结构与对象存储边界
 
@@ -186,44 +200,44 @@ Backlog 任务可以来自：
 ### BL-004 Java 并发锁体系
 
 - ID：BL-004
-- 优先级：P1
+- 优先级：P0
 - 来源：旧冲刺计划迁移
 - RoadmapRef：RM-03 Java / Spring / 并发能力
 - 状态：TODO
 - 主题：`synchronized`、`volatile`、CAS、AQS
 - 学习目标：补齐 Java 并发锁体系，并和线程池、任务执行、分布式锁边界连接起来。
 - 验收标准：能区分互斥、可见性、原子性和同步队列；能回答至少 2 个并发追问；能说明单 JVM 锁和分布式锁边界。
-- 当前断点：线程池主线已完成第一轮，但 Java 锁、CAS、AQS 尚未展开。
-- 关联文件：`backend/java/thread-pool.md`、`interview/java-concurrency-questions.md`、`mistakes/concurrency/thread-pool.md`
+- 当前断点：线程池主线已完成第一轮；2026-07-21 通过 ConcurrentHashMap 补了 CAS 空桶插入、桶级 `synchronized`、可见性、协作扩容和复合操作原子性的入口，但尚未系统学习 `synchronized`、`volatile`、CAS 通用问题和 AQS。
+- 关联文件：`backend/java/thread-pool.md`、`backend/java/map-and-concurrent-hash-map.md`、`interview/java-concurrency-questions.md`、`mistakes/concurrency/thread-pool.md`
 - 下一步动作：先从 `synchronized` 解决什么问题开始，再进入 `volatile`、CAS、AQS。
 
 ### BL-005 Spring 核心机制
 
 - ID：BL-005
-- 优先级：P1
+- 优先级：P0
 - 来源：旧冲刺计划迁移
 - RoadmapRef：RM-03 Java / Spring / 并发能力
-- 状态：TODO
+- 状态：REVIEW
 - 主题：IOC、AOP、Bean 生命周期、`@Transactional` 失效场景
 - 学习目标：建立 Spring 核心机制和 Web 请求链路的连接。
 - 验收标准：能讲清 IOC 和 AOP 解决的问题；能说明 Bean 生命周期关键阶段；能回答 `@Transactional` 常见失效场景。
-- 当前断点：Spring MVC 请求链路已有基础，Spring 核心机制尚未系统学习。
-- 关联文件：`fundamentals/network/http-tcp-request-flow.md`、`interview/computer-fundamentals-questions.md`
-- 下一步动作：先从 IOC 为什么出现开始，再补 AOP 和事务代理边界。
+- 当前断点：2026-07-21 已完成 IOC / DI、Bean 创建时机、生命周期、作用域、prototype 销毁、AOP 代理与 `@Transactional` 失效的第一轮梳理，并能用对账辅账事务事故解释同类自调用和独立 Service 修复。当前仍缺独立口述验证，以及循环依赖、BeanPostProcessor 细节和更完整的 AOP 调用链。
+- 关联文件：`backend/spring/ioc-bean-and-transaction-proxy.md`、`interview/mock-records/2026-07-21-pingan-java-backend-prep.md`、`projects/settlement-system/transaction-flow-and-reconciliation.md`、`fundamentals/network/http-tcp-request-flow.md`、`interview/computer-fundamentals-questions.md`
+- 下一步动作：面试事件收口后，用 3 至 5 个追问验证 IOC、Bean 生命周期、代理、自调用和回滚规则；再决定是否进入循环依赖与 AOP 深挖。
 
 ### BL-006 结算系统项目表达
 
 - ID：BL-006
-- 优先级：P1
+- 优先级：P0
 - 来源：项目表达短板 + 旧冲刺计划迁移
 - RoadmapRef：RM-05 项目深挖与工程表达
 - 状态：DOING
 - 主题：结算系统 2 分钟和 10 分钟项目表达
 - 学习目标：把业务功能表达升级为工程能力表达。
 - 验收标准：能用 2 分钟讲清系统定位、核心链路、异步状态、幂等恢复、规模瓶颈；能用 10 分钟展开一致性或幂等设计。
-- 当前断点：项目素材充分，但系统架构、数据流和性能瓶颈容易混在一起。
-- 关联文件：`interview/real-records/2026-06-10-llm-application-engineer.md`、`interview/real-records/2026-06-30-ai-agent-rag-backend.md`
-- 下一步动作：按“系统定位 -> 业务场景 -> 上下游与核心数据流 -> 状态管理 -> 失败恢复 -> 规模与瓶颈”重写 2 分钟回答。
+- 当前断点：2026-07-21 已将主职责统一为“交易流水处理与核销业务域”，并还原 FFP 文件集成、流水处理、订单匹配、辅账、ERP、待对账池和核销链路。已确认三组可量化证据：三年不少于 50 次上游流水纠错、N+1 改造后达到 100 万笔 8 分钟以内、对账辅账事故涉及数千笔辅账及百万级关联明细。规则系统已确认采用配置驱动的策略模式，并完成面试口径；Map 构建、配置缓存和场景 ID 优先级语义仍待确认。自我介绍已完成一次口述，但项目 2 分钟和 10 分钟版本仍待演练。
+- 关联文件：`projects/settlement-system/transaction-flow-and-reconciliation.md`、`sessions/2026-07-21-java-resume-project-evidence-and-pingan-breakpoint.md`、`sessions/2026-07-21-pingan-java-interview-prep-closeout.md`、`interview/mock-records/2026-07-21-pingan-java-backend-prep.md`、`backend/mysql/sql-performance-analysis.md`、`backend/spring/ioc-bean-and-transaction-proxy.md`、`resume/java-backend-resume.md`、`interview/real-records/2026-06-10-llm-application-engineer.md`、`interview/real-records/2026-06-30-ai-agent-rag-backend.md`
+- 下一步动作：面试后确认 Map 是由 Spring 直接注入还是启动时构建、配置是否缓存及场景 ID 的优先级语义；随后按“系统定位 -> 核心链路 -> 一致性 -> 失败恢复 -> 性能 -> 复盘”完成 2 分钟和 10 分钟口述版本，再更新 Java 后端简历。
 
 ### BL-007 RAG / Agent 项目事实边界表达
 
@@ -249,8 +263,8 @@ Backlog 任务可以来自：
 - 主题：死锁、锁分类、慢 SQL 和事务日志边界
 - 学习目标：把已学 MySQL 主线转成稳定追问能力。
 - 验收标准：能回答死锁产生与排查；能区分共享锁、排他锁、乐观锁、悲观锁、Redis 锁和数据库锁；能用执行计划反推访问路径。
-- 当前断点：事务、MVCC、索引和锁已完成第一轮，但追问稳定性仍需复盘。
-- 关联文件：`backend/mysql/transaction.md`、`backend/mysql/lock-and-batch-processing.md`、`interview/mysql-questions.md`、`mistakes/database/transaction.md`
+- 当前断点：事务、MVCC、索引和锁已完成第一轮；2026-07-21 又通过真实 N+1 案例梳理了“单条 SQL 耗时、调用次数、扫描范围、锁等待和整体访问模型”的 SQL 优化主线，并快速复盘 Join、Group By、Distinct、Union 和重复属性查询。死锁与执行计划追问稳定性仍需验证。
+- 关联文件：`backend/mysql/transaction.md`、`backend/mysql/lock-and-batch-processing.md`、`backend/mysql/sql-performance-analysis.md`、`interview/mysql-questions.md`、`interview/mock-records/2026-07-21-pingan-java-backend-prep.md`、`mistakes/database/transaction.md`
 - 下一步动作：用 3 到 5 个追问验证死锁、锁分类和慢 SQL 访问路径。
 
 ### BL-009 算法保底
@@ -277,6 +291,6 @@ Backlog 任务可以来自：
 - 主题：综合模拟面试、评分、错题和表达问题清单
 - 学习目标：通过模拟面试检验后端基础、项目表达和算法表达。
 - 验收标准：完成至少一轮综合模拟面试；形成高频错题和表达问题清单；将反复错误回补到 `mistakes/` 或 Backlog。
-- 当前断点：已有真实面试复盘，但尚未完成正式综合模拟面试。
+- 当前断点：2026-07-21 开始平安产险模拟面试，仅完成一题 60 秒自我介绍并获得 8/10 评价；主要问题是职责范围偏大、AI 技术名词过密和结尾岗位匹配偏弱。尚未完成项目介绍和正式综合模拟。
 - 关联文件：`interview/real-records/`、`mistakes/`
 - 下一步动作：在 Redis 和项目表达补齐后，安排一轮 Java 后端综合模拟面试。
