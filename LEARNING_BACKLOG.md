@@ -95,9 +95,9 @@ Backlog 任务可以来自：
 - 主题：围绕 2026-07-21 平安系 Java 后端面试，准备项目表达、Java / Spring / MySQL 高频题、生产排障和 AI 工程补充问题
 - 学习目标：以 Java 后端为主身份完成本次面试准备；能用真实项目证据回答设计模式、生产问题、SQL 优化、线程与任务可靠性问题，并能以补充能力回答 Nebula、RAG 文件切分和 AI Coding。
 - 验收标准：完成 60 秒自我介绍和两个代表项目的 2 分钟版本；每个项目至少准备一个真实难点、一个设计选择、一个故障或风险处理和一个复盘改进；能回答 HashMap / ConcurrentHashMap / Hashtable、依赖注入、Bean 创建时机与作用域、`@Transactional` 失效、SQL 优化和生产事故排查；能诚实说明 Nebula 使用边界；能回答 RAG 文件切分和 AI Coding 的实际使用；完成至少一轮按真实追问方式进行的模拟面试。
-- 当前断点：2026-07-21 已完成 HR 三组建议的第一轮覆盖，并完成一次 60 秒自我介绍口述纠偏，评分 8/10。已能围绕真实项目回答策略模式、N+1 批处理优化、事务事故和生产排障；已完成 Spring DI、Bean 生命周期与作用域、事务代理边界、Java Map 对比、ConcurrentHashMap 的 CAS / 桶级同步、SQL 优化、RAG 文件切分和 AI Coding 的机制梳理。JVM、RocketMQ、缓存和通用 SQL 题只完成快速覆盖。两个项目的正式 2 分钟口述和完整综合模拟尚未完成；当前也没有平安产险真实面试结果，不提前建立真实面试记录。
+- 当前断点：2026-07-21 已完成 HR 三组建议的第一轮覆盖，并完成一次 60 秒自我介绍口述纠偏，评分 8/10。已能围绕真实项目回答策略模式、N+1 批处理优化、事务事故和生产排障；已完成 Spring DI、Bean 生命周期与作用域、事务代理边界、Java Map 对比、ConcurrentHashMap 的 CAS / 桶级同步、SQL 优化、RAG 文件切分和 AI Coding 的机制梳理。JVM、RocketMQ、缓存和通用 SQL 题只完成快速覆盖。两个项目的正式 2 分钟口述和完整综合模拟尚未完成。2026-07-23 已确认平安产险面试完成且未通过；尚未还原真实面试问题、现场回答和暴露短板，暂不判定未通过的具体原因。用户已明确暂停本次面试复盘，先推进 `BL-006` 与 Java 后端简历。
 - 关联文件：`interview/mock-records/2026-07-21-pingan-java-backend-prep.md`、`projects/settlement-system/transaction-flow-and-reconciliation.md`、`sessions/2026-07-21-java-resume-project-evidence-and-pingan-breakpoint.md`、`sessions/2026-07-21-pingan-java-interview-prep-closeout.md`、`resume/java-backend-resume.md`、`backend/spring/ioc-bean-and-transaction-proxy.md`、`backend/java/map-and-concurrent-hash-map.md`、`backend/java/thread-pool.md`、`backend/mysql/sql-performance-analysis.md`、`backend/mysql/transaction.md`、`backend/mysql/lock-and-batch-processing.md`、`interview/mysql-questions.md`、`backend/redis/distributed-lock.md`、`interview/redis-questions.md`、`interview/rag-project-story.md`、`interview/ai-application-questions.md`
-- 下一步动作：下一次先确认平安产险面试是否已经完成；如果已完成，按独立公司和场次归档真实问题、现场回答与暴露短板，并判断 `BL-015` 是否可以 DONE；如果尚未进行，从“介绍最熟悉的 Java 项目、具体职责和挑战”恢复模拟。随后回到 `BL-006` 的两个项目 2 分钟版本和 Java 简历证据更新。
+- 下一步动作：完成当前 Java 后端简历完善后，再按独立公司和场次还原平安产险面试的真实问题、现场回答、追问反应和主观感受；再基于证据分析未通过原因，归档真实面试记录，将可执行短板回流到 Backlog 或 `mistakes/`，并判断 `BL-015` 是否可以 DONE。
 
 ### BL-014 金蝶 AI 应用开发高级工程师面试准备
 
@@ -225,19 +225,19 @@ Backlog 任务可以来自：
 - 关联文件：`backend/spring/ioc-bean-and-transaction-proxy.md`、`interview/mock-records/2026-07-21-pingan-java-backend-prep.md`、`projects/settlement-system/transaction-flow-and-reconciliation.md`、`fundamentals/network/http-tcp-request-flow.md`、`interview/computer-fundamentals-questions.md`
 - 下一步动作：面试事件收口后，用 3 至 5 个追问验证 IOC、Bean 生命周期、代理、自调用和回滚规则；再决定是否进入循环依赖与 AOP 深挖。
 
-### BL-006 结算系统项目表达
+### BL-006 结算系统项目表达与双版本简历完善
 
 - ID：BL-006
 - 优先级：P0
 - 来源：项目表达短板 + 旧冲刺计划迁移
 - RoadmapRef：RM-05 项目深挖与工程表达
 - 状态：DOING
-- 主题：结算系统 2 分钟和 10 分钟项目表达
-- 学习目标：把业务功能表达升级为工程能力表达。
-- 验收标准：能用 2 分钟讲清系统定位、核心链路、异步状态、幂等恢复、规模瓶颈；能用 10 分钟展开一致性或幂等设计。
-- 当前断点：2026-07-21 已将主职责统一为“交易流水处理与核销业务域”，并还原 FFP 文件集成、流水处理、订单匹配、辅账、ERP、待对账池和核销链路。已确认三组可量化证据：三年不少于 50 次上游流水纠错、N+1 改造后达到 100 万笔 8 分钟以内、对账辅账事故涉及数千笔辅账及百万级关联明细。规则系统已确认采用配置驱动的策略模式，并完成面试口径；Map 构建、配置缓存和场景 ID 优先级语义仍待确认。自我介绍已完成一次口述，但项目 2 分钟和 10 分钟版本仍待演练。
-- 关联文件：`projects/settlement-system/transaction-flow-and-reconciliation.md`、`sessions/2026-07-21-java-resume-project-evidence-and-pingan-breakpoint.md`、`sessions/2026-07-21-pingan-java-interview-prep-closeout.md`、`interview/mock-records/2026-07-21-pingan-java-backend-prep.md`、`backend/mysql/sql-performance-analysis.md`、`backend/spring/ioc-bean-and-transaction-proxy.md`、`resume/java-backend-resume.md`、`interview/real-records/2026-06-10-llm-application-engineer.md`、`interview/real-records/2026-06-30-ai-agent-rag-backend.md`
-- 下一步动作：面试后确认 Map 是由 Spring 直接注入还是启动时构建、配置是否缓存及场景 ID 的优先级语义；随后按“系统定位 -> 核心链路 -> 一致性 -> 失败恢复 -> 性能 -> 复盘”完成 2 分钟和 10 分钟口述版本，再更新 Java 后端简历。
+- 主题：结算系统 2 分钟和 10 分钟项目表达，以及 Java 后端 / AI 应用双版本简历完善
+- 学习目标：把业务功能表达升级为工程能力表达，并形成事实一致、重点不同、可以按目标岗位继续定制的两份投递基准稿。
+- 验收标准：Java 和 AI 两份简历的工作时间、项目事实与量化数据保持一致，分别突出 Java 生产工程能力和 RAG / Agent 应用能力；能用 2 分钟讲清结算系统定位、核心链路、异步状态、幂等恢复和规模瓶颈；能用 10 分钟展开一致性或幂等设计。
+- 当前断点：2026-07-21 已将主职责统一为“交易流水处理与核销业务域”，并还原 FFP 文件集成、流水处理、订单匹配、辅账、ERP、待对账池和核销链路。已确认十组项目证据：三年不少于 50 次上游流水纠错、N+1 改造后达到 100 万笔 8 分钟以内、对账辅账事故涉及数千笔辅账及百万级关联明细、主动发现 ERP 发票/收据凭证 ID 命名空间碰撞并以“凭证 ID + 接口名”组合业务键修复、设计未对账池批量终止与恢复能力并实现受控状态流转和逐笔审计、通过动态 MySQL 分区查询范围将对账池生成任务由接近 40 分钟缩短至约 8 分钟并修复部分命中漏数据问题、通过分页与总数解耦和联合索引修复将亿级流水表尾页查询从超过 120 秒降至 3 秒以内、通过抢占式调度、Redis 锁、批次事务和明细级 Checkpoint 实现对账池任务中断续跑、独立设计结算单电子盖章模块并实现批量异步申请、跨系统回调关联、幂等状态更新、超时恢复和文件版本切换且上线运行 3 个月未发生生产故障或数据错误、通过 Heap Dump 定位 `ReconcileData` 及关联对象占用或保留内存超过 10GB且被 MyBatis 缓存长期持有，关闭对应查询缓存后经低内存对照测试与生产三个月运行均未再发生 OOM。2026-07-24 已完成 Java 后端和 AI 应用两份可投递基准稿及终稿审校：Java 版从十组证据中筛选六组最适合简历的生产案例，按职责、性能、可靠性、OOM 排障、主动防错和独立交付组织；AI 版突出 RAG 全链路、Java / Python 边界和受控 Agent，同时保留四年 Java 生产经验作为工程可信度。两份简历已删除期望薪资，避免过早锚定；MCP 明确为协议理解，MQ 只保留实际使用口径，不包装为中间件建设经验；公司时间、项目时间、规模与量化结果已校验一致。当前基准稿可以用于投递，获得具体 JD 后再调整关键词与案例顺序。结算系统 2 分钟和 10 分钟口述版本尚未完成。
+- 关联文件：`projects/settlement-system/transaction-flow-and-reconciliation.md`、`projects/settlement-system/settlement-document-stamping.md`、`sessions/2026-07-24-java-ai-resume-and-project-evidence.md`、`sessions/2026-07-21-java-resume-project-evidence-and-pingan-breakpoint.md`、`sessions/2026-07-21-pingan-java-interview-prep-closeout.md`、`interview/mock-records/2026-07-21-pingan-java-backend-prep.md`、`backend/mysql/sql-performance-analysis.md`、`backend/spring/ioc-bean-and-transaction-proxy.md`、`resume/java-backend-resume.md`、`resume/ai-application-resume.md`、`interview/real-records/2026-06-10-llm-application-engineer.md`、`interview/real-records/2026-06-30-ai-agent-rag-backend.md`
+- 下一步动作：由用户通读 Java 后端和 AI 应用两份基准稿，确认专业技能中的每个关键词都能接受追问；收到具体 JD 后分别调整关键词、个人优势和项目证据顺序。投递文件在仓库外补充真实联系方式并导出 PDF / Word。随后按“系统定位 -> 核心链路 -> 一致性 -> 失败恢复 -> 性能 -> 复盘”完成结算系统 2 分钟和 10 分钟口述版本。Map 构建、配置缓存和场景 ID 优先级语义仍作为待确认事实，不写入简历。
 
 ### BL-007 RAG / Agent 项目事实边界表达
 

@@ -26,5 +26,5 @@
 
 ## 4. 当前文件
 
-1. `ai-application-resume.md`：此前持续投递使用的 AI 应用工程师简历原文脱敏归档。
-2. `java-backend-resume.md`：面向 Java 后端工程师岗位的平行有效简历版本。
+1. `ai-application-resume.md`：面向 AI 应用工程师岗位的可维护投递基准稿。
+2. `java-backend-resume.md`：面向 Java 后端工程师岗位的可维护投递基准稿。

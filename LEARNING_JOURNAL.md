@@ -56,6 +56,13 @@
 - 当前能力仍不均衡：Spring、事务、SQL 和项目证据已完成第一轮结构化；JVM、RocketMQ、Redis 数据结构、`synchronized` / `volatile` / AQS 仍偏面试速答，后续不能把“看过答案”误认为“稳定掌握”。
 - 面试表达形成新的校验顺序：先限定本人职责，再讲问题和证据，然后解释机制、结果与复盘；不确定的框架细节、生产效果和他人负责模块明确保留边界。
 
+### 2026-07-24 项目证据形成双版本简历基准
+
+- 结算系统经历从三组代表案例扩展为覆盖性能、可靠性、跨系统状态、主动防错和 JVM 排障的十组可追问证据，并分别归档到交易核销与电子盖章项目文档。
+- Java 后端与 AI 应用两份简历不再按技术栈多少区分，而是共享同一组工作事实、按岗位选择不同证据：Java 版突出生产工程能力，AI 版突出 RAG / Agent 链路及 Java / Python 协作边界。
+- 简历事实校验形成稳定原则：量化结果必须带真实条件和生产验证；无法确认的 MyBatis 缓存层级、Mapper 结构和待落地优化不写成确定事实；MQ 保持实际使用口径，MCP 只表述为协议理解。
+- 两份简历已成为可继续按 JD 定制的投递基准稿；具体任务断点仍以 `BL-006` 和 `START_HERE.md` 为准。
+
 ---
 
 ## 长期典型误区模式
@@ -279,14 +286,16 @@
 ### 结算系统项目深挖与 Java 求职表达
 
 1. `projects/settlement-system/transaction-flow-and-reconciliation.md`
-2. `sessions/2026-07-21-java-resume-project-evidence-and-pingan-breakpoint.md`
-3. `sessions/2026-07-21-pingan-java-interview-prep-closeout.md`
-4. `interview/mock-records/2026-07-21-pingan-java-backend-prep.md`
-5. `backend/spring/ioc-bean-and-transaction-proxy.md`
-6. `backend/java/map-and-concurrent-hash-map.md`
-7. `backend/mysql/sql-performance-analysis.md`
-8. `resume/java-backend-resume.md`
-9. `resume/ai-application-resume.md`
+2. `projects/settlement-system/settlement-document-stamping.md`
+3. `sessions/2026-07-24-java-ai-resume-and-project-evidence.md`
+4. `sessions/2026-07-21-java-resume-project-evidence-and-pingan-breakpoint.md`
+5. `sessions/2026-07-21-pingan-java-interview-prep-closeout.md`
+6. `interview/mock-records/2026-07-21-pingan-java-backend-prep.md`
+7. `backend/spring/ioc-bean-and-transaction-proxy.md`
+8. `backend/java/map-and-concurrent-hash-map.md`
+9. `backend/mysql/sql-performance-analysis.md`
+10. `resume/java-backend-resume.md`
+11. `resume/ai-application-resume.md`
 
 ### Redis / 分布式锁
 
@@ -327,3 +336,4 @@
 24. `sessions/2026-07-13-kingdee-ai-application-interview-prep.md`
 25. `sessions/2026-07-21-java-resume-project-evidence-and-pingan-breakpoint.md`
 26. `sessions/2026-07-21-pingan-java-interview-prep-closeout.md`
+27. `sessions/2026-07-24-java-ai-resume-and-project-evidence.md`
