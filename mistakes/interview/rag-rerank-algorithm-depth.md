@@ -25,6 +25,7 @@
 5. 文档解析和切片是 RAG 效果上游。标题层级、段落、表格、图片、PDF / OCR 和语义边界会直接影响 chunk 质量、召回质量和引用准确性。
 6. 语义切分不是让大模型随意切，而是把句子 / 段落作为基础单元或相邻单元组，计算 embedding 相似度，语义距离明显变化的位置作为候选切分点，再结合 min_tokens、max_tokens、overlap 和文档结构约束。
 7. 表格 chunk 的核心不是把表格转成普通文本后固定窗口切，而是先抽取表格结构，再按普通明细表、宽表、交叉表、Key-Value 表、多页表分别处理；检索侧应保留 table summary、row-level KV、structured JSON 和原始 HTML / Markdown 等多种表示。
+8. 当前 Rerank 的事实边界是：独立分支 Demo 已完成尝试性接入，正式主链路仍使用 Hybrid Retrieval 与融合，不能把 Demo 验证说成生产落地，也不能再笼统说成“完全没做过”。
 
 ## 复盘触发条件
 
@@ -33,6 +34,7 @@
 3. 面试官追问 Word / PDF 文档解析、标题层级、表格、图片或 OCR。
 4. 面试官问是否关注前沿 RAG / LLM 应用算法。
 5. 面试官追问固定窗口之外如何语义切分，或问 PDF / Word / CSV 中个性化表格如何 chunk。
+6. 面试官确认 Rerank 是正式链路、实验分支还是后续设计。
 
 ## 关联主题
 
@@ -41,3 +43,4 @@
 3. `interview/real-records/2026-07-13-kingdee-ai-application-senior-engineer.md`
 4. `interview/ai-application-questions.md`
 5. `interview/rag-project-story.md`
+6. `interview/real-records/2026-07-28-shokz-senior-java-supply-chain.md`

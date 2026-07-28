@@ -63,6 +63,21 @@
 - 简历事实校验形成稳定原则：量化结果必须带真实条件和生产验证；无法确认的 MyBatis 缓存层级、Mapper 结构和待落地优化不写成确定事实；MQ 保持实际使用口径，MCP 只表述为协议理解。
 - 两份简历已成为可继续按 JD 定制的投递基准稿；具体任务断点仍以 `BL-006` 和 `START_HERE.md` 为准。
 
+### 2026-07-27 Java 技术栈进入分层建设
+
+- 多次 Java 后端 JD 和真实面试暴露的问题开始收敛到三层能力：MySQL、Redis / Redisson、MQ、JVM、多线程、Linux 属于生产后端核心层；Spring Cloud、Nacos、Sentinel 属于微服务治理层；Docker、Kubernetes 属于应用交付与运行层。
+- MySQL 已有事务、锁、索引、SQL 优化和生产案例基础，后续以追问验证和机制补强为主；Redis、MQ、JVM、多线程和 Linux 仍需形成更完整的机制、故障边界与诊断主线。
+- Spring Cloud、Nacos、Sentinel、Docker 和 Kubernetes 值得学习，但目标深度不同：先形成可运行的服务治理和容器交付证据；Kubernetes 当前只建设后端开发者所需的部署、观察和排障能力，不扩张到集群平台运维。
+- 后续学习不按技术名词逐个背诵，而按“解决的问题 -> 运行机制 -> 失败边界 -> 实验或项目证据 -> 面试表达”推进。具体任务状态和次序仍以 `LEARNING_BACKLOG.md`、`START_HERE.md` 为准。
+
+### 2026-07-28 面试补课从穷举记忆转向最小检索入口
+
+- 韶音科技面试连续从项目事实追问到原子性、MySQL 表空间、RAG 质量和 Spring Bean 生命周期边界。会后最强烈的感受是“最后总会被问到不知道”，容易忽略此前已经回答正确的生产链路和核心机制。
+- 后续不以记住所有接口、回调顺序和平台实现为学习目标。每个主题先压缩成三到四个检索入口，再按“问题层次 -> 已确认事实 -> 机制解释 -> 失败边界 -> 当前未知”展开。
+- 面试官追问到未知处是能力边界探测，不等于此前回答全部失效；稳定承认未知、说明验证方式，比为不掌握的底层机制继续背书更重要。
+- Rerank 项目事实完成校准：正式主链路使用 Hybrid Retrieval 与融合；独立分支 Demo 做过尝试性接入，但未作为正式主链路或生产能力落地。
+- 本次暴露点已收敛为短周期 `BL-023`，不会为了追上一场面试继续横向扩张整个 Java 技术栈。
+
 ---
 
 ## 长期典型误区模式
@@ -199,6 +214,35 @@
 3. `LEARNING_BACKLOG.md`
 4. `START_HERE.md`
 
+### 9. 容易把技术栈名称当成工程能力
+
+典型表现：
+
+- 容易把会使用某个注解、客户端或部署命令，直接等同于掌握组件的机制、故障边界和生产治理。
+- 容易把 Redisson 当成不再需要理解 Redis 锁语义，把 Spring Cloud 组件罗列当成微服务治理，把使用 Kubernetes 当成平台运维经验。
+- 学习范围容易随 JD 技术名词横向扩张，缺少核心层、治理层、交付层的深度区分和真实证据。
+
+主要索引：
+
+1. `LEARNING_ROADMAP.md`
+2. `LEARNING_BACKLOG.md`
+3. `interview/mock-records/2026-07-13-kingdee-ai-application-senior-engineer-prep.md`
+4. `resume/java-backend-resume.md`
+
+### 10. 容易把追问终点等同于整场失败
+
+典型表现：
+
+- 面试官沿一个问题持续追问后，只记住最后答不出的细节，忽略前面已经成立的项目事实、生产经验和核心机制。
+- 为了避免再次“不知道”，容易尝试穷举背诵 Bean 回调、数据库实现和中间件细节，导致记忆压力继续上升。
+- 回答时容易先为现网方案辩护，没有先承认通用风险并区分事实、推断和未知。
+
+主要索引：
+
+1. `mistakes/interview/follow-up-boundaries-and-memory-pressure.md`
+2. `interview/real-records/2026-07-28-shokz-senior-java-supply-chain.md`
+3. `sessions/2026-07-28-shokz-interview-review.md`
+
 ---
 
 ## 已沉淀主题索引
@@ -263,6 +307,8 @@
 20. `interview/mock-records/2026-07-13-kingdee-ai-application-senior-engineer-prep.md`
 21. `sessions/2026-07-13-kingdee-ai-application-interview-prep.md`
 22. `interview/real-records/2026-07-13-kingdee-ai-application-senior-engineer.md`
+23. `interview/real-records/2026-07-28-shokz-senior-java-supply-chain.md`
+24. `sessions/2026-07-28-shokz-interview-review.md`
 
 ### Java 线程池与后台任务
 
@@ -272,11 +318,26 @@
 4. `sessions/2026-06-12-thread-pool-task-execution.md`
 5. `sessions/2026-06-14-thread-pool-lifecycle-monitoring.md`
 
+### 万级 QPS 容量设计与高并发治理
+
+1. `backend/distributed-system/high-qps-capacity-design.md`
+2. `mistakes/distributed/high-qps-and-mq-boundaries.md`
+3. `sessions/2026-07-28-high-qps-capacity-design.md`
+4. `backend/java/thread-pool.md`
+5. `interview/java-concurrency-questions.md`
+
 ### Spring IOC、Bean 与事务代理
 
 1. `backend/spring/ioc-bean-and-transaction-proxy.md`
 2. `interview/mock-records/2026-07-21-pingan-java-backend-prep.md`
 3. `projects/settlement-system/transaction-flow-and-reconciliation.md`
+4. `interview/real-records/2026-07-28-shokz-senior-java-supply-chain.md`
+
+### 真实面试追问与知识边界
+
+1. `interview/real-records/2026-07-28-shokz-senior-java-supply-chain.md`
+2. `mistakes/interview/follow-up-boundaries-and-memory-pressure.md`
+3. `sessions/2026-07-28-shokz-interview-review.md`
 
 ### Java Map 与并发容器
 
@@ -337,3 +398,5 @@
 25. `sessions/2026-07-21-java-resume-project-evidence-and-pingan-breakpoint.md`
 26. `sessions/2026-07-21-pingan-java-interview-prep-closeout.md`
 27. `sessions/2026-07-24-java-ai-resume-and-project-evidence.md`
+28. `sessions/2026-07-28-high-qps-capacity-design.md`
+29. `sessions/2026-07-28-shokz-interview-review.md`

@@ -12,14 +12,19 @@
 
 当前候选任务：
 
-- `BL-006`：结算系统项目表达与双版本简历完善
+- `BL-023`：韶音面试数据准确性与基础机制复核（已完成逐题还原，等待最小口述和 MySQL 实验）
 
 说明：
 
 - 2026-07-18 已确认将求职和学习主航道从算法倾向的 AI 应用岗位切回 Java 后端。
 - 新定位是“Java 后端主线 + AI 应用工程补充”，已有 RAG / Agent 学习继续作为差异化能力，不再作为主要竞争方向无限扩张。
-- 2026-07-23 已确认平安产险面试完成且未通过；用户明确暂不复盘该场面试，`BL-015` 保持 REVIEW。
-- 当前先推进 `BL-006`；Java 后端和 AI 应用两份可投递基准稿已经完成，下一步是用户通读确认、按具体 JD 定制，并完成项目口述版本。
+- 2026-07-27 用户决定将平安产险面试复盘封盘，`BL-015` 已完成，不再单独还原相似面试内容。
+- `BL-006` 已完成双版本简历基准稿和项目证据整理，但暂缓项目口述与 JD 定制，等临近明确面试时结合具体 JD 统一恢复。
+- 2026-07-27 用户补充三个真实面试学习点：万级 QPS、JVM 机制和 Spring Batch，已分别建立 `BL-016`、`BL-017`、`BL-018`。
+- 2026-07-27 已将目标技术栈整理为生产后端核心层、微服务治理层和应用交付层；复用已有 MySQL、Redis、MQ、JVM、并发任务，并新增 Linux、Spring Cloud / Nacos / Sentinel、Docker、Kubernetes 任务。
+- 2026-07-28 已完成 `BL-016` 第一轮学习，任务保持 `REVIEW`，等待 60 至 90 秒压缩口述。
+- 2026-07-28 韶音科技高级 Java 工程师（供应链）面试暴露幂等原子性、MySQL 表空间、RAG 质量分层和 Spring Bean 生命周期表达问题，已建立短周期 `BL-023`。
+- 当前先用最小回答卡和一个 MySQL 实验收口 `BL-023`，完成后回到 `BL-016`；`BL-017` JVM 和 `BL-004` Java 并发锁体系保留原断点等待恢复。
 
 ---
 
@@ -27,14 +32,13 @@
 
 当前断点：
 
-1. `BL-006` 为当前任务：2026-07-24 已完成 Java 后端和 AI 应用两份可投递基准稿及终稿审校。Java 版从十组结算系统证据中筛选六组最适合简历的生产案例，突出性能、可靠性、OOM 排障、主动防错和独立交付；AI 版突出 RAG 全链路、Java / Python 协作边界和受控 Agent，并用四年 Java 生产经验提供工程可信度。两份简历已移除期望薪资，MCP 明确为协议理解，MQ 只保留实际使用口径；当前基准稿可以用于投递，获得具体 JD 后再进行岗位定制。
-2. 结算系统职责已统一为“交易流水处理与核销业务域”，完整事实归档在 `projects/settlement-system/transaction-flow-and-reconciliation.md`。
-3. 已确认十个高价值案例：三年不少于 50 次上游流水纠错的冲销补偿管道；将逐笔查询改为 1000 笔批量查询和 Map 匹配、达到 100 万笔 8 分钟以内；对账辅账重复 / 漏生成事务事故及独立 Service 事务边界修复；主动发现 ERP 发票/收据凭证 ID 命名空间碰撞，通过“凭证 ID + 接口名”组合业务键修复并经真实重推场景验证；设计未对账池批量终止 / 恢复能力，每账期约使用 5 次、每次处理几十笔辅账，并提供状态约束与逐笔审计；以动态 MySQL 分区查询范围替代固定月份回溯，将对账池生成任务由接近 40 分钟缩短至约 8 分钟，并规避部分订单命中后漏入池；通过分页数据与总数解耦、延迟回表和联合索引修复，将亿级流水表尾页查询从超过 120 秒降至稳定 3 秒以内；通过抢占式调度、Redis 锁、批次事务和明细级 Checkpoint 实现对账池任务中断续跑，并完成主动中断与生产重启验证；独立设计结算单电子盖章模块，通过持久化请求唯一标识与 `docId` 关联两阶段同步申请和外部异步回调（本端由 Spring Web 接口接收），支持单请求最多 20 笔、有界线程池执行、原子状态抢占、条件回写防止重复或迟到回调覆盖、1 小时超时恢复和原始 / 盖章文件版本切换，上线运行 3 个月未发生生产故障或数据错误；通过 Heap Dump 定位 `ReconcileData` 及关联对象占用或保留内存超过 10GB且被 MyBatis 缓存长期持有，关闭对应查询缓存后经低内存对照测试与生产三个月运行均未再发生 OOM。
-4. `Could not roll back JDBC transaction` 只能说明 Spring 调用 JDBC 回滚时发生异常，不能直接证明数据库部分提交；面试中要区分触发条件、事务边界根因和连接层异常证据。
-5. 规则系统已确认使用配置驱动的策略模式：不同规则类实现统一接口，由配置表 `match` 选出规则 ID，再从 Spring Bean `Map` 注册表取得实现并调用；Map 构建和配置缓存方式仍待确认。
-6. Java 和 AI 两份平行简历均已完成投递基准稿及终稿审校；公司时间、项目时间、规模与量化结果已经校验一致。Java 版不再铺开全部案例，未入选证据继续保留在项目深挖文档；AI 版未把待验证方案或未落地的 Rerank 写成项目成果。
-7. 已完成机制梳理的范围包括：策略模式、Nebula 与 MySQL、Spring DI 与 Bean、事务代理、Java Map 与 ConcurrentHashMap、生产排障、SQL 优化、RAG 文件切分和 AI Coding；JVM、RocketMQ、缓存和通用 SQL 题只完成快速覆盖。
-8. 两个项目的正式 2 分钟口述和完整综合模拟尚未完成；不能把面试前快速覆盖等同于系统掌握。
+1. `BL-023` 状态为 `DOING`，韶音面试四道题已经逐题还原并完成第一轮纠偏，但尚未闭卷口述。
+2. 幂等问题已能区分单批次单执行者、数据库原子条件和业务幂等；下一次只用“单执行者、原子条件、业务唯一键、重试”四个词回答。
+3. MySQL 问题已确认必须区分页可复用、`.ibd` 文件缩小、操作系统磁盘回收和云平台指标；具体云平台机制未知，本地最小实验尚未执行。
+4. RAG 回答已区分追踪、召回、排序、生成和评测；Rerank 的准确边界是独立分支 Demo 已尝试，正式主链路未落地。
+5. Spring Bean 现场回答的作用域边界基本正确；尚需用“创建、注入、增强、销毁”完成一次 30 至 60 秒完整口述。
+6. 本次学习方法不再追求穷举背诵：面试官追问到未知处不等于整场失败，回答时要区分已确认事实、合理推断和当前未知。
+7. `BL-016` 继续保持 `REVIEW`；`BL-023` 完成后回到高并发压缩口述，再进入 `BL-017` JVM。
 
 ---
 
@@ -42,29 +46,22 @@
 
 最近一次归档：
 
-1. `sessions/2026-07-24-java-ai-resume-and-project-evidence.md`
-2. `projects/settlement-system/transaction-flow-and-reconciliation.md`
-3. `projects/settlement-system/settlement-document-stamping.md`
-4. `resume/java-backend-resume.md`
-5. `resume/ai-application-resume.md`
-6. `sessions/2026-07-21-pingan-java-interview-prep-closeout.md`
-7. `sessions/2026-07-21-java-resume-project-evidence-and-pingan-breakpoint.md`
-8. `interview/mock-records/2026-07-21-pingan-java-backend-prep.md`
+1. `sessions/2026-07-28-shokz-interview-review.md`
+2. `sessions/2026-07-28-high-qps-capacity-design.md`
 
-相关主题已有沉淀：
+本次韶音面试已有沉淀：
 
-1. `backend/spring/ioc-bean-and-transaction-proxy.md`
-2. `backend/java/map-and-concurrent-hash-map.md`
-3. `backend/java/thread-pool.md`
-4. `backend/mysql/sql-performance-analysis.md`
-5. `backend/mysql/transaction.md`
-6. `backend/mysql/lock-and-batch-processing.md`
-7. `interview/java-concurrency-questions.md`
-8. `interview/mysql-questions.md`
-9. `backend/redis/distributed-lock.md`
-10. `interview/redis-questions.md`
-11. `interview/rag-project-story.md`
-12. `interview/ai-application-questions.md`
+1. `interview/real-records/2026-07-28-shokz-senior-java-supply-chain.md`
+2. `mistakes/interview/follow-up-boundaries-and-memory-pressure.md`
+3. `interview/rag-project-story.md`
+4. `backend/spring/ioc-bean-and-transaction-proxy.md`
+5. `projects/settlement-system/transaction-flow-and-reconciliation.md`
+
+高并发主题已有沉淀：
+
+1. `backend/distributed-system/high-qps-capacity-design.md`
+2. `mistakes/distributed/high-qps-and-mq-boundaries.md`
+3. `sessions/2026-07-28-high-qps-capacity-design.md`
 
 ---
 
@@ -72,39 +69,25 @@
 
 建议下一步：
 
-1. 读取 `LEARNING_BACKLOG.md` 中的 `BL-006`
-2. 读取 `resume/java-backend-resume.md` 和 `resume/ai-application-resume.md`
-3. 由用户通读确认专业技能中的 Java、MQ、MCP、LangGraph 等关键词均能接受现场追问，继续纠正任何所有权或事实边界
-4. 收到具体 Java 或 AI 应用 JD 后，分别调整求职意向、个人优势、技能关键词和项目证据顺序
-5. 在仓库外补充真实联系方式并导出 PDF / Word 投递文件，不将敏感信息写入版本控制
-6. 按“系统定位 -> 核心链路 -> 一致性 -> 失败恢复 -> 性能 -> 复盘”完成结算系统 2 分钟和 10 分钟版本
-7. 完成 `BL-006` 当前验收后，再决定是否恢复 `BL-015` 面试复盘，或进入 `BL-005` / `BL-004`
+1. 休息充分后，只复核幂等第一题，不读取完整答案
+2. 使用“单执行者、原子条件、业务唯一键、重试”四个词回答 30 至 60 秒
+3. 回答稳定后，执行 MySQL `DELETE`、`TRUNCATE`、`OPTIMIZE TABLE` 最小实验
+4. 再分别复核 RAG 的“召回、排序、生成、评测”和 Bean 的“创建、注入、增强、销毁”
+5. `BL-023` 完成后回到 `BL-016`，闭卷完成高并发 60 至 90 秒口述
 
 ---
 
 ## 6. 优先读取文件
 
 1. `LEARNING_BACKLOG.md`
-2. `resume/java-backend-resume.md`
-3. `resume/ai-application-resume.md`
-4. `projects/settlement-system/transaction-flow-and-reconciliation.md`
-5. `projects/settlement-system/settlement-document-stamping.md`
-6. `sessions/2026-07-24-java-ai-resume-and-project-evidence.md`
-7. `sessions/2026-07-21-java-resume-project-evidence-and-pingan-breakpoint.md`
-8. `backend/spring/ioc-bean-and-transaction-proxy.md`
-9. `backend/java/map-and-concurrent-hash-map.md`
-10. `backend/mysql/sql-performance-analysis.md`
-11. `interview/mock-records/2026-07-21-pingan-java-backend-prep.md`
-12. `backend/java/thread-pool.md`
-13. `interview/java-concurrency-questions.md`
-14. `backend/mysql/transaction.md`
-15. `backend/mysql/lock-and-batch-processing.md`
-16. `interview/mysql-questions.md`
-17. `backend/redis/distributed-lock.md`
-18. `interview/redis-questions.md`
-19. `interview/rag-project-story.md`
-20. `interview/ai-application-questions.md`
-21. `LEARNING_ROADMAP.md`
+2. `interview/real-records/2026-07-28-shokz-senior-java-supply-chain.md`
+3. `mistakes/interview/follow-up-boundaries-and-memory-pressure.md`
+4. `sessions/2026-07-28-shokz-interview-review.md`
+5. `interview/rag-project-story.md`
+6. `backend/spring/ioc-bean-and-transaction-proxy.md`
+7. `projects/settlement-system/transaction-flow-and-reconciliation.md`
+8. `backend/distributed-system/high-qps-capacity-design.md`
+9. `mistakes/distributed/high-qps-and-mq-boundaries.md`
 
 需要判断长期能力方向时，再读取：
 
