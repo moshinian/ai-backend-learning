@@ -85,19 +85,33 @@ Backlog 任务可以来自：
 
 ## 5. 当前任务池
 
+### BL-024 和生创新技术全栈工程师面试复盘与最小补强
+
+- ID：BL-024
+- 优先级：P0
+- 来源：真实面试暴露
+- RoadmapRef：RM-03 Java / Spring / 并发能力；RM-05 项目深挖与工程表达；RM-08 面试复盘与查漏补缺
+- 状态：DOING
+- 主题：围绕和生创新技术全栈工程师面试暴露的项目缩放表达、AOP / 事务传播和 Java 版本能力完成最小补强
+- 学习目标：面对不熟悉结算领域的面试官，能够按“系统全貌、核心链路、本人职责、代表难点”逐层展开；先回答技术问题本身，再使用一个短案例证明；对不知道的版本和框架事实保持明确边界。
+- 验收标准：能用 90 秒讲清结算系统的服务对象、输入、主链路、输出和本人职责；能用 60 秒讲清一个项目难点的现象、约束、机制、结果与个人边界；能用 30 至 60 秒回答 AOP 的用途、代理机制和自调用边界；能区分 `REQUIRED`、`REQUIRES_NEW`、`NESTED` 并说明事务拦截器的执行过程；能说出 Java 8、11、17、21 各一到两个代表能力；能按真实时间线说明 RAG 项目的发起背景、公司阶段、离职节点和离职后开发边界。
+- 当前断点：2026-08-02 已完成技术补强第一轮。能够从 Advisor、Pointcut、Advice、代理 Bean、JDK 动态代理 / CGLIB 和拦截器链解释 AOP，能够说明 `TransactionInterceptor` 与 `TransactionManager` 的职责，并通过连续判断区分 `REQUIRED`、`REQUIRES_NEW`、`NESTED`、`rollback-only`、`UnexpectedRollbackException`、自调用和 checked exception 回滚规则；已闭卷说出 Java 8 的 Lambda / Stream、Java 11 的 String API / HttpClient、Java 17 的密封类型 / JDK 内部强封装、Java 21 的虚拟线程 / `switch` 模式匹配。结算系统 90 秒口述和代表难点 60 秒口述由用户明确暂时跳过，因此任务保持 `DOING`，不因技术部分通过而提前标记完成。RAG 时间线和冲销管道个人贡献继续保持既有事实边界。
+- 关联文件：`interview/real-records/2026-07-29-hesheng-innovation-fullstack-engineer.md`、`mistakes/interview/project-zoom-level-and-listener-alignment.md`、`projects/settlement-system/transaction-flow-and-reconciliation.md`、`backend/spring/ioc-bean-and-transaction-proxy.md`、`backend/java/java-version-capability-cards.md`、`mistakes/spring/aop-transaction-proxy-boundaries.md`、`sessions/2026-08-02-aop-transaction-propagation-java-version-cards.md`、`resume/java-backend-resume.md`、`resume/ai-application-resume.md`
+- 下一步动作：默认恢复时先询问是否继续此前暂缓的项目表达；若恢复，则闭卷完成结算系统 90 秒口述和一个代表难点 60 秒口述，达到后将 `BL-024` 标记为 `DONE`。若仍暂缓，则保留本断点并切回 `BL-016` 的高并发压缩口述，不重复学习已经通过的 AOP、事务传播和 Java 版本卡。
+
 ### BL-023 韶音面试数据准确性与基础机制复核
 
 - ID：BL-023
 - 优先级：P0
 - 来源：真实面试暴露
 - RoadmapRef：RM-02 数据库核心能力；RM-03 Java / Spring / 并发能力；RM-04 Redis / MQ / 分布式能力；RM-05 项目深挖与工程表达；RM-06 AI Backend / RAG / Agent 能力；RM-08 面试复盘与查漏补缺
-- 状态：DOING
+- 状态：DONE
 - 主题：围绕韶音科技面试暴露的幂等原子性、MySQL 表空间、RAG 回答质量和 Spring Bean 生命周期，形成少量可检索的回答入口
 - 学习目标：不通过穷举背诵补面试细节，而是建立“先识别问题层次，再说明已确认事实、机制边界和当前未知”的稳定回答方式。
-- 验收标准：能用 30 至 60 秒分别回答“单执行者为什么不等于原子和幂等”“DELETE 后空间去了哪里”“如何保证 RAG 回答与问题对应”“Spring Bean 生命周期”；能完成一次独立表空间下 `DELETE`、`TRUNCATE`、`OPTIMIZE TABLE` 的最小实验并解释观察指标；能稳定表述“正式主链路使用 Hybrid Retrieval 与融合，独立分支 Demo 尝试过 Rerank，未作为生产能力落地”；遇到未知追问时能区分事实、推断和待验证项。
-- 当前断点：2026-07-28 已完成真实面试逐题还原和第一轮纠偏。已确认第一问的核心是区分单执行者、原子条件与幂等；第二问必须区分页复用、物理表空间和云平台指标，具体平台机制仍未知；第三问在澄清后回答回到召回、融合、Rerank Demo、Prompt 与拒答，但第一次将追踪和相关性混答；第四问的作用域边界基本正确，尚缺完整生命周期展开。用户在连续追问后感到明显疲劳和挫败，本任务不以一次记住全部细节为目标；尚未完成闭卷口述和 MySQL 本地实验。
+- 验收标准：能用 30 至 60 秒分别回答“单执行者为什么不等于原子和幂等”“DELETE 后空间去了哪里”“如何保证 RAG 回答与问题对应”“Spring Bean 生命周期”；能区分 InnoDB 页复用、数据文件、操作系统磁盘和云平台指标，且不为未知平台机制背书；能稳定表述“Rerank 已集成进离职后个人持续建设的 RAG 主链路，不包装为荣耀内部试用或生产上线效果”；遇到未知追问时能区分事实、推断和待验证项。
+- 当前断点：2026-07-29 已完成四个验收问题。原子性 / 幂等能够区分 Redis 锁、条件更新、批次事务、业务唯一键和下游幂等；MySQL 回答能够区分页复用、数据文件、操作系统磁盘和云平台指标，并保留具体平台机制未知的边界；RAG 能按召回、排序、生成和评测分层，且已校准 Rerank 主链路事实；Spring Bean 已完成连续口述，能够说明实例化、依赖注入、初始化、`BeanPostProcessor` 代理、方法调用时的 AOP 增强、同类自调用失效以及 prototype 资源所有权。和生创新技术面试进一步暴露的项目表达、AOP 压缩口述和事务传播深度转交 `BL-024` 与 `BL-005`，不延长本任务。
 - 关联文件：`interview/real-records/2026-07-28-shokz-senior-java-supply-chain.md`、`sessions/2026-07-28-shokz-interview-review.md`、`mistakes/interview/follow-up-boundaries-and-memory-pressure.md`、`interview/rag-project-story.md`、`mistakes/interview/rag-rerank-algorithm-depth.md`、`backend/spring/ioc-bean-and-transaction-proxy.md`、`projects/settlement-system/transaction-flow-and-reconciliation.md`
-- 下一步动作：休息充分后只复核第一问，不读取完整答案，使用“单执行者、原子条件、业务唯一键、重试”四个词完成 30 至 60 秒回答；稳定后再安排 MySQL 最小实验。四题与实验完成后标记为 `DONE`，回到 `BL-016`。
+- 下一步动作：本任务已完成。后续项目表达、AOP 和事务传播由 `BL-024` 承接；万级 QPS 复盘仍保留在 `BL-016`，待本次真实面试短周期复盘结束后恢复。
 
 ### BL-016 万级 QPS 容量设计与高并发治理
 
@@ -236,7 +250,7 @@ Backlog 任务可以来自：
 - 主题：补齐 RAG 从工程链路进入算法追问时的关键短板
 - 学习目标：理解混合检索、结果融合、Rerank、私有语料排序失效、结构化文档解析、语义切分、PDF / OCR 和 RAG 评测的机制边界，能把工程实现和算法原理连接起来。
 - 验收标准：能讲清关键词检索、向量检索、RRF / 加权融合和 Rerank 的区别；能解释 cross-encoder rerank 的基本机制及其和 embedding 双塔召回的差异；能回答“最相关片段被排在最后怎么办”；能说明 Word 标题层级、表格、图片、PDF / OCR 对文档解析和切分的影响；能用 Recall@K、MRR、NDCG、faithfulness、引用准确性组织 RAG 评测。
-- 当前断点：2026-07-21 已在 `BL-015` 中完成 RAG 文件切分答案梳理：常见方式包括长度、递归、结构、语义和父子多粒度切分；当前项目事实仍是固定窗口 + overlap + 自然边界兜底，其他方式属于优化方向。2026-07-28 韶音面试再次验证了“追踪、召回、排序、生成”容易混答；澄清后已能讲回 Hybrid Retrieval、融合、Prompt 和拒答。用户进一步确认独立分支 Demo 已尝试接入 Rerank，但正式主链路仍以 Hybrid Retrieval 与融合为准，不能包装成生产能力。尚未进行独立口述追问验证，任务保持 AI 补充能力 REVIEW。
+- 当前断点：2026-07-21 已在 `BL-015` 中完成 RAG 文件切分答案梳理：常见方式包括长度、递归、结构、语义和父子多粒度切分；当前项目事实仍是固定窗口 + overlap + 自然边界兜底，其他方式属于优化方向。2026-07-28 韶音面试再次验证了“追踪、召回、排序、生成”容易混答；2026-07-29 已完成四层口述并确认 Rerank 已集成进离职后个人持续建设的 RAG 主链路，在 Hybrid Retrieval 与融合后执行二阶段排序。荣耀内部阶段只完成 RAG 初步搭建且没有用户试用，不能将 Rerank 或 Agent 包装成公司内部能力；语义切分、表格 chunk、领域 Reranker 适配和专项评测尚未继续展开，任务保持 AI 补充能力 REVIEW。
 - 关联文件：`interview/real-records/2026-07-07-huashengtong-ai-application-engineer.md`、`sessions/2026-07-07-huashengtong-ai-application-interview-review.md`、`interview/real-records/2026-07-13-kingdee-ai-application-senior-engineer.md`、`sessions/2026-07-13-kingdee-ai-application-interview-prep.md`、`interview/real-records/2026-07-28-shokz-senior-java-supply-chain.md`、`sessions/2026-07-28-shokz-interview-review.md`、`mistakes/interview/rag-rerank-algorithm-depth.md`、`interview/mock-records/2026-07-07-huashengtong-ai-application-engineer-prep.md`、`interview/mock-records/2026-07-13-kingdee-ai-application-senior-engineer-prep.md`、`interview/ai-application-questions.md`、`interview/rag-project-story.md`
 - 下一步动作：只有后续目标岗位明确要求检索算法深度时，再做文件切分口述追问，并恢复语义切分、表格 chunk 和 Rerank 专项建设。
 
@@ -330,13 +344,14 @@ Backlog 任务可以来自：
 - 优先级：P0
 - 来源：旧冲刺计划迁移
 - RoadmapRef：RM-03 Java / Spring / 并发能力
-- 状态：REVIEW
+- 状态：DONE
 - 主题：IOC、AOP、Bean 生命周期、`@Transactional` 失效场景
 - 学习目标：建立 Spring 核心机制和 Web 请求链路的连接。
 - 验收标准：能讲清 IOC 和 AOP 解决的问题；能说明 Bean 生命周期关键阶段；能回答 `@Transactional` 常见失效场景。
-- 当前断点：2026-07-21 已完成 IOC / DI、Bean 创建时机、生命周期、作用域、prototype 销毁、AOP 代理与 `@Transactional` 失效的第一轮梳理，并能用对账辅账事务事故解释同类自调用和独立 Service 修复。2026-07-28 韶音面试中能够正确说出默认单例随容器创建和关闭、prototype 按获取创建且需由使用方处理资源释放，说明作用域主线已经形成；但没有主动展开实例化、注入、Aware、BeanPostProcessor、初始化和代理阶段，仍缺稳定口述。
-- 关联文件：`backend/spring/ioc-bean-and-transaction-proxy.md`、`interview/mock-records/2026-07-21-pingan-java-backend-prep.md`、`interview/real-records/2026-07-28-shokz-senior-java-supply-chain.md`、`projects/settlement-system/transaction-flow-and-reconciliation.md`、`fundamentals/network/http-tcp-request-flow.md`、`interview/computer-fundamentals-questions.md`
-- 下一步动作：先用“创建、注入、增强、销毁”完成一次 30 至 60 秒 Bean 生命周期口述；再用 3 至 5 个追问验证 IOC、代理、自调用和回滚规则，最后决定是否进入循环依赖与 AOP 深挖。
+- 验收结果：已能讲清 IOC / DI 解决的对象创建与依赖装配问题，能够说明实例化、注入、初始化、BeanPostProcessor、代理和销毁阶段；能够从 Advisor / Pointcut / Advice、JDK 动态代理 / CGLIB、拦截器链解释 AOP，并能回答同类自调用、异常捕获、默认回滚规则、`rollback-only` 和事务传播边界。已达到本任务当前验收标准；循环依赖、事务管理器实现差异和 AOP 源码级细节属于后续按需深挖，不延长本任务。
+- 当前断点：2026-08-02 完成 AOP 与声明式事务连续追问和闭卷压缩。能够说明普通运行时注解不会自动产生 AOP 能力，代理 Bean 不代表所有方法都执行相同增强，`proceed()` 负责推进拦截器链；能够区分 `TransactionInterceptor` 的流程组织与 `TransactionManager` 的资源管理，并结合项目事务事故解释外部代理调用与同类自调用的差异。
+- 关联文件：`backend/spring/ioc-bean-and-transaction-proxy.md`、`mistakes/spring/aop-transaction-proxy-boundaries.md`、`sessions/2026-08-02-aop-transaction-propagation-java-version-cards.md`、`interview/mock-records/2026-07-21-pingan-java-backend-prep.md`、`interview/real-records/2026-07-28-shokz-senior-java-supply-chain.md`、`projects/settlement-system/transaction-flow-and-reconciliation.md`、`fundamentals/network/http-tcp-request-flow.md`、`interview/computer-fundamentals-questions.md`
+- 下一步动作：任务已完成。后续只在真实面试再次暴露循环依赖、事务管理器差异或源码级代理问题时，新建小任务或回补对应主题，不重复当前基础主线。
 
 ### BL-006 结算系统项目表达与双版本简历完善
 
@@ -362,9 +377,9 @@ Backlog 任务可以来自：
 - 主题：未生产上线的 RAG / Agent 项目如何表达工程价值
 - 学习目标：明确区分已实现能力、个人实践、生产化设计和未落地边界。
 - 验收标准：能回答“没有生产上线为什么仍能证明能力”；能区分固定 Pipeline、Workflow 和 Agent；能避免把设计方案包装成生产经验。
-- 当前断点：2026-06-30 真实面试中，项目真实性和 Agent 概念被持续追问。
+- 当前断点：2026-07-29 已确认项目时间线：需求起点来自荣耀财经部门，由产品收集后交给开发认领；本人离职前完成 RAG 初步搭建，但没有用户试用；离职后围绕同类场景继续个人工程实践并新增 Rerank 和 Agent。后续事实边界应区分公司需求背景、公司阶段初版、个人后续实现和未生产验证。
 - 关联文件：`interview/rag-project-story.md`、`interview/ai-application-questions.md`、`interview/real-records/2026-06-30-ai-agent-rag-backend.md`
-- 下一步动作：整理“事实 -> 架构 -> 职责 -> 难点 -> 边界 -> 下一步验证”的项目回答。
+- 下一步动作：恢复本任务时，直接用“财经需求 -> 认领初版 -> 未试用 -> 离职后 Rerank / Agent -> 非生产验证”完成 30 至 60 秒事实边界口述。
 
 ### BL-008 MySQL 追问复盘
 
@@ -378,7 +393,7 @@ Backlog 任务可以来自：
 - 验收标准：能回答死锁产生与排查；能区分共享锁、排他锁、乐观锁、悲观锁、Redis 锁和数据库锁；能用执行计划反推访问路径。
 - 当前断点：事务、MVCC、索引和锁已完成第一轮；2026-07-21 又通过真实 N+1 案例梳理了“单条 SQL 耗时、调用次数、扫描范围、锁等待和整体访问模型”的 SQL 优化主线，并快速复盘 Join、Group By、Distinct、Union 和重复属性查询。2026-07-28 韶音面试暴露新的存储边界：能够确认云平台删除历史数据后存储指标下降，但尚不能区分 InnoDB 页复用、`.ibd` 文件缩小、操作系统磁盘回收和云平台治理机制。死锁、执行计划和表空间追问稳定性仍需验证。
 - 关联文件：`backend/mysql/transaction.md`、`backend/mysql/lock-and-batch-processing.md`、`backend/mysql/sql-performance-analysis.md`、`interview/mysql-questions.md`、`interview/mock-records/2026-07-21-pingan-java-backend-prep.md`、`interview/real-records/2026-07-28-shokz-senior-java-supply-chain.md`、`mistakes/database/transaction.md`
-- 下一步动作：先由 `BL-023` 完成 `DELETE`、`TRUNCATE`、`OPTIMIZE TABLE` 的最小实验，再用 3 到 5 个追问验证死锁、锁分类、慢 SQL 访问路径和表空间边界。
+- 下一步动作：本任务恢复时直接用 3 到 5 个追问验证死锁、锁分类、慢 SQL 访问路径和表空间边界；对云平台物理回收机制继续保持未知边界，不从现象反推实现。
 
 ### BL-009 算法保底
 

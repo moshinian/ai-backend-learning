@@ -7,13 +7,13 @@
 ## 个人优势
 
 - 4 年 Java 后端生产系统开发经验，后期长期负责云服务结算系统的交易流水处理与核销业务域，具备复杂业务建模、跨系统状态流转、批处理和故障恢复经验。
-- 独立建设企业知识库 RAG + Agent 系统，覆盖文档解析切块、Embedding、Dense / Hybrid Retrieval、RRF 融合、上下文组装、引用溯源和会话管理等端到端链路。
+- 完成企业知识库 RAG 初步搭建，并在离职后独立完善 Rerank 与 Agent，覆盖文档解析切块、Embedding、Dense / Hybrid Retrieval、融合、重排、引用溯源和受控工具调用。
 - 具备 Java + Python 协作架构实践，以 Spring Boot 管理知识库、任务、会话和业务状态，以 FastAPI 封装模型能力，并基于 LangGraph 构建带工具白名单、参数校验、风险分级和人工确认的受控工具调用流程。
 
 ## 专业技能
 
 - **LLM 应用：** RAG、Embedding、Prompt / 上下文组装、来源引用、会话管理、AI Gateway、企业知识库问答；
-- **检索增强：** PostgreSQL 全文检索、pgvector、Dense / Hybrid Retrieval、TopK 召回、关键词兜底、RRF 融合；
+- **检索增强：** PostgreSQL 全文检索、pgvector、Dense / Hybrid Retrieval、TopK 召回、关键词兜底、RRF 融合、Rerank；
 - **Agent 工程：** LangGraph、Agent Runtime、Tool Calling、JSON Schema、工具白名单、风险分级、人工确认（Human-in-the-loop）；了解 MCP 工具协议；
 - **后端工程：** Java、Spring Boot、Spring MVC、MyBatis、Python、FastAPI、PostgreSQL、MySQL、Redis、MQ、异步任务、幂等与重试补偿。
 
@@ -30,14 +30,14 @@
 
 ### 企业知识库 RAG + Agent 系统
 
-**独立设计与开发** | 2026.02-至今
+**核心开发与个人持续实践** | 2026.02-至今
 
 **技术栈：** Java、Spring Boot、Python、FastAPI、PostgreSQL、pgvector、Redis、LangGraph
 
-1. 围绕企业知识库与结算文档问答场景，从 0 到 1 建设 RAG + Agent 系统；采用 Spring Boot 管理知识库、文档任务、会话、业务状态和对外接口，FastAPI 封装 Embedding 与模型调用能力。
+1. 项目起点来自荣耀财经部门内部需求，由产品收集问题、开发认领任务；本人认领并在离职前完成 RAG 初步搭建，离职后围绕同类场景继续个人工程实践。
 2. 实现文档上传、解析、清洗、Chunk 切分、Embedding 生成与向量入库的知识库构建链路，并通过状态落库、幂等处理、失败重试、中断恢复和索引就绪校验保障长任务可恢复。
-3. 基于 PostgreSQL 全文检索和 pgvector 构建 Dense / Hybrid Retrieval，使用 RRF 融合两路候选，针对中文全文检索零命中增加关键词兜底，完成 TopK 召回、上下文组装、答案生成及引用来源展示。
-4. 将模型接入统一收敛到 AI Gateway，保持知识库、会话和任务状态由 Java 后端管理；构建 LangGraph Agent Runtime，通过只读工具、工具白名单、JSON Schema、调用次数限制、风险分级和人工确认约束工具执行。
+3. 基于 PostgreSQL 全文检索和 pgvector 构建 Dense / Hybrid Retrieval，使用 RRF 融合两路候选，针对中文全文检索零命中增加关键词兜底；离职后新增 Rerank，完成融合后候选的二阶段排序。
+4. 将模型接入统一收敛到 AI Gateway，保持知识库、会话和任务状态由 Java 后端管理；离职后新增 LangGraph Agent Runtime，通过只读工具、工具白名单、JSON Schema、调用次数限制、风险分级和人工确认约束工具执行。
 
 ### 云服务结算系统
 

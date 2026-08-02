@@ -75,8 +75,23 @@
 - 韶音科技面试连续从项目事实追问到原子性、MySQL 表空间、RAG 质量和 Spring Bean 生命周期边界。会后最强烈的感受是“最后总会被问到不知道”，容易忽略此前已经回答正确的生产链路和核心机制。
 - 后续不以记住所有接口、回调顺序和平台实现为学习目标。每个主题先压缩成三到四个检索入口，再按“问题层次 -> 已确认事实 -> 机制解释 -> 失败边界 -> 当前未知”展开。
 - 面试官追问到未知处是能力边界探测，不等于此前回答全部失效；稳定承认未知、说明验证方式，比为不掌握的底层机制继续背书更重要。
-- Rerank 项目事实完成校准：正式主链路使用 Hybrid Retrieval 与融合；独立分支 Demo 做过尝试性接入，但未作为正式主链路或生产能力落地。
+- RAG 项目事实完成校准：需求起点来自荣耀财经部门，产品收集后由开发认领；本人离职前完成 RAG 初步搭建，但没有用户试用；离职后围绕同类场景继续个人工程实践并新增 Rerank 和 Agent。当前 Rerank 已集成进个人持续建设的知识库主链路，但不据此声称荣耀内部试用或生产上线效果。
 - 本次暴露点已收敛为短周期 `BL-023`，不会为了追上一场面试继续横向扩张整个 Java 技术栈。
+
+### 2026-07-29 项目表达从“证据充足”进入“听众对齐”
+
+- 和生创新技术全栈工程师面试表明，已有结算系统事实和技术证据并不自动等于项目能够被陌生听众理解。面试官多次要求先说明系统全貌、单据链路和个人职责，并明确反馈“讲得太细、没有跟上节奏、难点不清楚”。
+- 后续项目表达固定按“系统全貌 -> 核心链路 -> 本人职责 -> 代表难点”逐层缩放。面试官没有建立业务图像前，不提前展开字段、缓存、分页、策略实现和异常分支。
+- 技术难点必须包含可观察问题、不可违反的约束、明确机制和结果证据；“方案设计、综合应用、持续适配、抽象兼容”不能单独作为难点。
+- 面试压力下再次出现事实边界漂移风险：冲销管道是否从零设计和“一天百万订单”等口径仍需确认；RAG 已明确区分公司需求与初版阶段、离职后个人新增 Rerank / Agent 阶段，不能因为现场追问而把当前整套能力包装为荣耀内部项目成果。
+- 本场同时确认 Java 基础仍存在结构性薄弱点：AOP 本质能够理解，但压缩表达不稳；事务传播和 Java 8 之后的版本能力尚未形成可检索入口。具体任务由 `BL-024` 承接。
+
+### 2026-08-02 Spring 学习从注解记忆进入代理调用链
+
+- AOP 认知从“使用注解增加功能”推进到 Advisor、Pointcut、Advice、代理 Bean、拦截器链和 `proceed()` 的完整调用关系；能够说明普通运行时注解为什么不会自动产生 AOP 能力。
+- 声明式事务不再只记传播行为名称，而是先判断调用是否经过代理，再区分 `TransactionInterceptor` 的流程组织、`TransactionManager` 的资源管理、物理事务数量、保存点和 `rollback-only` 状态。
+- 连续判断中暴露并纠正了两个高价值边界：`NESTED` 内层回滚不必然拖垮外层事务；自调用异常被外层捕获时，因为内层拦截器没有执行，结果可能与跨 Bean 的 `REQUIRED` 调用不同。
+- Java 版本学习采用“每版两个入口、每个入口说明解决的问题和边界”的最小卡片方式，已经建立 Java 8、11、17、21 的闭卷检索入口；后续不再用“性能更好、GC 更流畅”等无法验证的笼统表述代替版本事实。
 
 ---
 
@@ -106,6 +121,8 @@
 - 慢 SQL、索引失效和执行计划容易只背结论，缺少访问路径分析。
 - 容易把 SQL 性能问题等同于单条慢 SQL，忽略 N+1、累计调用次数和数据库往返。
 - 容易只看到 `@Transactional` 注解，忽略真实代理调用链、异常规则、线程和数据源边界。
+- 容易认为运行时注解会自动产生 AOP 能力，或把代理 Bean 理解成所有方法都会执行相同增强，忽略 Advisor、Pointcut 和逐方法匹配。
+- 容易把 Java 异常是否被 `catch` 与事务的 `rollback-only` 状态混为一谈，没有先区分跨 Bean 代理调用和同类自调用。
 - 容易把 JDBC 回滚异常直接解释成事务未开启或数据库部分提交，缺少对原始异常和最终数据状态的核对。
 
 主要索引：
@@ -114,6 +131,8 @@
 2. `backend/mysql/lock-and-batch-processing.md`
 3. `mistakes/database/transaction.md`
 4. `interview/mysql-questions.md`
+5. `backend/spring/ioc-bean-and-transaction-proxy.md`
+6. `mistakes/spring/aop-transaction-proxy-boundaries.md`
 
 ### 3. 容易把任务状态、处理权和业务幂等混在一起
 
@@ -163,6 +182,7 @@
 
 - 结算系统容易把业务场景、系统架构、数据流、性能瓶颈和技术栈混在一起。
 - RAG 项目容易罗列文档解析、向量化、模型调用等功能，而不是按业务问题、架构、职责、难点和指标组织。
+- 面对不熟悉业务的听众，容易在系统全貌尚未建立时进入字段、缓存、分页和异常分支；对方表示没听懂后，又继续增加同层细节。
 
 主要索引：
 
@@ -170,6 +190,8 @@
 2. `interview/ai-application-questions.md`
 3. `interview/real-records/2026-06-10-llm-application-engineer.md`
 4. `interview/real-records/2026-06-30-ai-agent-rag-backend.md`
+5. `mistakes/interview/project-zoom-level-and-listener-alignment.md`
+6. `interview/real-records/2026-07-29-hesheng-innovation-fullstack-engineer.md`
 
 ### 7. AI Backend 表达容易混淆已实现、设计方案和生产经验
 
@@ -332,6 +354,14 @@
 2. `interview/mock-records/2026-07-21-pingan-java-backend-prep.md`
 3. `projects/settlement-system/transaction-flow-and-reconciliation.md`
 4. `interview/real-records/2026-07-28-shokz-senior-java-supply-chain.md`
+5. `mistakes/spring/aop-transaction-proxy-boundaries.md`
+6. `sessions/2026-08-02-aop-transaction-propagation-java-version-cards.md`
+
+### Java 版本能力卡
+
+1. `backend/java/java-version-capability-cards.md`
+2. `sessions/2026-08-02-aop-transaction-propagation-java-version-cards.md`
+3. `interview/real-records/2026-07-29-hesheng-innovation-fullstack-engineer.md`
 
 ### 真实面试追问与知识边界
 
@@ -400,3 +430,4 @@
 27. `sessions/2026-07-24-java-ai-resume-and-project-evidence.md`
 28. `sessions/2026-07-28-high-qps-capacity-design.md`
 29. `sessions/2026-07-28-shokz-interview-review.md`
+30. `sessions/2026-08-02-aop-transaction-propagation-java-version-cards.md`

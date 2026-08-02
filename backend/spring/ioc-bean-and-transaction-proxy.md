@@ -43,17 +43,104 @@ Spring 对 prototype 通常只负责创建、依赖注入和初始化，不自�
 
 ## 4. AOP 与事务代理机制
 
+### 4.1 注解、Pointcut、Advisor 和代理 Bean
+
+AOP 解决的是日志、事务、权限、缓存、监控等逻辑在多个业务方法中重复出现的问题。它把这些横切逻辑从业务方法中拆出，并在符合条件的方法调用前后统一执行。
+
+一个普通注解只有元数据能力，不会天然产生 AOP 增强。注解要具备 AOP 能力，必须有对应的 Spring 基础设施：
+
+1. 有代码扫描类或方法上的注解，并把它转换为可执行的 Advice。
+2. 有 Pointcut 判断哪些 Bean、哪些方法匹配。
+3. 有 Advisor 把“在哪里增强”和“执行什么增强”组合起来。
+4. 自动代理创建器在 Bean 生命周期的后处理阶段，为命中 Advisor 的 Bean 返回代理对象。
+
+可以先把三个概念压缩为：
+
+```text
+Pointcut：选择在哪里增强
+Advice：定义增强时执行什么
+Advisor：把 Pointcut 和 Advice 组合起来
+```
+
+`candidateAdvisors` 不是写死的一组系统拦截器，而是当前容器中可能参与匹配的 Advisor 候选。它们既可能来自 Spring 事务、缓存等基础设施，也可能来自用户声明的 `@Aspect`。`@Before`、`@Around`、`@After` 等表示不同的 Advice 执行时机；同一个 `@Aspect` 可以声明多个 Advice，Spring 会把相应切面方法转换为可参与匹配和排序的 Advisor。
+
+“代理整个 Bean”是指容器对外暴露的是包裹目标对象的代理对象，而不是为某一个方法单独创建对象。代理对象可以接收这个 Bean 的多个方法调用，但每次调用仍会按当前方法重新匹配拦截器链；没有命中 Pointcut 的方法可以直接进入目标方法，不代表 Bean 上所有方法都会执行相同增强。
+
+### 4.2 JDK 动态代理与 CGLIB
+
+JDK 动态代理根据接口创建代理对象，核心 API 可以简化为：
+
+```java
+Service proxy = (Service) Proxy.newProxyInstance(
+        Service.class.getClassLoader(),
+        new Class<?>[]{Service.class},
+        (proxyObject, method, methodArgs) -> {
+            // 调用前增强
+            Object result = method.invoke(target, methodArgs);
+            // 调用后增强
+            return result;
+        }
+);
+```
+
+调用 `proxy.hello()` 时，JDK 代理会自动把本次调用对应的 `Method`、参数和代理对象传给 `InvocationHandler`。`Method` 变量叫什么由开发者决定，不存在 JVM 默认生成一个 `helloMethod` 名称的规则；真正的映射依据是代理接口的方法签名。`target` 也不是由 `InvocationHandler` 自动寻找，通常由创建 Handler 的代码显式持有，Spring 则在内部替开发者完成代理创建和目标对象绑定。
+
+CGLIB 通过生成目标类的子类并覆盖可增强方法实现代理，因此不要求业务类实现接口，但 `final` 类不能被继承，`final` 方法也不能被覆盖增强。Spring 容器会根据配置、接口和目标类情况选择代理方式，业务代码通常不会直接出现 `Proxy.newProxyInstance()`。
+
+### 4.3 拦截器链与顺序
+
+代理方法被调用后，Spring 会为当前方法找到所有匹配的 Advisor，并把 Advice 适配成一条拦截器链。可以把执行过程理解为：
+
+```text
+代理方法
+-> 拦截器 1
+-> 拦截器 2
+-> 拦截器 3
+-> 目标方法
+-> 拦截器 3 返回
+-> 拦截器 2 返回
+-> 拦截器 1 返回
+```
+
+`MethodInvocation.proceed()` 或 `ProceedingJoinPoint.proceed()` 的作用不是走过场，而是把控制权交给链中的下一个拦截器；当链中没有剩余拦截器时，才调用目标方法。如果 `@Around` Advice 在条件校验失败时不调用 `proceed()`，后续拦截器和目标方法都不会执行。
+
+拦截器不是固定内置的“日志、权限、事务”三件套。事务拦截器由声明式事务基础设施注册；日志、权限和自定义注解校验是否存在，取决于项目是否声明了对应的 Aspect、Advisor 或框架组件。
+
+多个切面需要显式使用 `@Order`、`Ordered` 或框架提供的顺序配置表达优先级。通常数值越小优先级越高，在调用链外层先进入、后退出；没有声明顺序时不要依赖偶然观察到的执行先后，同优先级也不应承载有严格依赖的业务语义。
+
+### 4.4 TransactionInterceptor 与 TransactionManager
+
 声明式事务的典型调用链：
 
 ```text
 调用方
 -> Spring 代理对象
--> TransactionInterceptor 开启或加入事务
+-> TransactionInterceptor 读取事务属性并组织调用
+-> TransactionManager 创建、加入、挂起或恢复事务
 -> 目标方法
 -> 根据正常返回或异常规则提交 / 回滚
 ```
 
-因此，`@Transactional` 只是事务元数据。调用是否经过代理、异常是否满足回滚规则、操作是否使用正确事务管理器，才决定事务是否按预期工作。
+`TransactionInterceptor` 主要负责读取 `@Transactional` 对应的传播行为、隔离级别、只读、超时和回滚规则，选择事务管理器，并在事务边界内调用 `invocation.proceed()`。`TransactionManager` 才负责管理真实事务资源。以 JDBC 事务管理器为例，数据库连接通常绑定到当前线程，创建、提交和回滚最终由事务管理器完成，而不是由拦截器直接操作 JDBC。
+
+三种常见传播行为：
+
+| 传播行为 | 当前没有事务 | 当前已有事务 |
+|---|---|---|
+| `REQUIRED` | 创建新事务 | 加入当前事务 |
+| `REQUIRES_NEW` | 创建新事务 | 挂起当前事务并创建独立事务，完成后恢复外层事务 |
+| `NESTED` | 通常创建新事务 | 在同一物理事务中建立保存点，内层可回滚到保存点 |
+
+`REQUIRES_NEW` 的内层事务独立提交后，外层事务随后回滚不会撤销它。`NESTED` 不是独立提交：内层失败且异常被外层正确处理时，可以只回滚保存点后的修改；外层事务最终回滚时，内层修改仍会一起回滚。`NESTED` 还依赖事务管理器和底层资源支持保存点。
+
+事务异常需要区分“Java 异常是否被捕获”和“事务是否已经标记为 `rollback-only`”：
+
+1. 跨 Bean 的 `REQUIRED` 内层方法经过自己的事务拦截器，抛出运行时异常时可能把共享事务标记为 `rollback-only`。外层即使捕获异常，也不能清除这个标记；外层正常返回并请求提交时，会回滚并可能抛出 `UnexpectedRollbackException`。
+2. 同类自调用绕过内层事务拦截器。如果外层捕获普通运行时异常，且底层资源没有自行标记事务失败，外层拦截器只看到正常返回，事务可能提交。
+3. 如果自调用抛出的运行时异常继续离开外层事务方法，外层事务拦截器仍会看到异常并回滚外层事务。
+4. Spring 默认对 `RuntimeException` 和 `Error` 回滚，普通 checked exception 默认不回滚；可通过 `rollbackFor` 和 `noRollbackFor` 调整。
+
+因此，`@Transactional` 只是事务元数据。调用是否经过代理、传播行为选择了哪个事务、异常是否到达拦截器、事务是否已经被标记为只能回滚，以及操作是否使用正确事务管理器，才共同决定最终结果。
 
 常见失效或预期不一致场景：
 

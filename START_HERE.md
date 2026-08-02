@@ -12,7 +12,7 @@
 
 当前候选任务：
 
-- `BL-023`：韶音面试数据准确性与基础机制复核（已完成逐题还原，等待最小口述和 MySQL 实验）
+- `BL-024`：和生创新技术全栈工程师面试复盘与最小补强
 
 说明：
 
@@ -24,7 +24,13 @@
 - 2026-07-27 已将目标技术栈整理为生产后端核心层、微服务治理层和应用交付层；复用已有 MySQL、Redis、MQ、JVM、并发任务，并新增 Linux、Spring Cloud / Nacos / Sentinel、Docker、Kubernetes 任务。
 - 2026-07-28 已完成 `BL-016` 第一轮学习，任务保持 `REVIEW`，等待 60 至 90 秒压缩口述。
 - 2026-07-28 韶音科技高级 Java 工程师（供应链）面试暴露幂等原子性、MySQL 表空间、RAG 质量分层和 Spring Bean 生命周期表达问题，已建立短周期 `BL-023`。
-- 当前先用最小回答卡和一个 MySQL 实验收口 `BL-023`，完成后回到 `BL-016`；`BL-017` JVM 和 `BL-004` Java 并发锁体系保留原断点等待恢复。
+- 2026-07-29 已完成 `BL-023` 的原子性 / 幂等、MySQL 存储边界、RAG 质量分层和 Spring Bean 生命周期最小回答卡。
+- 2026-07-29 已完成 RAG 回答质量四层口述，并确认 Rerank 已集成进离职后个人持续建设的知识库主链路，不声称荣耀内部试用或生产上线效果。
+- 2026-07-29 已完成 Spring Bean 生命周期连续口述，`BL-023` 达到当前验收标准并标记为 `DONE`。
+- 2026-07-29 和生创新技术全栈工程师面试再次暴露项目缩放表达、AOP 压缩回答、事务传播和 Java 版本能力问题，已建立短周期 `BL-024`。
+- 2026-08-02 已完成 `BL-024` 的 AOP、事务传播和 Java 8 / 11 / 17 / 21 最小版本卡；结算系统口述和代表难点由用户明确暂时跳过，因此 `BL-024` 保持 `DOING`。
+- `BL-005` 的 IOC、Bean 生命周期、AOP 和事务代理已经完成机制学习、口述和追问验证，达到当前验收标准并标记为 `DONE`。
+- 当前优先确认是否恢复 `BL-024` 剩余的项目口述；若继续暂缓，则保留断点并回到 `BL-016`，`BL-017` JVM 和 `BL-004` Java 并发锁体系等待后续恢复。
 
 ---
 
@@ -32,13 +38,13 @@
 
 当前断点：
 
-1. `BL-023` 状态为 `DOING`，韶音面试四道题已经逐题还原并完成第一轮纠偏，但尚未闭卷口述。
-2. 幂等问题已能区分单批次单执行者、数据库原子条件和业务幂等；下一次只用“单执行者、原子条件、业务唯一键、重试”四个词回答。
-3. MySQL 问题已确认必须区分页可复用、`.ibd` 文件缩小、操作系统磁盘回收和云平台指标；具体云平台机制未知，本地最小实验尚未执行。
-4. RAG 回答已区分追踪、召回、排序、生成和评测；Rerank 的准确边界是独立分支 Demo 已尝试，正式主链路未落地。
-5. Spring Bean 现场回答的作用域边界基本正确；尚需用“创建、注入、增强、销毁”完成一次 30 至 60 秒完整口述。
-6. 本次学习方法不再追求穷举背诵：面试官追问到未知处不等于整场失败，回答时要区分已确认事实、合理推断和当前未知。
-7. `BL-016` 继续保持 `REVIEW`；`BL-023` 完成后回到高并发压缩口述，再进入 `BL-017` JVM。
+1. `BL-024` 状态为 `DOING`。技术部分已经完成第一轮：能够解释 Advisor / Pointcut / Advice、JDK 动态代理 / CGLIB、代理 Bean 和拦截器链，并能说明事务拦截器与事务管理器的职责。
+2. 已能区分 `REQUIRED`、`REQUIRES_NEW`、`NESTED`，以及 `rollback-only`、`UnexpectedRollbackException`、跨 Bean 调用、自调用、异常捕获和默认回滚规则的组合边界。
+3. 已闭卷说出 Java 8 的 Lambda / Stream、Java 11 的 String API / HttpClient、Java 17 的密封类型 / JDK 内部强封装、Java 21 的虚拟线程 / `switch` 模式匹配，并能说明主要作用和边界。
+4. `BL-024` 尚未完成的只有结算系统 90 秒口述和代表难点 60 秒口述；这是用户明确暂时跳过的内容，不重复学习已经通过的技术部分。
+5. 项目表达恢复时仍按“系统全貌、核心链路、本人职责、代表难点”逐层缩放；冲销管道只表述为后续场景适配、缺陷修复和长期维护，不改写为完全从零设计。
+6. RAG 项目继续保持真实时间线：离职前完成初步搭建但没有用户试用，Rerank 和 Agent 是离职后个人持续实践，不包装为公司生产成果。
+7. `BL-005` 和 `BL-023` 已完成；`BL-016` 保持 `REVIEW`，如果继续暂缓项目表达，下一轮从高并发闭卷口述恢复。
 
 ---
 
@@ -46,8 +52,21 @@
 
 最近一次归档：
 
-1. `sessions/2026-07-28-shokz-interview-review.md`
-2. `sessions/2026-07-28-high-qps-capacity-design.md`
+1. `sessions/2026-08-02-aop-transaction-propagation-java-version-cards.md`
+2. `interview/real-records/2026-07-29-hesheng-innovation-fullstack-engineer.md`
+3. `sessions/2026-07-28-shokz-interview-review.md`
+
+本次 AOP、事务传播和 Java 版本已有沉淀：
+
+1. `backend/spring/ioc-bean-and-transaction-proxy.md`
+2. `backend/java/java-version-capability-cards.md`
+3. `mistakes/spring/aop-transaction-proxy-boundaries.md`
+4. `sessions/2026-08-02-aop-transaction-propagation-java-version-cards.md`
+
+本次和生创新技术面试已有沉淀：
+
+1. `interview/real-records/2026-07-29-hesheng-innovation-fullstack-engineer.md`
+2. `mistakes/interview/project-zoom-level-and-listener-alignment.md`
 
 本次韶音面试已有沉淀：
 
@@ -69,25 +88,26 @@
 
 建议下一步：
 
-1. 休息充分后，只复核幂等第一题，不读取完整答案
-2. 使用“单执行者、原子条件、业务唯一键、重试”四个词回答 30 至 60 秒
-3. 回答稳定后，执行 MySQL `DELETE`、`TRUNCATE`、`OPTIMIZE TABLE` 最小实验
-4. 再分别复核 RAG 的“召回、排序、生成、评测”和 Bean 的“创建、注入、增强、销毁”
-5. `BL-023` 完成后回到 `BL-016`，闭卷完成高并发 60 至 90 秒口述
+1. 先确认是否恢复此前主动暂缓的结算系统项目表达，不重复复习 AOP、事务传播和 Java 版本卡
+2. 如果恢复 `BL-024`，不读取项目笔记，用“服务对象、输入、主链路、输出、本人职责”完成 90 秒口述
+3. 再选择 N+1 批处理、ERP 凭证 ID 碰撞或可恢复批处理中的一个，用“现象、约束、机制、结果、个人边界”完成 60 秒口述
+4. 两段口述通过后将 `BL-024` 标记为 `DONE`
+5. 如果继续暂缓项目表达，则保留 `BL-024` 断点并回到 `BL-016`，闭卷完成高并发 60 至 90 秒口述
 
 ---
 
 ## 6. 优先读取文件
 
 1. `LEARNING_BACKLOG.md`
-2. `interview/real-records/2026-07-28-shokz-senior-java-supply-chain.md`
-3. `mistakes/interview/follow-up-boundaries-and-memory-pressure.md`
-4. `sessions/2026-07-28-shokz-interview-review.md`
-5. `interview/rag-project-story.md`
-6. `backend/spring/ioc-bean-and-transaction-proxy.md`
-7. `projects/settlement-system/transaction-flow-and-reconciliation.md`
-8. `backend/distributed-system/high-qps-capacity-design.md`
-9. `mistakes/distributed/high-qps-and-mq-boundaries.md`
+2. `sessions/2026-08-02-aop-transaction-propagation-java-version-cards.md`
+3. `backend/spring/ioc-bean-and-transaction-proxy.md`
+4. `backend/java/java-version-capability-cards.md`
+5. `mistakes/spring/aop-transaction-proxy-boundaries.md`
+6. `interview/real-records/2026-07-29-hesheng-innovation-fullstack-engineer.md`
+7. `mistakes/interview/project-zoom-level-and-listener-alignment.md`
+8. `projects/settlement-system/transaction-flow-and-reconciliation.md`
+9. `backend/distributed-system/high-qps-capacity-design.md`
+10. `mistakes/distributed/high-qps-and-mq-boundaries.md`
 
 需要判断长期能力方向时，再读取：
 

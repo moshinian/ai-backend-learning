@@ -9,7 +9,7 @@
 - 4 年 Java 后端开发经验，后期长期负责云服务结算系统的交易流水处理与核销业务域，熟悉流水、订单、辅账、ERP 入账和核销对账等复杂账务链路。
 - 具备百万级批处理和亿级流水表查询优化经验，曾通过批量查询与内存匹配将 100 万笔流水处理控制在 8 分钟内，并结合执行计划与联合索引将尾页查询从 120 秒超时降至稳定 3 秒以内。
 - 具备复杂批处理任务的可靠性设计与生产排障经验，落地状态抢占、任务分片、中断续跑与幂等补偿，并处理过 Spring 事务边界和 MyBatis 缓存导致的 OOM 问题。
-- 具备 Python 与 AI 应用开发能力，独立建设企业知识库 RAG + Agent 系统，可将检索、模型调用和受控工具执行能力与 Java 后端工程结合。
+- 具备 Python 与 AI 应用开发能力，完成企业知识库 RAG 初步搭建并在离职后独立新增 Rerank 与 Agent 能力，可将检索、模型调用和受控工具执行与 Java 后端工程结合。
 
 ## 专业技能
 
@@ -45,13 +45,13 @@
 
 ### 企业知识库 RAG + Agent 系统
 
-**独立设计与开发** | 2026.02-至今
+**核心开发与个人持续实践** | 2026.02-至今
 
 **技术栈：** Java、Spring Boot、Python、FastAPI、PostgreSQL、pgvector、Redis、LangGraph
 
-1. 独立完成企业知识库 RAG + Agent 系统从 0 到 1 建设，采用 Spring Boot 管理知识库、文档任务、会话、业务状态和对外接口，FastAPI 封装 Embedding 与模型调用能力。
-2. 基于 PostgreSQL + pgvector 实现文档切块、Embedding、Dense / Hybrid Retrieval、RRF 融合、TopK 召回、上下文组装与引用溯源，完成企业文档问答端到端链路。
-3. 为文档解析、索引构建和重嵌入任务实现异步处理、状态落库、失败重试、中断恢复与索引就绪校验；构建受工具白名单、JSON Schema、调用次数、风险分级和人工确认约束的 Agent Runtime。
+1. 项目起点来自荣耀财经部门内部需求，由产品收集问题、开发认领任务；本人认领并在离职前完成 RAG 初步搭建，离职后围绕同类场景继续个人工程实践。
+2. 基于 PostgreSQL + pgvector 实现文档切块、Embedding、Dense / Hybrid Retrieval、RRF 融合、TopK 召回、上下文组装与引用溯源，并在离职后将 Rerank 集成进知识库主链路。
+3. 采用 Spring Boot 管理知识库、文档任务、会话和业务状态，FastAPI 封装模型能力；离职后新增受工具白名单、JSON Schema、调用次数、风险分级和人工确认约束的 LangGraph Agent Runtime。
 
 ## 教育经历
 
