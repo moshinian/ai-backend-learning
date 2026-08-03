@@ -93,6 +93,14 @@
 - 连续判断中暴露并纠正了两个高价值边界：`NESTED` 内层回滚不必然拖垮外层事务；自调用异常被外层捕获时，因为内层拦截器没有执行，结果可能与跨 Bean 的 `REQUIRED` 调用不同。
 - Java 版本学习采用“每版两个入口、每个入口说明解决的问题和边界”的最小卡片方式，已经建立 Java 8、11、17、21 的闭卷检索入口；后续不再用“性能更好、GC 更流畅”等无法验证的笼统表述代替版本事实。
 
+### 2026-08-03 项目可靠性表达从技术叠加进入职责分层
+
+- 平安产险面试准备完成了结算系统从内部业务名词到“服务对象、输入、公共主链路、输出、本人职责”的再次压缩，并确认早期参与 2C 支付和 2B 预装、后期独立负责 2B 商推以及公共流水与核销的职责演进。
+- 性能案例开始严格分离：N+1 解决累计数据库往返；2C 支付订单由月分区调整为周分区，使分区粒度匹配一周查询窗口；亿级流水尾页问题由分页拆分、执行计划和联合索引解决。相同的“100 万笔 8 分钟”不能让不同阶段的方案互相替代。
+- 任务可靠性形成新的职责图：数据库条件更新负责同名定时父任务抢占；Redis 功能级锁负责手工与定时两个入口互斥；Spring Batch、分片状态和心跳负责执行控制；明细状态、批次事务和幂等负责数据正确与失败续跑。
+- 对既有方案的复盘不再停留在“Redis 锁有用或没用”的二选一，而是先确认锁保护的入口、资源和生命周期；也能够说明功能级全局锁与分片状态字符串的简单性收益和扩展代价。
+- 当天真实面试新增分布式事务缺口：面试官提到的“二级事务、三级事务”可能指 2PC / 3PC，但原词尚未核对。后续必须区分本地批次事务、跨系统最终一致性和分布式提交协议，不能用 Redis 锁、状态机或补偿机制直接替代协议知识。
+
 ---
 
 ## 长期典型误区模式
@@ -141,6 +149,8 @@
 - 初始容易只用 `status` 判断任务是否还能推进，忽略 `process_token`、租约、心跳、重试和补偿。
 - 外部 ERP 调用超时时，容易把“不知道结果”误判成“失败”。
 - Redis 锁、数据库状态机和业务幂等键的职责容易混答。
+- 容易只看到数据库抢占和 Redis 锁都在“防并发”，没有先判断前者保护定时任务实例、后者可能保护手工 / 定时跨入口，因此过早把二者判断为完全重复或缺一不可。
+- 容易把单库批次事务、任务状态、Redis 锁、重试和补偿统称为“分布式事务”，忽略它们与 2PC / 3PC 等分布式提交协议不在同一层。
 
 主要索引：
 
@@ -148,6 +158,8 @@
 2. `backend/redis/distributed-lock.md`
 3. `mistakes/distributed/redis-lock.md`
 4. `interview/redis-questions.md`
+5. `projects/settlement-system/transaction-flow-and-reconciliation.md`
+6. `sessions/2026-08-03-pingan-interview-prep-and-project-reliability.md`
 
 ### 4. Java 并发容易把执行模型和可靠性问题混在一起
 
@@ -368,6 +380,8 @@
 1. `interview/real-records/2026-07-28-shokz-senior-java-supply-chain.md`
 2. `mistakes/interview/follow-up-boundaries-and-memory-pressure.md`
 3. `sessions/2026-07-28-shokz-interview-review.md`
+4. `interview/real-records/2026-08-03-pingan-property-backend-individual-group.md`
+5. `sessions/2026-08-03-pingan-interview-prep-and-project-reliability.md`
 
 ### Java Map 与并发容器
 
@@ -387,6 +401,8 @@
 9. `backend/mysql/sql-performance-analysis.md`
 10. `resume/java-backend-resume.md`
 11. `resume/ai-application-resume.md`
+12. `sessions/2026-08-03-pingan-interview-prep-and-project-reliability.md`
+13. `interview/real-records/2026-08-03-pingan-property-backend-individual-group.md`
 
 ### Redis / 分布式锁
 
@@ -396,6 +412,17 @@
 4. `sessions/2026-06-16-redis-distributed-lock.md`
 5. `interview/real-records/2026-06-30-ai-agent-rag-backend.md`
 6. `sessions/2026-06-30-ai-agent-rag-backend-interview.md`
+7. `projects/settlement-system/transaction-flow-and-reconciliation.md`
+8. `sessions/2026-08-03-pingan-interview-prep-and-project-reliability.md`
+
+### 批处理任务、Spring Batch 与分布式事务边界
+
+1. `projects/settlement-system/transaction-flow-and-reconciliation.md`
+2. `backend/redis/distributed-lock.md`
+3. `mistakes/distributed/redis-lock.md`
+4. `sessions/2026-08-03-pingan-interview-prep-and-project-reliability.md`
+5. `interview/real-records/2026-08-03-pingan-property-backend-individual-group.md`
+6. `LEARNING_BACKLOG.md` 中的 `BL-018`、`BL-025`
 
 ---
 
@@ -431,3 +458,4 @@
 28. `sessions/2026-07-28-high-qps-capacity-design.md`
 29. `sessions/2026-07-28-shokz-interview-review.md`
 30. `sessions/2026-08-02-aop-transaction-propagation-java-version-cards.md`
+31. `sessions/2026-08-03-pingan-interview-prep-and-project-reliability.md`

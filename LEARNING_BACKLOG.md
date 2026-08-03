@@ -85,19 +85,34 @@ Backlog 任务可以来自：
 
 ## 5. 当前任务池
 
+### BL-025 平安产险面试复盘与分布式事务最小补强
+
+- ID：BL-025
+- 优先级：P0
+- 来源：真实面试暴露 + 次日面试准备
+- RoadmapRef：RM-04 Redis / MQ / 分布式能力；RM-05 项目深挖与工程表达；RM-08 面试复盘与查漏补缺
+- 状态：TODO
+- 主题：核对面试中的“二级事务、三级事务”是否指两阶段提交 / 三阶段提交，并建立分布式事务方案的最小回答入口
+- 学习目标：先区分本地事务、跨服务 / 跨数据源分布式事务和业务最终一致性，再理解 2PC、3PC、TCC、Saga、事务型 Outbox / 本地消息表分别解决什么问题、依赖什么前提、付出什么代价；能够把这些机制与结算系统的 ERP 调用、任务状态、重试、幂等和补偿边界正确对应。
+- 验收标准：能确认“二级 / 三级事务”原词与 2PC / 3PC 推断的事实边界；能用 30 至 60 秒说明 2PC 的协调者、参与者、Prepare、Commit / Rollback 和阻塞 / 不确定状态问题；能说明 3PC 增加的阶段、超时思想及其仍不能消除的网络分区边界；能比较 2PC / XA、TCC、Saga、事务型 Outbox / 本地消息表的适用场景和代价；能明确说明结算系统中的单库批次事务是本地事务，Redis 锁不是事务，ERP 链路依赖状态推进、稳定幂等键、重试和补偿，不能包装成强一致分布式事务。
+- 当前断点：2026-08-03 平安产险后端面试中，面试官在分布式事务追问里提到候选人记忆中的“二级事务、三级事务”。当前只能推断可能指两阶段提交和三阶段提交，尚未核对原问题，也尚未形成机制回答。当天已能区分数据库父任务抢占、Redis 跨手工 / 定时入口互斥、Spring Batch 协作式停止、分片状态汇总、明细级 Checkpoint 和批次本地事务，但这些任务可靠性机制不能直接等同于分布式事务。
+- 关联文件：`interview/real-records/2026-08-03-pingan-property-backend-individual-group.md`、`sessions/2026-08-03-pingan-interview-prep-and-project-reliability.md`、`projects/settlement-system/transaction-flow-and-reconciliation.md`、`backend/redis/distributed-lock.md`、`mistakes/distributed/redis-lock.md`、`LEARNING_ROADMAP.md`
+- 下一步动作：今晚停止学习并休息。下一次恢复时先结合次日两场面试的 JD 做最小取舍；若有 20 至 30 分钟知识补强时间，则先核对 2PC / 3PC 术语，用“本质、流程、失败边界、替代方案、项目映射”完成一张最小回答卡和一次闭卷口述，不扩张到分布式事务源码或产品实现细节。
+
 ### BL-024 和生创新技术全栈工程师面试复盘与最小补强
 
 - ID：BL-024
 - 优先级：P0
 - 来源：真实面试暴露
 - RoadmapRef：RM-03 Java / Spring / 并发能力；RM-05 项目深挖与工程表达；RM-08 面试复盘与查漏补缺
-- 状态：DOING
+- 状态：DONE
 - 主题：围绕和生创新技术全栈工程师面试暴露的项目缩放表达、AOP / 事务传播和 Java 版本能力完成最小补强
 - 学习目标：面对不熟悉结算领域的面试官，能够按“系统全貌、核心链路、本人职责、代表难点”逐层展开；先回答技术问题本身，再使用一个短案例证明；对不知道的版本和框架事实保持明确边界。
 - 验收标准：能用 90 秒讲清结算系统的服务对象、输入、主链路、输出和本人职责；能用 60 秒讲清一个项目难点的现象、约束、机制、结果与个人边界；能用 30 至 60 秒回答 AOP 的用途、代理机制和自调用边界；能区分 `REQUIRED`、`REQUIRES_NEW`、`NESTED` 并说明事务拦截器的执行过程；能说出 Java 8、11、17、21 各一到两个代表能力；能按真实时间线说明 RAG 项目的发起背景、公司阶段、离职节点和离职后开发边界。
-- 当前断点：2026-08-02 已完成技术补强第一轮。能够从 Advisor、Pointcut、Advice、代理 Bean、JDK 动态代理 / CGLIB 和拦截器链解释 AOP，能够说明 `TransactionInterceptor` 与 `TransactionManager` 的职责，并通过连续判断区分 `REQUIRED`、`REQUIRES_NEW`、`NESTED`、`rollback-only`、`UnexpectedRollbackException`、自调用和 checked exception 回滚规则；已闭卷说出 Java 8 的 Lambda / Stream、Java 11 的 String API / HttpClient、Java 17 的密封类型 / JDK 内部强封装、Java 21 的虚拟线程 / `switch` 模式匹配。结算系统 90 秒口述和代表难点 60 秒口述由用户明确暂时跳过，因此任务保持 `DOING`，不因技术部分通过而提前标记完成。RAG 时间线和冲销管道个人贡献继续保持既有事实边界。
-- 关联文件：`interview/real-records/2026-07-29-hesheng-innovation-fullstack-engineer.md`、`mistakes/interview/project-zoom-level-and-listener-alignment.md`、`projects/settlement-system/transaction-flow-and-reconciliation.md`、`backend/spring/ioc-bean-and-transaction-proxy.md`、`backend/java/java-version-capability-cards.md`、`mistakes/spring/aop-transaction-proxy-boundaries.md`、`sessions/2026-08-02-aop-transaction-propagation-java-version-cards.md`、`resume/java-backend-resume.md`、`resume/ai-application-resume.md`
-- 下一步动作：默认恢复时先询问是否继续此前暂缓的项目表达；若恢复，则闭卷完成结算系统 90 秒口述和一个代表难点 60 秒口述，达到后将 `BL-024` 标记为 `DONE`。若仍暂缓，则保留本断点并切回 `BL-016` 的高并发压缩口述，不重复学习已经通过的 AOP、事务传播和 Java 版本卡。
+- 验收结果：已完成 AOP、事务传播和 Java 8 / 11 / 17 / 21 最小能力卡；2026-08-03 平安产险面试准备中，已闭卷完成自我介绍和结算系统全貌口述，能够按“服务对象、输入、公共主链路、输出、本人职责”建立业务图像；已围绕 2C 支付订单分区优化和可恢复分片任务讲清现象、机制、结果、代价与事实边界。RAG 时间线和冲销管道个人贡献继续保持既有边界。本任务达到当前验收标准，真实面试新暴露的分布式事务缺口转交 `BL-025`，不延长本任务。
+- 当前断点：技术部分和项目表达均已完成当前一轮验证。项目表达能够从公司财经 / 结算运营人员、订单和流水输入、结算单 / 辅账 / ERP / 核销主链路展开，再区分早期参与 2C 支付与 2B 预装、后期独立负责 2B 商推和公共流水核销的职责演进；代表难点能够分别使用按周分区恢复性能基线，以及数据库父任务抢占、Redis 跨入口互斥、Spring Batch 停止、分片汇总、批次事务和明细状态解释性能与可靠性。分区 DDL 的精确 `RANGE` 写法和 Spring Batch 具体 API 仍属于历史实现细节待确认，不影响当前项目表达验收。
+- 关联文件：`interview/real-records/2026-07-29-hesheng-innovation-fullstack-engineer.md`、`mistakes/interview/project-zoom-level-and-listener-alignment.md`、`projects/settlement-system/transaction-flow-and-reconciliation.md`、`backend/spring/ioc-bean-and-transaction-proxy.md`、`backend/java/java-version-capability-cards.md`、`mistakes/spring/aop-transaction-proxy-boundaries.md`、`sessions/2026-08-02-aop-transaction-propagation-java-version-cards.md`、`sessions/2026-08-03-pingan-interview-prep-and-project-reliability.md`、`resume/java-backend-resume.md`、`resume/ai-application-resume.md`
+- 下一步动作：本任务已完成。后续如果真实面试再次暴露项目缩放或 Spring 代理表达问题，新建小任务或回补对应主题；当前恢复入口切换到 `BL-025`，`BL-016` 保持 `REVIEW` 等待后续闭卷验证。
 
 ### BL-023 韶音面试数据准确性与基础机制复核
 
@@ -151,9 +166,9 @@ Backlog 任务可以来自：
 - 主题：Spring Batch 的作业模型、Chunk 事务、状态持久化、失败重启、跳过重试和并行分片
 - 学习目标：理解 Spring Batch 相比自定义定时任务解决了哪些批处理工程问题，并能将其机制与现有百万级流水、Checkpoint 和中断续跑经验进行对照。
 - 验收标准：能讲清 Job、JobInstance、JobExecution、Step、StepExecution 和 JobRepository 的关系；能区分 Tasklet 与 Chunk；能解释 ItemReader、ItemProcessor、ItemWriter 和 Chunk 事务边界；能说明 restart、skip、retry、listener、partition 和并行 Step 的作用与风险；能判断什么场景应该使用 Spring Batch，什么场景自定义任务更合适。
-- 当前断点：已有自定义批处理、任务分片、批次事务、数据库状态抢占和明细级 Checkpoint 的生产经验，但尚未系统学习或使用 Spring Batch，不能把自研任务机制表述为 Spring Batch 经验。
-- 关联文件：`projects/settlement-system/transaction-flow-and-reconciliation.md`、`backend/java/thread-pool.md`、`LEARNING_ROADMAP.md`
-- 下一步动作：先比较普通 `@Scheduled` + 自定义任务表与 Spring Batch 的职责边界，再进入 Job / Step / JobRepository。
+- 当前断点：2026-08-03 重新确认结算系统的长任务实际使用过 Spring Batch，而不是纯自研定时任务。当前能够回忆 Chunk 批次事务、分片执行、任务心跳、外部停止和失败续跑链路；外部停止很可能使用 Spring Batch 的 `JobOperator.stop`，并同步把自研任务表更新为“停止中”，等待当前 Chunk 和各分片退出后再允许重启。由于已无法查看原项目代码，具体 Spring Batch 版本、Job / Step 拓扑、分区实现和准确 API 仍需保持待确认，不能把机制推断写成已核实源码事实。
+- 关联文件：`projects/settlement-system/transaction-flow-and-reconciliation.md`、`backend/java/thread-pool.md`、`sessions/2026-08-03-pingan-interview-prep-and-project-reliability.md`、Spring Batch 官方文档：`https://docs.spring.io/spring-batch/reference/job/advanced-meta-data.html`、`LEARNING_ROADMAP.md`
+- 下一步动作：恢复本任务时，不再从“是否用过 Spring Batch”开始，而是先画出实际项目中的父任务、分片实例、自研任务表、Spring Batch 元数据、Chunk 事务和停止 / 重启链路，再对照 Job、JobInstance、JobExecution、Step、StepExecution、JobRepository 补齐准确框架概念。
 
 ### BL-019 Linux 生产问题诊断主线
 
