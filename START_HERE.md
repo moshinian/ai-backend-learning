@@ -12,17 +12,15 @@
 
 当前候选任务：
 
-- `BL-025`：平安产险面试复盘与分布式事务最小补强
+- `BL-026`：颂拓 AI Agent 一面复盘与生产化补强
 
 说明：
 
-- 2026-07-18 已确认将求职和学习主航道从算法倾向的 AI 应用岗位切回 Java 后端。
-- 新定位是“Java 后端主线 + AI 应用工程补充”，已有 RAG / Agent 学习继续作为差异化能力，不再作为主要竞争方向无限扩张。
-- 2026-08-03 已完成平安产险面试前的自我介绍、结算系统全貌、分区性能案例和可恢复分片任务口述；`BL-024` 的技术补强和项目表达均达到当前验收标准，已标记为 `DONE`。
-- 当天真实面试新增分布式事务知识缺口：面试官提到候选人记忆中的“二级事务、三级事务”，当前只能推断可能指 2PC / 3PC，原词和机制都尚未核对。
-- 2026-08-03 重新确认项目实际使用过 Spring Batch。当前能够解释 Chunk、分片、心跳、协作式停止和失败续跑，但具体版本、Job / Step 拓扑和准确停止 API 仍需保持历史记忆边界，`BL-018` 继续为 `TODO`。
-- `BL-016` 万级 QPS 仍为 `REVIEW`，尚缺一次独立闭卷口述；不因今天的面试速答提前标记完成。
-- 用户今晚停止学习并休息，2026-08-04 还有两场面试。下一会话先按两场面试的 JD 和时间做最小取舍，不扩张完整分布式事务或 Spring Batch 目录。
+- 2026-08-04 已完成颂拓 AI Agent 工程师技术一面。面试官表示可能安排 AI 算法负责人继续交流，但面试结果和下一轮均尚未确认。
+- 本场验证了“Java 后端主线 + AI 应用工程补充”与生产化 Agent 后端岗位的匹配，不改变长期求职定位。
+- 当前最高收益不是扩张新的 Agent 框架，而是准确讲清个人项目已经实现的 SSE 事件链路，并补齐长期任务、多实例和容器隔离的最小边界。
+- `BL-025` 分布式事务补强保持 `TODO`，暂降为 P1；完成 `BL-026` 当前最小验收后，或新的 Java 金融后端面试需要时再恢复。
+- `BL-016` 万级 QPS 保持 `REVIEW`，`BL-018` Spring Batch 保持 `TODO`，均未因本场面试提前改变状态。
 
 ---
 
@@ -30,40 +28,31 @@
 
 当前断点：
 
-1. `BL-025` 状态为 `TODO`。只确认面试暴露了分布式事务陌生问题，尚不能把“二级 / 三级事务”直接等同为 2PC / 3PC，更不能把未学习的协议写成已掌握。
-2. 下一轮最小学习入口是：本地事务与分布式事务的边界、2PC 流程和阻塞 / 不确定状态、3PC 增加阶段与仍存在的网络分区边界，再比较 TCC、Saga、事务型 Outbox / 本地消息表。
-3. 已稳定区分项目可靠性层次：数据库条件更新负责同名定时父任务抢占；Redis 功能级锁负责手工与定时跨入口互斥；Spring Batch 和分片心跳负责执行控制；明细状态、批次事务和幂等负责数据正确与续跑。
-4. 已确认 2C 支付订单表以 `business_day` 做日期分区，早期按月、后期按周；单次匹配通常查询一周，改造后 100 万笔从约半小时恢复到约 8 分钟。准确 `RANGE` DDL 和扫描行数变化没有历史证据，不补写。
-5. 已确认分片任务使用类似 `p1-T,p2-T,p3-T,p4-T` 的汇总状态；该实现能够收口固定分片，但状态表达和并发更新仍有结构化改进空间。
-6. RAG 项目继续保持真实时间线：离职前完成初步搭建但没有用户试用，Rerank 和 Agent 是离职后个人持续实践，不包装为公司生产成果。
+1. `BL-026` 状态为 `DOING`，一面纪要审计和 SSE 第一轮机制归纳已经完成，尚缺闭卷口述及后续主题的最小验证。
+2. 已确认 Run 是一次完整执行，Step 是可观察阶段，Action 是需要确认或产生副作用的业务动作，Event 是按 Run 排序、用于持久化和推送的事实。
+3. 已确认个人项目存在两段流：Python Runtime 到 Java 的运行时 SSE，以及 Java 到前端的业务 SSE；Java 按完整 Event 入库，事务提交后发布，重连时按 `Last-Event-ID` 补发，并通过心跳与恢复任务处理孤儿 Run。
+4. 当前实现边界是 Step 级而非 Token 级；实时通道仍为单实例内存广播，尚无用户主动取消，也不能声称具备完整生产认证、指标、告警和多实例高可用。
+5. 下一层待补内容是长期记忆冲突与版本、长任务检查点与校验、MCP / Skill 版本和工具选择质量、FastAPI 多实例共享状态与广播、容器沙箱隔离。
+6. 会议纪要可能存在转写误差：`Bn25` 很可能是 BM25，`Rank` 很可能是 Rerank，`NCM` 很可能是 MCP，`ASROPI` 暂无法确认；会议助手对面试官态度的判断不作为结果事实。
+7. 项目时间线继续保持原边界：公司阶段只有离职前的 RAG 初步搭建且没有用户试用；Rerank、Agent、事件恢复和后续工程能力属于离职后的个人持续建设。
 
 ---
 
 ## 4. 最近学习位置
 
-最近一次归档：
+本次一面与机制沉淀：
 
-1. `sessions/2026-08-03-pingan-interview-prep-and-project-reliability.md`
+1. `sessions/2026-08-04-suunto-ai-agent-interview-and-sse-review.md`
+2. `interview/real-records/2026-08-04-suunto-ai-agent-engineer.md`
+3. `backend/distributed-system/agent-sse-event-stream-and-recovery.md`
+4. `mistakes/interview/agent-project-implementation-and-expression-gap.md`
+5. `interview/ai-application-questions.md`
+
+此前 Java 主线断点：
+
+1. `LEARNING_BACKLOG.md` 中的 `BL-025`
 2. `interview/real-records/2026-08-03-pingan-property-backend-individual-group.md`
-3. `sessions/2026-08-02-aop-transaction-propagation-java-version-cards.md`
-
-本次项目表达与任务可靠性已有沉淀：
-
-1. `projects/settlement-system/transaction-flow-and-reconciliation.md`
-2. `backend/redis/distributed-lock.md`
-3. `mistakes/distributed/redis-lock.md`
-4. `sessions/2026-08-03-pingan-interview-prep-and-project-reliability.md`
-
-本次平安产险真实面试已有沉淀：
-
-1. `interview/real-records/2026-08-03-pingan-property-backend-individual-group.md`
-2. `LEARNING_BACKLOG.md` 中的 `BL-025`
-
-高并发主题已有沉淀：
-
-1. `backend/distributed-system/high-qps-capacity-design.md`
-2. `mistakes/distributed/high-qps-and-mq-boundaries.md`
-3. `sessions/2026-07-28-high-qps-capacity-design.md`
+3. `sessions/2026-08-03-pingan-interview-prep-and-project-reliability.md`
 
 ---
 
@@ -71,23 +60,22 @@
 
 建议下一步：
 
-1. 今晚停止学习并休息，不再展开新知识。
-2. 明天新会话先提供两场面试的 JD、时间和形式，按岗位要求决定是否在面试前投入 `BL-025`。
-3. 若有 20 至 30 分钟补强时间，先确认“二级 / 三级事务”是否指 2PC / 3PC，再完成 30 至 60 秒最小回答；只覆盖本质、阶段、失败边界、替代方案和结算项目映射。
-4. 面试前不学习 Seata 源码、完整 Spring Batch 目录或分布式事务产品配置。
-5. 两场面试结束后，再根据真实暴露点决定继续 `BL-025`，还是回到 `BL-016` 的高并发闭卷验证。
+1. 不看笔记，用 60 至 90 秒讲清 Run / Step / Action / Event、两段 SSE、事件入库、事务提交后发布、`Last-Event-ID` 补发和当前边界。
+2. 回答“Python 每返回一个字，Java 是否都要入库”时，明确 Token、SSE 帧和业务 Event 不是同一粒度；当前项目按完整业务 Event 入库。
+3. 依次完成长期记忆与长任务校验、MCP / Skill 版本与工具评测、FastAPI 多实例与容器沙箱的最小回答卡。
+4. 若确认进入算法负责人下一轮，再按本场问题做一次闭卷模拟；未确认前不扩张模型训练、推理框架或 Kubernetes 平台运维细节。
+5. `BL-026` 达到最小验收后，根据真实面试安排恢复 `BL-025` 或 `BL-016`。
 
 ---
 
 ## 6. 优先读取文件
 
-1. `LEARNING_BACKLOG.md` 中的 `BL-025`
-2. `sessions/2026-08-03-pingan-interview-prep-and-project-reliability.md`
-3. `interview/real-records/2026-08-03-pingan-property-backend-individual-group.md`
-4. `projects/settlement-system/transaction-flow-and-reconciliation.md`
-5. `backend/redis/distributed-lock.md`
-6. `mistakes/distributed/redis-lock.md`
-7. `LEARNING_BACKLOG.md` 中的 `BL-018`
+1. `LEARNING_BACKLOG.md` 中的 `BL-026`
+2. `backend/distributed-system/agent-sse-event-stream-and-recovery.md`
+3. `interview/real-records/2026-08-04-suunto-ai-agent-engineer.md`
+4. `mistakes/interview/agent-project-implementation-and-expression-gap.md`
+5. `interview/ai-application-questions.md`
+6. `sessions/2026-08-04-suunto-ai-agent-interview-and-sse-review.md`
 
 需要判断长期能力方向时，再读取：
 

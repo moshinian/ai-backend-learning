@@ -85,19 +85,33 @@ Backlog 任务可以来自：
 
 ## 5. 当前任务池
 
+### BL-026 颂拓 AI Agent 一面复盘与生产化补强
+
+- ID：BL-026
+- 优先级：P0
+- 来源：真实面试暴露 + 潜在下一轮准备
+- RoadmapRef：RM-06 AI Backend / RAG / Agent 能力；RM-08 面试复盘与查漏补缺；RM-09 系统设计、容量与性能工程；RM-10 交付、运维与平台基础
+- 状态：DOING
+- 主题：围绕颂拓 AI Agent 工程师一面暴露的 SSE 表达、长期任务治理、多实例部署和容器隔离问题，建立生产化 Agent 后端的最小回答主线
+- 学习目标：准确讲清个人项目中 Run / Step / Action / Event、Python 到 Java 与 Java 到前端的两段 SSE、事件持久化、事务提交后发布、`Last-Event-ID` 补发、心跳和孤儿 Run 恢复；区分 Step 级与 Token 级流式、事件表与实时广播、兼容性版本治理与工具选择质量；为长期记忆、长任务校验、FastAPI 多实例和容器沙箱建立可落地但不过度包装的最小方案。
+- 验收标准：能用 60 至 90 秒闭卷讲清实际 SSE 链路和当前边界；能回答“Python 每返回一个字是否都要入库”并说明事件与 Token 的不同写入粒度；能用状态权威、共享存储、消息通道、优雅退出和故障演练说明单实例到多实例的改造；能区分 MCP 协议、工具 Schema、Skill / Prompt 和模型版本，并说明版本控制不等于工具选择正确；能为记忆冲突和长任务跑偏分别提出数据模型、确定性校验与按风险触发的模型校验；能说明容器沙箱的最小安全边界；全程区分个人项目已实现、设计方向和未有生产经验。
+- 当前断点：2026-08-04 已完成一面纪要审计和 SSE 第一轮机制归纳。已确认个人项目不是“尚未做状态表”，而是已实现 Step 级完整事件持久化、事务提交后发布、`Last-Event-ID` 补发、心跳与孤儿 Run 恢复；当前缺口是逐 Token 流式、多实例共享广播、用户主动取消及完整生产认证 / 指标。长期记忆、长任务校验、MCP / Skill 版本与工具选择质量、FastAPI 多实例、容器沙箱、BM25 / 多语言和模型基础仍待闭卷验证。会议纪要中的 BM25、Rerank、MCP 等术语可能存在转写误差，面试结果和下一轮尚未确认。
+- 关联文件：`interview/real-records/2026-08-04-suunto-ai-agent-engineer.md`、`backend/distributed-system/agent-sse-event-stream-and-recovery.md`、`interview/ai-application-questions.md`、`mistakes/interview/agent-project-implementation-and-expression-gap.md`、`sessions/2026-08-04-suunto-ai-agent-interview-and-sse-review.md`、`LEARNING_ROADMAP.md`
+- 下一步动作：先脱稿完成一次 60 至 90 秒 SSE 主链路和边界口述，再按“记忆与长任务治理 -> MCP / Skill 版本和评测 -> FastAPI 多实例与容器沙箱”的顺序补强。若确认进入算法负责人下一轮，再增加一次针对性模拟；结果未确认前不扩张模型训练、推理框架或 Kubernetes 平台运维细节。
+
 ### BL-025 平安产险面试复盘与分布式事务最小补强
 
 - ID：BL-025
-- 优先级：P0
-- 来源：真实面试暴露 + 次日面试准备
+- 优先级：P1
+- 来源：真实面试暴露
 - RoadmapRef：RM-04 Redis / MQ / 分布式能力；RM-05 项目深挖与工程表达；RM-08 面试复盘与查漏补缺
 - 状态：TODO
 - 主题：核对面试中的“二级事务、三级事务”是否指两阶段提交 / 三阶段提交，并建立分布式事务方案的最小回答入口
 - 学习目标：先区分本地事务、跨服务 / 跨数据源分布式事务和业务最终一致性，再理解 2PC、3PC、TCC、Saga、事务型 Outbox / 本地消息表分别解决什么问题、依赖什么前提、付出什么代价；能够把这些机制与结算系统的 ERP 调用、任务状态、重试、幂等和补偿边界正确对应。
 - 验收标准：能确认“二级 / 三级事务”原词与 2PC / 3PC 推断的事实边界；能用 30 至 60 秒说明 2PC 的协调者、参与者、Prepare、Commit / Rollback 和阻塞 / 不确定状态问题；能说明 3PC 增加的阶段、超时思想及其仍不能消除的网络分区边界；能比较 2PC / XA、TCC、Saga、事务型 Outbox / 本地消息表的适用场景和代价；能明确说明结算系统中的单库批次事务是本地事务，Redis 锁不是事务，ERP 链路依赖状态推进、稳定幂等键、重试和补偿，不能包装成强一致分布式事务。
-- 当前断点：2026-08-03 平安产险后端面试中，面试官在分布式事务追问里提到候选人记忆中的“二级事务、三级事务”。当前只能推断可能指两阶段提交和三阶段提交，尚未核对原问题，也尚未形成机制回答。当天已能区分数据库父任务抢占、Redis 跨手工 / 定时入口互斥、Spring Batch 协作式停止、分片状态汇总、明细级 Checkpoint 和批次本地事务，但这些任务可靠性机制不能直接等同于分布式事务。
+- 当前断点：2026-08-03 平安产险后端面试中，面试官在分布式事务追问里提到候选人记忆中的“二级事务、三级事务”。当前只能推断可能指两阶段提交和三阶段提交，尚未核对原问题，也尚未形成机制回答。当天已能区分数据库父任务抢占、Redis 跨手工 / 定时入口互斥、Spring Batch 协作式停止、分片状态汇总、明细级 Checkpoint 和批次本地事务，但这些任务可靠性机制不能直接等同于分布式事务。2026-08-04 因颂拓 AI Agent 一面出现更紧迫且可能进入下一轮的暴露项，本任务保持 `TODO` 并暂降为 P1，机制学习尚未开始。
 - 关联文件：`interview/real-records/2026-08-03-pingan-property-backend-individual-group.md`、`sessions/2026-08-03-pingan-interview-prep-and-project-reliability.md`、`projects/settlement-system/transaction-flow-and-reconciliation.md`、`backend/redis/distributed-lock.md`、`mistakes/distributed/redis-lock.md`、`LEARNING_ROADMAP.md`
-- 下一步动作：今晚停止学习并休息。下一次恢复时先结合次日两场面试的 JD 做最小取舍；若有 20 至 30 分钟知识补强时间，则先核对 2PC / 3PC 术语，用“本质、流程、失败边界、替代方案、项目映射”完成一张最小回答卡和一次闭卷口述，不扩张到分布式事务源码或产品实现细节。
+- 下一步动作：完成 `BL-026` 的当前最小验收后，或下一场 Java 金融后端面试确认需要时，再核对 2PC / 3PC 术语，用“本质、流程、失败边界、替代方案、项目映射”完成一张最小回答卡和一次闭卷口述，不扩张到分布式事务源码或产品实现细节。
 
 ### BL-024 和生创新技术全栈工程师面试复盘与最小补强
 

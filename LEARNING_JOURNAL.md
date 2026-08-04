@@ -101,6 +101,15 @@
 - 对既有方案的复盘不再停留在“Redis 锁有用或没用”的二选一，而是先确认锁保护的入口、资源和生命周期；也能够说明功能级全局锁与分片状态字符串的简单性收益和扩展代价。
 - 当天真实面试新增分布式事务缺口：面试官提到的“二级事务、三级事务”可能指 2PC / 3PC，但原词尚未核对。后续必须区分本地批次事务、跨系统最终一致性和分布式提交协议，不能用 Redis 锁、状态机或补偿机制直接替代协议知识。
 
+### 2026-08-04 Agent 工程学习从功能清单进入状态与事件链
+
+- 颂拓 AI Agent 工程师一面验证了“Java 生产后端能力迁移到 Agent Runtime”的岗位匹配：状态、幂等、恢复、数据库、缓存、消息、压测和排障，比单纯罗列 Agent 框架更接近岗位核心。
+- 本场出现新的高价值反差：个人 `rag-system` 已经实现 Run / Step / Action / Event、事件表、事务提交后发布、`Last-Event-ID` 补发、心跳和孤儿 Run 恢复，但现场认知仍停留在“可以增加状态表”。代码实现不能代替本人形成可检索的机制模型。
+- SSE 开始按四个维度拆分：Step 级还是 Token 级、实时帧是否持久化、断线后如何补发、单实例广播如何升级为多实例共享通道。只有分别回答这四个问题，才能避免把“流式”说成一个模糊功能。
+- 工具治理也需要分层：版本号解决兼容性和可复现性，工具描述、参数约束和评测集决定模型选择质量；MCP 元数据不能替代业务认证与授权。
+- Python 多实例部署、容器沙箱、模型工程化、长期记忆和长任务校验仍是当前能力缺口。后续只做与潜在下一轮直接相关的最小补强，不把尚未实践的方案包装成生产经验。
+- 该岗位是 Java 后端主线的合理延伸，不改变长期求职定位。当前通过 `BL-026` 短周期补强；未确认下一轮前，不扩张模型训练或平台运维知识面。
+
 ---
 
 ## 长期典型误区模式
@@ -216,6 +225,10 @@
 - 学习 LangChain / LangGraph 时，容易只抓住已跑通的 `create_agent`、StateGraph、checkpoint、interrupt 片段，忽略官方文档中的 Core components、Middleware、Runtime、Frontend、Capabilities、Production、Graph API / Functional API 等目录级全貌。
 - RAG 工程链路能讲通后，容易在 Rerank、私有语料排序失效、文档结构化解析和前沿算法追问处变成泛化回答，需要把工程链路和检索 / NLP 算法机制接起来。
 - RAG 文档切分容易停留在固定窗口 + overlap，面对语义切分、Word / PDF / OCR / 表格等复杂文档结构时，需要主动区分“已落地实现”和“成熟优化方案”，并把结构抽取、语义边界、表格结构和评测闭环讲清。
+- 容易把 Step 级事件、Token 级流式、事件持久化和多实例实时广播都简称为 SSE，导致项目已经实现的恢复链路和仍未实现的能力边界一起失真。
+- 容易因为代码由协作工具完成并已跑通，就误以为本人已经形成机制理解；面试前仍必须沿入口、状态权威、事件顺序、事务边界、恢复路径和失败边界做一次闭卷还原。
+- 容易认为给 MCP 工具或 Skill 增加版本号就能改善模型效果，忽略版本治理解决兼容性，而工具描述、候选集合、参数 Schema 和评测才决定选择质量。
+- 容易把 Java 多实例和任务治理经验直接类比成 Python / FastAPI、Kubernetes 和容器沙箱的实际经验；可迁移的是设计方法，具体运行时和交付机制仍要补课并保留经历边界。
 
 主要索引：
 
@@ -233,6 +246,10 @@
 12. `mistakes/interview/rag-rerank-algorithm-depth.md`
 13. `sessions/2026-07-13-kingdee-ai-application-interview-prep.md`
 14. `interview/real-records/2026-07-13-kingdee-ai-application-senior-engineer.md`
+15. `backend/distributed-system/agent-sse-event-stream-and-recovery.md`
+16. `interview/real-records/2026-08-04-suunto-ai-agent-engineer.md`
+17. `mistakes/interview/agent-project-implementation-and-expression-gap.md`
+18. `sessions/2026-08-04-suunto-ai-agent-interview-and-sse-review.md`
 
 ### 8. 学习管理容易把路线、任务、断点和归档混在一起
 
@@ -343,6 +360,18 @@
 22. `interview/real-records/2026-07-13-kingdee-ai-application-senior-engineer.md`
 23. `interview/real-records/2026-07-28-shokz-senior-java-supply-chain.md`
 24. `sessions/2026-07-28-shokz-interview-review.md`
+25. `interview/real-records/2026-08-04-suunto-ai-agent-engineer.md`
+26. `backend/distributed-system/agent-sse-event-stream-and-recovery.md`
+27. `mistakes/interview/agent-project-implementation-and-expression-gap.md`
+28. `sessions/2026-08-04-suunto-ai-agent-interview-and-sse-review.md`
+
+### Agent SSE、状态持久化与恢复
+
+1. `backend/distributed-system/agent-sse-event-stream-and-recovery.md`
+2. `interview/ai-application-questions.md`
+3. `interview/real-records/2026-08-04-suunto-ai-agent-engineer.md`
+4. `mistakes/interview/agent-project-implementation-and-expression-gap.md`
+5. `sessions/2026-08-04-suunto-ai-agent-interview-and-sse-review.md`
 
 ### Java 线程池与后台任务
 
@@ -382,6 +411,8 @@
 3. `sessions/2026-07-28-shokz-interview-review.md`
 4. `interview/real-records/2026-08-03-pingan-property-backend-individual-group.md`
 5. `sessions/2026-08-03-pingan-interview-prep-and-project-reliability.md`
+6. `interview/real-records/2026-08-04-suunto-ai-agent-engineer.md`
+7. `mistakes/interview/agent-project-implementation-and-expression-gap.md`
 
 ### Java Map 与并发容器
 
@@ -459,3 +490,4 @@
 29. `sessions/2026-07-28-shokz-interview-review.md`
 30. `sessions/2026-08-02-aop-transaction-propagation-java-version-cards.md`
 31. `sessions/2026-08-03-pingan-interview-prep-and-project-reliability.md`
+32. `sessions/2026-08-04-suunto-ai-agent-interview-and-sse-review.md`
