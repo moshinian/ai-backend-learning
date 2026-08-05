@@ -110,6 +110,23 @@
 - Python 多实例部署、容器沙箱、模型工程化、长期记忆和长任务校验仍是当前能力缺口。后续只做与潜在下一轮直接相关的最小补强，不把尚未实践的方案包装成生产经验。
 - 该岗位是 Java 后端主线的合理延伸，不改变长期求职定位。当前通过 `BL-026` 短周期补强；未确认下一轮前，不扩张模型训练或平台运维知识面。
 
+### 2026-08-05 Agent 工程从状态事件链进入 Harness 全貌
+
+- 兔展 AI 平台后端技术一面再次出现“代码已有能力，但本人无法先画出系统”的反差。代码复核确认个人项目已实现单 Agent 模型—工具循环、`ToolMessage`、工具注册、读写风险分流和事件审计；现场却先讲 QPS、状态表和监控，导致面试官没有看到 Harness 主链路。
+- 这不是单纯的表达问题。当前项目确实还没有通用多轮聊天、独立 Query 改写、长期记忆、Skill 管理、多 Agent / 意图路由和代码执行沙箱。后续必须同时完成“已实现证据内化”和“真实能力扩展”，不能用状态、幂等和恢复替代 Agent 功能架构。
+- RAG 新增两个长期入口：多轮追问先改写成可独立检索的 Query；文档解析先区分原生文本、扫描 OCR、版面和表格，再讨论 Chunk。个人项目当前只确认 MD、TXT 和原生文本 PDF，成熟方案不能反写成已实现事实。
+- MySQL 联合索引学习新增搜索区间、覆盖索引和 ICP 边界；“范围条件之后字段完全不走索引”不再作为稳定答案。
+- 面试事实边界扩大到现场口述：文档量、延迟、模型平台、文件类型和历史视觉模型如果没有证据，不能为了让回答完整临时补齐。职业转向也要保留事实但去掉对前公司的负面评价，突出四年后端积累与主动选择。
+- 兔展团队确认实际工作涉及政企 Agent 定制、DSL 交互卡片、私有知识库、外部接口和 Kubernetes / 远程网络交付，说明 Agent 前端控制面与政企私有化交付具有长期建设价值，分别回流 `RM-06` 与 `RM-10`；具体任务状态和推进顺序不在 Journal 中记录。
+
+### 2026-08-05 限时编码与 ToC 设计从知识理解进入交付验证
+
+- 转转集团全栈工程师面试把算法短板校准为“正确推导未收敛成可运行代码”：相邻交换题已经得到第 x 个 `a` 的位置差 `X - x`，但没有在 15 分钟内消除 Map、完成合法 Java、数据类型检查和样例自测。后续算法掌握必须同时验证思路、实现和限时交付。
+- 内部批处理的分区、索引、状态和恢复经验不能直接替代 ToC 系统设计。ToC 订单需要先从用户列表、详情、峰值 SLA、分页和降级结果建立访问图，再讨论分片键、路由、冷热与扩容。
+- “先澄清场景”出现新的边界：必要约束应该询问，但面试官要求独立设计后，应主动声明合理假设并给出第一版方案，不能持续等待对方提供现有架构。
+- 6 小时 Redis 锁再次证明长任务互斥需要按入口锁、锁租约、数据库执行权、业务幂等和任务最大时间分层；心跳与软停止不能代替对固定 TTL 自身的回答。
+- 面试官明确反馈表达过长、缺少 ToC 经验。前端能力仍保持后端主导的事实边界，单场全栈岗位不改变长期求职主线；限时编码、ToC 用户链路和短时系统设计表达则具有跨岗位长期价值。
+
 ---
 
 ## 长期典型误区模式
@@ -141,6 +158,7 @@
 - 容易认为运行时注解会自动产生 AOP 能力，或把代理 Bean 理解成所有方法都会执行相同增强，忽略 Advisor、Pointcut 和逐方法匹配。
 - 容易把 Java 异常是否被 `catch` 与事务的 `rollback-only` 状态混为一谈，没有先区分跨 Bean 代理调用和同类自调用。
 - 容易把 JDBC 回滚异常直接解释成事务未开启或数据库部分提交，缺少对原始异常和最终数据状态的核对。
+- 联合索引容易停留在“等值在前、范围在后”和“范围之后失效”的口诀，没有区分构造 B+ 树扫描区间、索引记录过滤、覆盖索引、回表和 ICP。
 
 主要索引：
 
@@ -150,6 +168,7 @@
 4. `interview/mysql-questions.md`
 5. `backend/spring/ioc-bean-and-transaction-proxy.md`
 6. `mistakes/spring/aop-transaction-proxy-boundaries.md`
+7. `mistakes/database/composite-index-range-and-icp.md`
 
 ### 3. 容易把任务状态、处理权和业务幂等混在一起
 
@@ -191,11 +210,14 @@
 
 - DP 中容易先想公式或背包分类，而不是先定义子问题、状态含义、答案位置和转移依赖。
 - 前缀长度、字符下标、`dp[0]` 初始化、一维压缩中的旧值和新值需要持续用语义校验。
+- 即使已经得到正确位置差或不变量，也可能继续构造不必要的 Map / List，并停留在伪代码；面试验收必须包括可编译 Java、数据范围、边界和限时自测。
 
 主要索引：
 
 1. `fundamentals/algorithm/dp-basic.md`
 2. `mistakes/algorithm/dp.md`
+3. `mistakes/algorithm/adjacent-swap-live-coding.md`
+4. `interview/real-records/2026-08-05-zhuanzhuan-fullstack-engineer.md`
 
 ### 6. 项目表达容易堆功能，缺少问题分层
 
@@ -204,6 +226,8 @@
 - 结算系统容易把业务场景、系统架构、数据流、性能瓶颈和技术栈混在一起。
 - RAG 项目容易罗列文档解析、向量化、模型调用等功能，而不是按业务问题、架构、职责、难点和指标组织。
 - 面对不熟悉业务的听众，容易在系统全貌尚未建立时进入字段、缓存、分页和异常分支；对方表示没听懂后，又继续增加同层细节。
+- 系统设计题中容易把澄清问题变成等待提示；对方要求独立设计后，仍没有先声明默认假设并给出第一版方案。
+- 内部批处理经验容易从分区、索引和任务机制起答，缺少 ToC 用户列表 / 详情、SLA、分页、降级和体验结果的入口。
 
 主要索引：
 
@@ -213,6 +237,8 @@
 4. `interview/real-records/2026-06-30-ai-agent-rag-backend.md`
 5. `mistakes/interview/project-zoom-level-and-listener-alignment.md`
 6. `interview/real-records/2026-07-29-hesheng-innovation-fullstack-engineer.md`
+7. `interview/real-records/2026-08-05-zhuanzhuan-fullstack-engineer.md`
+8. `mistakes/distributed/toc-order-design-without-access-path.md`
 
 ### 7. AI Backend 表达容易混淆已实现、设计方案和生产经验
 
@@ -229,6 +255,8 @@
 - 容易因为代码由协作工具完成并已跑通，就误以为本人已经形成机制理解；面试前仍必须沿入口、状态权威、事件顺序、事务边界、恢复路径和失败边界做一次闭卷还原。
 - 容易认为给 MCP 工具或 Skill 增加版本号就能改善模型效果，忽略版本治理解决兼容性，而工具描述、候选集合、参数 Schema 和评测才决定选择质量。
 - 容易把 Java 多实例和任务治理经验直接类比成 Python / FastAPI、Kubernetes 和容器沙箱的实际经验；可迁移的是设计方法，具体运行时和交付机制仍要补课并保留经历边界。
+- 多轮 RAG 容易把“携带会话历史”和“生成独立检索 Query”混为一谈，遇到指代词时先想到 Agent / MCP，而没有回答最终送给关键词或向量检索器的文本。
+- Agent 项目容易用 LangGraph、状态表、SSE、Checkpoint 和 HITL 等组件证明“做过”，却没有先讲 Model、Messages、Tools、tool loop、Context、Memory、Skill、Sandbox 和 Evaluation 组成的 Harness 全貌。
 
 主要索引：
 
@@ -250,6 +278,10 @@
 16. `interview/real-records/2026-08-04-suunto-ai-agent-engineer.md`
 17. `mistakes/interview/agent-project-implementation-and-expression-gap.md`
 18. `sessions/2026-08-04-suunto-ai-agent-interview-and-sse-review.md`
+19. `interview/real-records/2026-08-05-tuzhan-ai-platform-backend.md`
+20. `mistakes/interview/rag-multi-turn-query-rewrite.md`
+21. `mistakes/database/composite-index-range-and-icp.md`
+22. `sessions/2026-08-05-tuzhan-interview-review-and-capability-map.md`
 
 ### 8. 学习管理容易把路线、任务、断点和归档混在一起
 
@@ -373,6 +405,23 @@
 4. `mistakes/interview/agent-project-implementation-and-expression-gap.md`
 5. `sessions/2026-08-04-suunto-ai-agent-interview-and-sse-review.md`
 
+### Agent Harness、Context 与工具循环
+
+1. `interview/ai-application-questions.md`
+2. `backend/distributed-system/agent-sse-event-stream-and-recovery.md`
+3. `mistakes/interview/agent-project-implementation-and-expression-gap.md`
+4. `interview/real-records/2026-08-05-tuzhan-ai-platform-backend.md`
+5. `sessions/2026-08-05-tuzhan-interview-review-and-capability-map.md`
+6. `LEARNING_BACKLOG.md` 中的 `BL-028`
+
+### 多轮 RAG Query 改写与文档解析
+
+1. `interview/rag-project-story.md`
+2. `mistakes/interview/rag-multi-turn-query-rewrite.md`
+3. `mistakes/interview/rag-rerank-algorithm-depth.md`
+4. `interview/real-records/2026-08-05-tuzhan-ai-platform-backend.md`
+5. `LEARNING_BACKLOG.md` 中的 `BL-029`
+
 ### Java 线程池与后台任务
 
 1. `backend/java/thread-pool.md`
@@ -388,6 +437,17 @@
 3. `sessions/2026-07-28-high-qps-capacity-design.md`
 4. `backend/java/thread-pool.md`
 5. `interview/java-concurrency-questions.md`
+6. `mistakes/distributed/toc-order-design-without-access-path.md`
+7. `interview/real-records/2026-08-05-zhuanzhuan-fullstack-engineer.md`
+8. `sessions/2026-08-05-zhuanzhuan-interview-review.md`
+
+### 限时算法编码与 Java 实现
+
+1. `mistakes/algorithm/adjacent-swap-live-coding.md`
+2. `fundamentals/algorithm/dp-basic.md`
+3. `mistakes/algorithm/dp.md`
+4. `interview/real-records/2026-08-05-zhuanzhuan-fullstack-engineer.md`
+5. `sessions/2026-08-05-zhuanzhuan-interview-review.md`
 
 ### Spring IOC、Bean 与事务代理
 
@@ -491,3 +551,5 @@
 30. `sessions/2026-08-02-aop-transaction-propagation-java-version-cards.md`
 31. `sessions/2026-08-03-pingan-interview-prep-and-project-reliability.md`
 32. `sessions/2026-08-04-suunto-ai-agent-interview-and-sse-review.md`
+33. `sessions/2026-08-05-tuzhan-interview-review-and-capability-map.md`
+34. `sessions/2026-08-05-zhuanzhuan-interview-review.md`

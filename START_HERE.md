@@ -12,15 +12,14 @@
 
 当前候选任务：
 
-- `BL-026`：颂拓 AI Agent 一面复盘与生产化补强
+- `BL-028`：Agent Harness 架构与项目证据闭环
 
 说明：
 
-- 2026-08-04 已完成颂拓 AI Agent 工程师技术一面。面试官表示可能安排 AI 算法负责人继续交流，但面试结果和下一轮均尚未确认。
-- 本场验证了“Java 后端主线 + AI 应用工程补充”与生产化 Agent 后端岗位的匹配，不改变长期求职定位。
-- 当前最高收益不是扩张新的 Agent 框架，而是准确讲清个人项目已经实现的 SSE 事件链路，并补齐长期任务、多实例和容器隔离的最小边界。
-- `BL-025` 分布式事务补强保持 `TODO`，暂降为 P1；完成 `BL-026` 当前最小验收后，或新的 Java 金融后端面试需要时再恢复。
-- `BL-016` 万级 QPS 保持 `REVIEW`，`BL-018` Spring Batch 保持 `TODO`，均未因本场面试提前改变状态。
+- 2026-08-05 兔展 AI 平台后端技术一面已完成，结果尚未确认；`BL-027` 进入 `REVIEW`，事实审计完成后封盘。
+- 本场没有改变“Java 后端主线 + AI 应用工程补充”，当前恢复入口切换到完整 Agent Harness 的实现证据与架构表达。
+- 其他暴露项已登记到 `BL-029`、`BL-030` 和 `BL-027`；具体优先级、状态和验收标准以 `LEARNING_BACKLOG.md` 为准。
+- 2026-08-05 晚间转转集团全栈工程师面试已归档；限时编码、ToC 订单设计和 6 小时 Redis 锁分别回流 `BL-009`、`BL-031`、`BL-002`，均不替换当前 P0 入口。
 
 ---
 
@@ -28,31 +27,35 @@
 
 当前断点：
 
-1. `BL-026` 状态为 `DOING`，一面纪要审计和 SSE 第一轮机制归纳已经完成，尚缺闭卷口述及后续主题的最小验证。
-2. 已确认 Run 是一次完整执行，Step 是可观察阶段，Action 是需要确认或产生副作用的业务动作，Event 是按 Run 排序、用于持久化和推送的事实。
-3. 已确认个人项目存在两段流：Python Runtime 到 Java 的运行时 SSE，以及 Java 到前端的业务 SSE；Java 按完整 Event 入库，事务提交后发布，重连时按 `Last-Event-ID` 补发，并通过心跳与恢复任务处理孤儿 Run。
-4. 当前实现边界是 Step 级而非 Token 级；实时通道仍为单实例内存广播，尚无用户主动取消，也不能声称具备完整生产认证、指标、告警和多实例高可用。
-5. 下一层待补内容是长期记忆冲突与版本、长任务检查点与校验、MCP / Skill 版本和工具选择质量、FastAPI 多实例共享状态与广播、容器沙箱隔离。
-6. 会议纪要可能存在转写误差：`Bn25` 很可能是 BM25，`Rank` 很可能是 Rerank，`NCM` 很可能是 MCP，`ASROPI` 暂无法确认；会议助手对面试官态度的判断不作为结果事实。
-7. 项目时间线继续保持原边界：公司阶段只有离职前的 RAG 初步搭建且没有用户试用；Rerank、Agent、事件恢复和后续工程能力属于离职后的个人持续建设。
+1. `BL-028` 状态为 `DOING`。代码证据审计已完成，下一步是把真实实现画成不依赖框架名的 Harness 主链路并闭卷表达。
+2. 已实现与未实现边界、代码证据和验收要求统一记录在 `LEARNING_BACKLOG.md` 的 `BL-028`；对应认知纠偏见 `mistakes/interview/agent-project-implementation-and-expression-gap.md`。
+3. 多轮 RAG、MySQL ICP 和面试事实审计分别由 `BL-029`、`BL-030`、`BL-027` 承接，不在本文件展开知识结论。
 
 ---
 
 ## 4. 最近学习位置
 
-本次一面与机制沉淀：
+最新转转面试与复盘：
 
-1. `sessions/2026-08-04-suunto-ai-agent-interview-and-sse-review.md`
-2. `interview/real-records/2026-08-04-suunto-ai-agent-engineer.md`
-3. `backend/distributed-system/agent-sse-event-stream-and-recovery.md`
+1. `interview/real-records/2026-08-05-zhuanzhuan-fullstack-engineer.md`
+2. `sessions/2026-08-05-zhuanzhuan-interview-review.md`
+3. `mistakes/algorithm/adjacent-swap-live-coding.md`
+4. `mistakes/distributed/toc-order-design-without-access-path.md`
+
+此前兔展面试与复盘：
+
+1. `interview/real-records/2026-08-05-tuzhan-ai-platform-backend.md`
+2. `sessions/2026-08-05-tuzhan-interview-review-and-capability-map.md`
+3. `interview/mock-records/2026-08-05-tuzhan-ai-platform-backend-prep.md`
 4. `mistakes/interview/agent-project-implementation-and-expression-gap.md`
-5. `interview/ai-application-questions.md`
+5. `mistakes/interview/rag-multi-turn-query-rewrite.md`
+6. `mistakes/database/composite-index-range-and-icp.md`
+7. `mistakes/interview/career-transition-negative-narrative.md`
 
-此前 Java 主线断点：
+暂停前断点：
 
-1. `LEARNING_BACKLOG.md` 中的 `BL-025`
-2. `interview/real-records/2026-08-03-pingan-property-backend-individual-group.md`
-3. `sessions/2026-08-03-pingan-interview-prep-and-project-reliability.md`
+1. `LEARNING_BACKLOG.md` 中的 `BL-026`
+2. `sessions/2026-08-04-suunto-ai-agent-interview-and-sse-review.md`
 
 ---
 
@@ -60,22 +63,23 @@
 
 建议下一步：
 
-1. 不看笔记，用 60 至 90 秒讲清 Run / Step / Action / Event、两段 SSE、事件入库、事务提交后发布、`Last-Event-ID` 补发和当前边界。
-2. 回答“Python 每返回一个字，Java 是否都要入库”时，明确 Token、SSE 帧和业务 Event 不是同一粒度；当前项目按完整业务 Event 入库。
-3. 依次完成长期记忆与长任务校验、MCP / Skill 版本与工具评测、FastAPI 多实例与容器沙箱的最小回答卡。
-4. 若确认进入算法负责人下一轮，再按本场问题做一次闭卷模拟；未确认前不扩张模型训练、推理框架或 Kubernetes 平台运维细节。
-5. `BL-026` 达到最小验收后，根据真实面试安排恢复 `BL-025` 或 `BL-016`。
+1. 先回答：“如果只有 DeepSeek API Key，怎样从零实现一个 Claude Code 类单 Agent？”只讲最小主链路，不先讲 QPS、Kubernetes 或多 Agent。
+2. 沿真实代码核对 Model、Messages、Tool Registry、Tool Call、ToolMessage、Action、State、Event 和 Java / Python 边界。
+3. 再补 Context / 短期记忆 / 长期记忆 / Skill / Router / Subagent / Sandbox / Evaluation，逐项说明是否需要及其代价。
+4. 完成 Harness 闭卷表达后，进入 `BL-029` 的多轮 Query 改写；`BL-030` 用小实验验证联合索引与 ICP。
+5. 在下一次投递或面试前完成 `BL-027` 的五组事实审计和职业转向表达修订。
+6. 转转面试暴露项的具体断点保留在 `BL-009`、`BL-031`、`BL-002`，当前不抢占 `BL-028`。
 
 ---
 
 ## 6. 优先读取文件
 
-1. `LEARNING_BACKLOG.md` 中的 `BL-026`
-2. `backend/distributed-system/agent-sse-event-stream-and-recovery.md`
-3. `interview/real-records/2026-08-04-suunto-ai-agent-engineer.md`
-4. `mistakes/interview/agent-project-implementation-and-expression-gap.md`
-5. `interview/ai-application-questions.md`
-6. `sessions/2026-08-04-suunto-ai-agent-interview-and-sse-review.md`
+1. `LEARNING_BACKLOG.md` 中的 `BL-028`
+2. `interview/real-records/2026-08-05-tuzhan-ai-platform-backend.md`
+3. `mistakes/interview/agent-project-implementation-and-expression-gap.md`
+4. `interview/ai-application-questions.md`
+5. `backend/distributed-system/agent-sse-event-stream-and-recovery.md`
+6. `sessions/2026-08-05-tuzhan-interview-review-and-capability-map.md`
 
 需要判断长期能力方向时，再读取：
 

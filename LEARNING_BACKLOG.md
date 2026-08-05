@@ -85,19 +85,90 @@ Backlog 任务可以来自：
 
 ## 5. 当前任务池
 
+### BL-028 Agent Harness 架构与项目证据闭环
+
+- ID：BL-028
+- 优先级：P0
+- 来源：兔展真实面试暴露 + 颂拓真实面试重复暴露
+- RoadmapRef：RM-05 项目深挖与工程表达；RM-06 AI Backend / RAG / Agent 能力；RM-08 面试复盘与查漏补缺
+- 状态：DOING
+- 主题：从“项目里有 LangGraph、工具和状态表”推进到能够完整设计、实现和解释单 Agent Harness，并区分多层 Agent 架构的扩展边界
+- 学习目标：建立 Model、Messages、Prompt、Tool / Skill Registry、Schema、Agent loop、权限 / HITL、Context、短期与长期记忆、Checkpoint、Sandbox、Tracing 和 Evaluation 的完整架构；准确映射个人 `rag-system` 已实现的单 Agent 工具循环、Java MCP 工具注册、Action 边界和事件审计，同时明确尚未实现的多轮会话、长期记忆、Skill 管理、多 Agent / 意图路由和通用代码执行沙箱。
+- 验收标准：能从只有模型 API Key 开始，用 2 至 3 分钟讲清一个 Claude Code 类单 Agent 的最小可运行主链路；能说明 `AIMessage.tool_calls -> 工具执行 -> ToolMessage -> 再次模型决策` 的循环；能区分系统提示、运行时 Context、短期 State、长期 Store 和 Skill；能说明读写文件、Shell、网络和高风险工具的授权与沙箱边界；能比较单 Agent、Router + 专用 Agent、多 Agent 协作的适用条件和代价；能沿个人代码指出已实现证据与明确缺口；完成一次闭卷架构口述和至少一个最小实验或代码走查证据。
+- 当前断点：2026-08-05 兔展面试官明确反馈，简历和现场回答没有体现意图识别、子策略分发、记忆、Skill 管理等成体系 Agent Harness。代码复核确认个人项目并非只有 RAG：Python 已实现 `StateGraph` 模型—工具循环、`AIMessage.tool_calls` / `ToolMessage`、只读工具与待确认 Action 分流、工具调用上限和 SSE Runtime；Java 已实现 `McpToolRegistry`、工具契约、业务状态与事件审计。当前仍是面向 RAG 运维诊断的单 Agent，不包含通用多轮聊天、独立 Query 改写、长期记忆、Skill 管理、多 Agent / 意图路由和 Claude Code 式文件 / Shell 沙箱。核心问题是已实现能力未被组织成 Harness 架构，同时确有更高层能力缺口。
+- 关联文件：`interview/real-records/2026-08-05-tuzhan-ai-platform-backend.md`、`mistakes/interview/agent-project-implementation-and-expression-gap.md`、`interview/ai-application-questions.md`、`backend/distributed-system/agent-sse-event-stream-and-recovery.md`、`sessions/2026-08-05-tuzhan-interview-review-and-capability-map.md`、`LEARNING_ROADMAP.md`
+- 下一步动作：先画一张不依赖框架名的单 Agent Harness 主链路，再逐项映射 `rag-system` 的真实类、状态和调用方向；随后回答“只有 DeepSeek API Key，如何从零实现 Claude Code 类 Agent”，最后再讨论 Router / 多 Agent、记忆和 Skill 管理，不先横向扩张所有框架 API。
+
+### BL-029 多轮 RAG Query 改写与文档解析边界
+
+- ID：BL-029
+- 优先级：P1
+- 来源：兔展真实面试暴露
+- RoadmapRef：RM-06 AI Backend / RAG / Agent 能力；RM-08 面试复盘与查漏补缺
+- 状态：TODO
+- 主题：补齐多轮会话中的指代消解、独立查询改写，以及 PDF / Word / OCR / 表格解析的实现与事实边界
+- 学习目标：理解为什么“这个手机什么时候发布”不能直接作为检索 Query；能够把历史消息与当前追问改写成语义完整的独立 Query，再执行关键词 / 向量检索；区分检索 Query、生成 Prompt 和会话历史；同时建立原生 PDF、扫描 PDF、Word、Markdown、表格和图片的解析分层，并与个人项目真实支持范围对齐。
+- 验收标准：能将“荣耀 13 手机多少钱 -> 这个手机什么时候发布”改写为独立 Query，并说明实体继承、歧义检测和信息不足时追问用户；能解释 Query rewrite 失败会影响关键词召回和向量召回；能设计原问题与改写问题的日志、缓存和评测；能区分原生 PDF 文本抽取、扫描 PDF OCR、版面顺序、表格结构和 Chunk；能准确说明个人 `rag-system` 当前代码只确认支持 `md`、`txt` 和原生文本 PDF，使用 PDFBox 与固定窗口 / overlap / 自然边界兜底，尚未确认 Word、OCR、表格或多模态解析实现。
+- 当前断点：面试现场先提出携带历史会话或做成 Agent / MCP，但没有直接回答最终送入向量模型的文本；经面试官提示后才收敛到 Query rewrite。代码检索未发现当前个人项目的独立 Query 改写实现。现场声称支持 Word、几千份文档、千万字符、Embedding 约 300ms、LLM 约 1000ms，以及早期本地模型 / 荣耀内部模型平台的部分事实，当前学习仓库和个人项目代码没有充分证据，必须先核对再复用。
+- 关联文件：`interview/real-records/2026-08-05-tuzhan-ai-platform-backend.md`、`interview/rag-project-story.md`、`mistakes/interview/rag-multi-turn-query-rewrite.md`、`mistakes/interview/rag-rerank-algorithm-depth.md`、`sessions/2026-08-05-tuzhan-interview-review-and-capability-map.md`、`LEARNING_ROADMAP.md`
+- 下一步动作：先用面试原例画出“chat history + current turn -> standalone query -> retrieval -> answer prompt”的链路，再核对公司阶段与个人项目的文件类型、数据规模、延迟和模型接入事实；事实未确认前不更新简历量化数据。
+
+### BL-030 MySQL 联合索引范围访问与 ICP
+
+- ID：BL-030
+- 优先级：P1
+- 来源：兔展真实面试暴露
+- RoadmapRef：RM-02 数据库核心能力；RM-08 面试复盘与查漏补缺
+- 状态：TODO
+- 主题：通过 `A = 1 AND B > 2 AND C = 3` 补齐联合索引搜索区间、覆盖索引、回表和索引条件下推的边界
+- 学习目标：不再用“范围条件之后字段完全不走索引”概括所有行为，而是区分用于构造 B+ 树扫描区间的 Key Part、在索引记录上继续过滤的条件、覆盖索引和回表读取完整行。
+- 验收标准：能比较 `(A,C,B)` 与 `(A,B,C)` 对扫描区间的影响；能说明 `(A,B,C)` 仍可用 A 等值和 B 范围定位区间，C 通常不能继续缩小该范围但仍可能参与索引记录过滤；能说明 ICP 的目标是在需要完整行时先用索引列过滤、减少回表，而不是“C 也参与索引定位”；能识别 `SELECT A,B,C` 在 `(A,B,C)` 上可能形成覆盖索引，因此不能机械套用“通过 ICP 避免回表”的话术；能通过 MySQL 8.4 `EXPLAIN` 对比 `key_len`、`Using index` 与 `Using index condition`。
+- 当前断点：面试现场能够判断等值列应放在范围列前，给出 `(A,C,B)`，但解释中使用了“物理分区、扫描层次”等不准确表述；随后把 `(A,B,C)` 说成不行，再改为 A、B 可用于访问而 C 不可用，并明确不知道 ICP。MySQL 官方文档确认，ICP 是在需要读取完整行时先用索引元组评估可下推条件，以减少完整行读取；对本题只查询 A、B、C 的覆盖索引场景，需要与 ICP 分开判断。
+- 关联文件：`interview/real-records/2026-08-05-tuzhan-ai-platform-backend.md`、`backend/mysql/sql-performance-analysis.md`、`interview/mysql-questions.md`、`mistakes/database/composite-index-range-and-icp.md`、`sessions/2026-08-05-tuzhan-interview-review-and-capability-map.md`、MySQL 8.4 官方文档：`https://dev.mysql.com/doc/refman/8.4/en/index-condition-pushdown-optimization.html`
+- 下一步动作：建立一张最小表和三组索引，在同一数据集上分别执行覆盖查询与 `SELECT *`，通过 `EXPLAIN` 和开关 `index_condition_pushdown` 验证搜索区间、覆盖索引与 ICP，不只背结论。
+
+### BL-031 ToC 订单查询与分库分表系统设计
+
+- ID：BL-031
+- 优先级：P1
+- 来源：转转集团全栈工程师真实面试暴露
+- RoadmapRef：RM-05 项目深挖与工程表达；RM-08 面试复盘与查漏补缺；RM-09 系统设计、容量与性能工程
+- 状态：TODO
+- 主题：从用户订单列表与详情访问路径出发，完成 ToC 订单系统的分片、路由、分页、冷热分层与用户体验设计
+- 学习目标：不再从“分区、配置表、小表查大表、分库分表”等技术名词直接起答，而是先明确用户订单列表、订单详情、商家或运营查询的访问模式、流量、SLA 和一致性，再选择分片键、路由、二级索引、分页、冷热分层和扩容方案。
+- 验收标准：能在 3 分钟内独立给出一个 ToC 订单查询方案；能说明为何用户订单列表通常优先按 `user_id` 路由，以及 `order_id` 点查如何携带或查询路由；能说明跨分片查询、热点用户、历史订单、游标分页、扩容迁移和全局唯一 ID 的代价；能区分 MySQL 分区裁剪与分库分表，说明跨月查询即使裁剪分区仍要处理命中数据；能用峰值 QPS、P95 / P99、可用性和降级结果说明用户体验，而不是只罗列分布式组件；回答时先给独立方案，再用澄清问题修正假设。
+- 当前断点：2026-08-05 转转集团全栈工程师面试中，面对类似电商的用户历史订单查询，能够先确认业务场景，并提出“小表保存关联键、大表取详情”和配置化路由方向；但在被要求独立设计分库分表后，没有及时给出明确分片键、列表 / 详情读模型、跨分片代价、扩容和 SLA。面试官明确反馈缺少 ToC 经验，并强调 ToC 更关注高并发下的用户体验与性能。会议助手包含主观评价，任务只采用候选人回答摘要和面试官明确反馈。
+- 关联文件：`interview/real-records/2026-08-05-zhuanzhuan-fullstack-engineer.md`、`mistakes/distributed/toc-order-design-without-access-path.md`、`backend/distributed-system/high-qps-capacity-design.md`、`mistakes/distributed/high-qps-and-mq-boundaries.md`、`sessions/2026-08-05-zhuanzhuan-interview-review.md`、`LEARNING_ROADMAP.md`
+- 下一步动作：先画“用户订单列表、订单详情、运营查询”三条访问路径，在不分库和需要分库两种容量前提下分别给方案；然后用 3 分钟闭卷回答一次，不先反问面试官现有架构。
+
+### BL-027 兔展 AI 平台后端开发面试专项准备
+
+- ID：BL-027
+- 优先级：P1
+- 来源：真实面试准备 + 目标岗位要求
+- RoadmapRef：RM-03 Java / Spring / 并发能力；RM-04 Redis / MQ / 分布式能力；RM-05 项目深挖与工程表达；RM-06 AI Backend / RAG / Agent 能力；RM-08 面试复盘与查漏补缺；RM-09 系统设计、容量与性能工程；RM-10 微服务治理与云原生交付
+- 状态：REVIEW
+- 主题：围绕 2026-08-05 15:00 兔展 AI 平台后端开发岗位，压缩 Java 平台后端、RAG / Workflow / Prompt、Agent 工具治理、性能可靠性和交付边界表达
+- 学习目标：把个人定位稳定为“Java 生产后端能力 + RAG / Agent 工程实践”，能够结合兔展 AI 交互平台场景说明模型、Agent Runtime、Java 业务状态和企业工具之间的职责边界；优先使用结算系统性能、可靠性和排障证据，以及个人 RAG / Agent 的检索、受控工具调用和事件恢复链路；对 Spring Cloud、Nacos、Docker、Kubernetes、Jenkins 和 ModelScope 的实际经验保留事实边界。
+- 验收标准：能完成 60 秒岗位定向自我介绍；能用 2 分钟讲清 RAG + Agent 系统的服务对象、输入输出、公共主链路、本人职责、难点和项目时间边界；能区分 RAG、固定 Workflow 和 Agent；能说明企业 API 如何注册为受权限、Schema、幂等、超时、审计和人工确认约束的 Tool / Skill；能用至少两个生产案例证明 MySQL / MyBatis 性能优化、任务可靠性或故障排查能力；能回答 AI 平台的高可用、扩展性、流式事件与故障恢复；遇到未实际落地的 Spring Cloud / Nacos / Docker / Kubernetes / Jenkins / ModelScope 细节时，先说明经验边界，再给出可迁移机制和验证方案。
+- 验收结果：已完成面试前定位和 2026-08-05 技术一面。现场能够完成 Java + AI 定位、RAG 主链路、pgvector 选型、原生 PDF 与扫描件区别、Agent 工具风险与状态恢复表达，并主动获取团队业务和入职前三个月职责。未稳定通过多轮 Query 改写、Agent Harness 系统设计和 MySQL ICP 追问；职业转向叙事、旧视觉项目模型细节及 RAG 数据量 / 延迟 / 文件类型也出现事实或表达风险，因此任务进入 `REVIEW`，新能力缺口分别转交 `BL-028` 至 `BL-030`。
+- 当前断点：2026-08-05 兔展 AI 平台后端技术一面已完成，结果尚未确认。面试官明确反馈表达和经历整体不错，但认为简历没有体现成体系的 Agent Harness，包括意图识别、子策略分发、记忆和 Skill 管理。代码复核后确认个人项目已经具备单 Agent 模型—工具循环、工具注册、风险分流和事件审计，但尚未覆盖对方所举的完整多层 Agent 能力。现场还暴露多轮 RAG Query rewrite、MySQL ICP、文档解析事实边界、历史视觉项目细节和职业转向叙事问题。
+- 关联文件：`interview/mock-records/2026-08-05-tuzhan-ai-platform-backend-prep.md`、`interview/real-records/2026-08-05-tuzhan-ai-platform-backend.md`、`sessions/2026-08-05-tuzhan-interview-review-and-capability-map.md`、`resume/ai-application-resume.md`、`resume/java-backend-resume.md`、`interview/rag-project-story.md`、`interview/ai-application-questions.md`、`backend/distributed-system/agent-sse-event-stream-and-recovery.md`、`projects/settlement-system/transaction-flow-and-reconciliation.md`、`LEARNING_ROADMAP.md`
+- 下一步动作：核对并固定五组事实：公司阶段与个人阶段的文件类型支持、文档 / Chunk 数据规模、Embedding / LLM 延迟、模型部署与内部平台、视觉实习的 YOLO / Faster R-CNN / ResNet 分工和样本量；把职业转向改写为“校招岗位调整 -> 四年后端能力积累 -> 主动迁移到 AI 平台后端”，完成后将本任务标记为 `DONE`。技术学习转入 `BL-028`。
+
 ### BL-026 颂拓 AI Agent 一面复盘与生产化补强
 
 - ID：BL-026
-- 优先级：P0
+- 优先级：P1
 - 来源：真实面试暴露 + 潜在下一轮准备
-- RoadmapRef：RM-06 AI Backend / RAG / Agent 能力；RM-08 面试复盘与查漏补缺；RM-09 系统设计、容量与性能工程；RM-10 交付、运维与平台基础
-- 状态：DOING
+- RoadmapRef：RM-06 AI Backend / RAG / Agent 能力；RM-08 面试复盘与查漏补缺；RM-09 系统设计、容量与性能工程；RM-10 微服务治理与云原生交付
+- 状态：TODO
 - 主题：围绕颂拓 AI Agent 工程师一面暴露的 SSE 表达、长期任务治理、多实例部署和容器隔离问题，建立生产化 Agent 后端的最小回答主线
 - 学习目标：准确讲清个人项目中 Run / Step / Action / Event、Python 到 Java 与 Java 到前端的两段 SSE、事件持久化、事务提交后发布、`Last-Event-ID` 补发、心跳和孤儿 Run 恢复；区分 Step 级与 Token 级流式、事件表与实时广播、兼容性版本治理与工具选择质量；为长期记忆、长任务校验、FastAPI 多实例和容器沙箱建立可落地但不过度包装的最小方案。
 - 验收标准：能用 60 至 90 秒闭卷讲清实际 SSE 链路和当前边界；能回答“Python 每返回一个字是否都要入库”并说明事件与 Token 的不同写入粒度；能用状态权威、共享存储、消息通道、优雅退出和故障演练说明单实例到多实例的改造；能区分 MCP 协议、工具 Schema、Skill / Prompt 和模型版本，并说明版本控制不等于工具选择正确；能为记忆冲突和长任务跑偏分别提出数据模型、确定性校验与按风险触发的模型校验；能说明容器沙箱的最小安全边界；全程区分个人项目已实现、设计方向和未有生产经验。
-- 当前断点：2026-08-04 已完成一面纪要审计和 SSE 第一轮机制归纳。已确认个人项目不是“尚未做状态表”，而是已实现 Step 级完整事件持久化、事务提交后发布、`Last-Event-ID` 补发、心跳与孤儿 Run 恢复；当前缺口是逐 Token 流式、多实例共享广播、用户主动取消及完整生产认证 / 指标。长期记忆、长任务校验、MCP / Skill 版本与工具选择质量、FastAPI 多实例、容器沙箱、BM25 / 多语言和模型基础仍待闭卷验证。会议纪要中的 BM25、Rerank、MCP 等术语可能存在转写误差，面试结果和下一轮尚未确认。
+- 当前断点：2026-08-04 已完成一面纪要审计和 SSE 第一轮机制归纳。已确认个人项目不是“尚未做状态表”，而是已实现 Step 级完整事件持久化、事务提交后发布、`Last-Event-ID` 补发、心跳与孤儿 Run 恢复；当前缺口是逐 Token 流式、多实例共享广播、用户主动取消及完整生产认证 / 指标。长期记忆、长任务校验、MCP / Skill 版本与工具选择质量、FastAPI 多实例、容器沙箱、BM25 / 多语言和模型基础仍待闭卷验证。会议纪要中的 BM25、Rerank、MCP 等术语可能存在转写误差，面试结果和下一轮尚未确认。2026-08-05 因当日 15:00 兔展 AI 平台后端开发面试需要即时准备，本任务暂停推进，状态调整为 `TODO`、优先级暂降为 P1，已完成内容和原断点保持不变。
 - 关联文件：`interview/real-records/2026-08-04-suunto-ai-agent-engineer.md`、`backend/distributed-system/agent-sse-event-stream-and-recovery.md`、`interview/ai-application-questions.md`、`mistakes/interview/agent-project-implementation-and-expression-gap.md`、`sessions/2026-08-04-suunto-ai-agent-interview-and-sse-review.md`、`LEARNING_ROADMAP.md`
-- 下一步动作：先脱稿完成一次 60 至 90 秒 SSE 主链路和边界口述，再按“记忆与长任务治理 -> MCP / Skill 版本和评测 -> FastAPI 多实例与容器沙箱”的顺序补强。若确认进入算法负责人下一轮，再增加一次针对性模拟；结果未确认前不扩张模型训练、推理框架或 Kubernetes 平台运维细节。
+- 下一步动作：完成兔展面试和必要复盘后，再根据颂拓下一轮结果决定是否恢复；恢复时仍从脱稿完成一次 60 至 90 秒 SSE 主链路和边界口述开始，不重做已完成的纪要审计和机制归纳。
 
 ### BL-025 平安产险面试复盘与分布式事务最小补强
 
@@ -229,14 +300,14 @@ Backlog 任务可以来自：
 ### BL-022 Kubernetes 的 Java 开发者视角
 
 - ID：BL-022
-- 优先级：P2
+- 优先级：P1
 - 来源：目标岗位要求 + 长期 Java 后端能力建设
 - RoadmapRef：RM-10 微服务治理与云原生交付
 - 状态：TODO
 - 主题：Java 服务在 Kubernetes 中的部署、配置、观察和基础故障定位
 - 学习目标：达到后端开发者能够部署和排查自己服务的深度，不把集群搭建、网络插件和平台运维作为当前主线。
 - 验收标准：能解释 Pod、Deployment、Service、ConfigMap、Secret、readiness / liveness 探针和资源 requests / limits；能完成一次 Java 服务部署、配置注入、日志查看、滚动更新和回滚；能根据 Pod 状态、事件、日志和探针结果定位常见启动或流量接入问题。
-- 当前断点：尚未建立 Kubernetes 系统知识和可运行证据，当前只规划开发者侧必需能力。
+- 当前断点：尚未建立 Kubernetes 系统知识和可运行证据，当前只规划开发者侧必需能力。2026-08-05 兔展面试确认其政企 Agent 定制交付岗位前三个月可能涉及 Kubernetes、远程部署和网络问题，说明该能力已从普通 JD 关键词变成真实岗位职责，但仍不因此包装为已有经验。
 - 关联文件：`labs/`、`backend/distributed-system/`、`LEARNING_ROADMAP.md`
 - 下一步动作：在 `BL-021` 形成稳定容器镜像后，再从 Pod、Deployment 和 Service 三个对象开始最小部署实验。
 
@@ -335,9 +406,9 @@ Backlog 任务可以来自：
 - 主题：Redis 原生锁、Redisson 锁、业务抢占锁、数据库状态机处理权的边界
 - 学习目标：能先区分锁的目标，再回答锁应该覆盖短临界区还是整个任务周期，并理解 Redisson 对加锁、续期和释放的封装边界。
 - 验收标准：能用 1 分钟讲清 `SET NX PX`、唯一 owner token 与安全释放；能解释 Redisson `RLock`、可重入、watchdog / lease time 和持有者释放约束；能解释为什么不能只依赖 Redis / Redisson 锁保证任务只处理一次；能结合数据库 `process_token` 和状态机回答长任务场景。
-- 当前断点：Redis 分布式锁第一轮已学习，但面试中锁粒度表达出现摇摆。
-- 关联文件：`backend/redis/distributed-lock.md`、`interview/redis-questions.md`、`mistakes/distributed/redis-lock.md`
-- 下一步动作：先对照原生 Redis 锁与 Redisson `RLock` 的加锁、续期和释放机制，再重写“锁整个任务还是只锁临界区”的面试回答。
+- 当前断点：Redis 分布式锁第一轮已学习，但锁粒度表达连续在真实面试中出现摇摆。2026-08-05 转转面试追问“6 小时 Redis 锁在任务宕机时怎么办”时，回答转向数据库抢占、心跳和软停止，没有先说明固定 TTL 的两个直接边界：进程宕机后可能阻塞入口直到 TTL 到期；任务运行超过 TTL 时又可能提前失锁并发。数据库处理权和明细幂等能够保证长期任务正确性，但不能代替对 Redis 锁自身租约和释放语义的回答。
+- 关联文件：`backend/redis/distributed-lock.md`、`interview/redis-questions.md`、`mistakes/distributed/redis-lock.md`、`interview/real-records/2026-08-05-zhuanzhuan-fullstack-engineer.md`、`sessions/2026-08-05-zhuanzhuan-interview-review.md`
+- 下一步动作：用 60 秒重答“为什么有 6 小时锁、宕机后怎样、任务超过 6 小时怎样”，按入口互斥、TTL / owner token、数据库执行权、业务幂等四层回答，再决定当前方案应该使用固定 lease、受控续期还是短锁保护抢占。
 
 ### BL-003 MQ 可靠性主线
 
@@ -427,16 +498,16 @@ Backlog 任务可以来自：
 ### BL-009 算法保底
 
 - ID：BL-009
-- 优先级：P2
-- 来源：旧冲刺计划迁移
+- 优先级：P1
+- 来源：转转集团真实面试暴露 + 旧冲刺计划迁移
 - RoadmapRef：RM-07 算法与问题求解能力
 - 状态：TODO
-- 主题：滑动窗口、二分、DP 代表题复述
-- 学习目标：建立算法面试保底表达能力。
-- 验收标准：完成至少 3 道代表题的思路复述；能讲清状态、选择、边界、复杂度；能独立写出基础 Java 实现。
-- 当前断点：DP 已完成多轮学习，滑动窗口和二分尚未开始。
-- 关联文件：`fundamentals/algorithm/dp-basic.md`、`mistakes/algorithm/dp.md`
-- 下一步动作：先短时复述 DP 代表题，再选择滑动窗口或二分开始第一轮。
+- 主题：基础算法的限时建模、Java 实现、自测与口述
+- 学习目标：建立算法面试保底交付能力，不只会解释思路，还能在 15 分钟内把正确推导收敛成可编译、边界清楚并完成样例验证的 Java 代码。
+- 验收标准：完成至少 3 道代表题的限时 Java 实现；能讲清目标、状态或不变量、边界和复杂度；每题在 15 分钟内经历“读题 -> 示例 -> 推导 -> 编码 -> 自测”；能主动检查空输入、字符或数组边界、`int` / `long` 和题目大小写；至少覆盖一次线性扫描、滑动窗口、二分和已学 DP 的代表题。
+- 当前断点：DP 已完成多轮学习，滑动窗口和二分尚未开始。2026-08-05 转转面试的相邻交换题中，草稿已经正确推导“第 x 个 A 当前在 X，移动次数为 X-x”，等价于累计每个 `a` 前面的 `b`；但使用 HashMap 保存位置，把一遍扫描复杂化为两阶段伪代码，并在 15 分钟内没有收敛出可运行 Java。该题暴露的是从正确模型到可提交实现的脱节，不是没有找到核心算法。
+- 关联文件：`fundamentals/algorithm/dp-basic.md`、`mistakes/algorithm/dp.md`、`mistakes/algorithm/adjacent-swap-live-coding.md`、`interview/real-records/2026-08-05-zhuanzhuan-fullstack-engineer.md`、`sessions/2026-08-05-zhuanzhuan-interview-review.md`
+- 下一步动作：先不看答案，在 15 分钟内重新完成相邻交换题，使用一遍扫描和 `long` 返回交换次数，并覆盖空串、全 a、全 b、交替字符串四组样例；通过后再开始滑动窗口和二分。
 
 ### BL-010 综合模拟面试与错题清单
 

@@ -64,7 +64,7 @@
 
 1. 事务、隔离级别、MVCC
 2. undo log、redo log、binlog
-3. B+ 树索引、联合索引、回表、覆盖索引
+3. B+ 树索引、联合索引、范围访问、索引条件下推、回表、覆盖索引
 4. 行锁、间隙锁、Next-Key Lock、死锁
 5. 慢 SQL 和执行计划分析
 
@@ -132,7 +132,7 @@
 2. 状态机、幂等、补偿、重试
 3. 批处理吞吐和分片并行
 4. 上下游接口、MQ、外部系统不确定状态
-5. 项目面试表达
+5. 项目与系统设计的分层、限时和听众对齐表达
 
 典型沉淀位置：
 
@@ -150,14 +150,14 @@
 
 能力边界：
 
-1. 文档解析、Chunk、Embedding、向量检索
-2. 混合检索、融合、Rerank、Prompt、引用链
+1. 原生文本、PDF / OCR、版面与表格等文档解析，Chunk、Embedding 和向量检索
+2. 多轮会话指代消解与独立 Query 改写，混合检索、融合、Rerank、Prompt 和引用链
 3. RAG 评测和线上问题回放
-4. Agent 状态、决策、工具执行、观察和人工确认
-5. LangChain 的 Core components、模型、消息、工具、Agent Harness、Middleware、Runtime context、结构化输出、检索组件和 Agent frontend 基础
+4. Agent Harness 的模型—工具循环、上下文与记忆、意图路由、Tool / Skill 注册、规划与执行、观察、评估和人工确认
+5. LangChain 的 Core components、模型、消息、工具、Agent Harness、Middleware、Runtime context、结构化输出、检索组件，以及 DSL / 卡片等 Agent frontend 控制面基础
 6. LangGraph 的 Graph API、Functional API、State、Node、Edge、Reducer、Command、Checkpoint、Store、Interrupt、Streaming、Subgraph、Time travel、持久执行和 human-in-the-loop
 7. LangChain / LangGraph 的生产化边界：应用结构、部署配置、测试、观测、前端控制面和 LangSmith 辅助调试
-8. 长任务、异步索引、失败重试、权限和可观测性
+8. 长任务、异步索引、失败重试、权限、沙箱、评测和可观测性
 
 典型沉淀位置：
 
@@ -179,7 +179,7 @@
 2. 滑动窗口
 3. 二分查找
 4. 回溯和图论基础
-5. Java 实现和口述表达
+5. 从正确推导收敛到可运行 Java 实现，并完成边界、自测和限时口述
 
 典型沉淀位置：
 
@@ -220,10 +220,11 @@
 
 1. QPS、并发数、响应时间、吞吐量和资源利用率之间的关系
 2. Web 线程、应用线程池、数据库连接池、缓存、MQ 和下游服务的容量预算
-3. 无状态扩容、缓存、批量化、异步化、分库分表和读写路径优化
-4. 限流、熔断、降级、隔离、背压和过载保护
-5. 阶梯压测、P95 / P99、错误率、队列趋势、容量拐点和安全余量
-6. 高可用、故障演练、监控、告警和容量复盘
+3. ToC 用户链路中的列表 / 详情读写模型、分片键、路由、跨分片查询、游标分页和冷热分层
+4. 无状态扩容、缓存、批量化、异步化、分库分表和读写路径优化
+5. 限流、熔断、降级、隔离、背压和过载保护
+6. 阶梯压测、P95 / P99、错误率、队列趋势、容量拐点和安全余量
+7. 高可用、故障演练、监控、告警和容量复盘
 
 典型沉淀位置：
 
@@ -249,6 +250,7 @@
 5. Docker 镜像、容器、网络、存储、配置、健康检查、日志和 JVM 容器资源边界
 6. Kubernetes 的 Pod、Deployment、Service、ConfigMap、Secret、探针、资源限制、日志和滚动发布
 7. 应用可观测性、发布验证、回滚和基础故障定位
+8. 政企私有化交付中的离线镜像、环境配置、网络连通、外部依赖、模型 / 数据安全和现场问题定位
 
 典型沉淀位置：
 
